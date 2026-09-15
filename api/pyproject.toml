@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# EXE002 false-positives on Windows bind mounts, which report every file as executable.
+lint.ignore = ["EXE002"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
