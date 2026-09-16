@@ -2,7 +2,8 @@
 line-length = 100
 target-version = "py311"
 # EXE002 false-positives on Windows bind mounts, which report every file as executable.
-lint.ignore = ["EXE002"]
+# B008 flags FastAPI's required `Depends(...)` default-argument pattern.
+lint.ignore = ["EXE002", "B008"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
