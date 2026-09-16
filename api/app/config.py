@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str
     openai_api_key: str = ""
+    max_video_duration_seconds: int = 10800
 
 
 settings = Settings()

@@ -18,7 +18,14 @@ export function VideoList({ videos }: VideoListProps) {
         <li key={video.id}>
           {video.thumbnail_url && <img src={video.thumbnail_url} alt="" width={120} />}
           <span>{video.title}</span>
-          <span>{video.status}</span>
+          <span className={video.status === 'failed' ? 'status-failed' : undefined}>
+            {video.status}
+          </span>
+          {video.status === 'failed' && video.error_message && (
+            <p role="alert" className="status-failed">
+              {video.error_message}
+            </p>
+          )}
           <button
             type="button"
             onClick={() => deleteVideo.mutate(video.id)}
