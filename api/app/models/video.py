@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, Integer, Text, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -18,6 +18,7 @@ class Video(Base):
     duration_seconds: Mapped[int | None] = mapped_column(Integer)
     thumbnail_url: Mapped[str | None] = mapped_column(Text)
     transcript_source: Mapped[str | None] = mapped_column(Text)
+    transcript: Mapped[list[dict] | None] = mapped_column(JSONB)
     status: Mapped[str] = mapped_column(Text, nullable=False, server_default="pending")
     error_message: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(
