@@ -79,7 +79,9 @@ def _download_audio(youtube_id: str, tmp_dir: str) -> Path:
 async def _fetch_transcript(youtube_id: str) -> tuple[list[dict], str]:
     try:
         cues = await asyncio.to_thread(_fetch_captions, youtube_id)
-        return cues, "captions"
+        if cues:
+            return cues, "captions"
+        logger.info("captions track for %s was empty, falling back to whisper", youtube_id)
     except (TranscriptsDisabled, NoTranscriptFound, RequestBlocked, VideoUnavailable) as e:
         logger.info(
             "no English captions for %s (%s), falling back to whisper",
@@ -107,7 +109,11 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
         try:
             metadata = await asyncio.to_thread(_extract_metadata, video.youtube_id)
             duration = metadata.get("duration")
-            if duration and duration > settings.max_video_duration_seconds:
+            if duration is None:
+                raise IngestionError(
+                    "Could not determine this video's duration (it may be a live stream)."
+                )
+            if duration > settings.max_video_duration_seconds:
                 raise IngestionError(
                     f"Video is {duration // 60} minutes long, over the "
                     f"{settings.max_video_duration_seconds // 60}-minute limit."

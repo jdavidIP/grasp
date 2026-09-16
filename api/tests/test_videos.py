@@ -1,4 +1,5 @@
 import uuid
+from pathlib import Path
 from unittest.mock import AsyncMock
 
 import pytest
@@ -8,6 +9,8 @@ from app.ingestion import videos as ingestion
 from app.main import app
 
 BASE_URL = "http://test"
+
+_real_fetch_transcript = ingestion._fetch_transcript
 
 
 def _fake_metadata(**overrides):
@@ -82,6 +85,41 @@ async def test_video_over_duration_fails(monkeypatch):
     detail = get_response.json()
     assert detail["status"] == "failed"
     assert "limit" in detail["error_message"].lower()
+
+
+async def test_video_unknown_duration_fails(monkeypatch):
+    monkeypatch.setattr(
+        ingestion, "_extract_metadata", lambda youtube_id: _fake_metadata(duration=None)
+    )
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "failed"
+    assert "duration" in detail["error_message"].lower()
+
+
+async def test_empty_captions_falls_back_to_whisper(monkeypatch):
+    # The autouse mock_ingestion fixture replaces _fetch_transcript itself, so
+    # restore the real implementation to exercise its actual fallback logic.
+    monkeypatch.setattr(ingestion, "_fetch_transcript", _real_fetch_transcript)
+    monkeypatch.setattr(ingestion, "_fetch_captions", lambda youtube_id: [])
+    monkeypatch.setattr(ingestion, "_download_audio", lambda youtube_id, tmp_dir: Path("fake.m4a"))
+    monkeypatch.setattr(
+        ingestion.llm,
+        "transcribe_audio",
+        AsyncMock(return_value=[{"start": 0.0, "end": 1.0, "text": "hi"}]),
+    )
+
+    cues, source = await ingestion._fetch_transcript("abc123")
+
+    assert source == "whisper"
+    assert cues == [{"start": 0.0, "end": 1.0, "text": "hi"}]
 
 
 async def test_video_no_transcript_fails(monkeypatch):

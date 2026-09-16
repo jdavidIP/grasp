@@ -21,6 +21,7 @@ The library. One row per added video.
 | duration_seconds | int | |
 | thumbnail_url | text | |
 | transcript_source | text | `captions` or `whisper` |
+| transcript | jsonb | list of `{start, end, text}` cues; raw transcript between fetch and Phase 3 segmentation |
 | status | text not null | `pending`, `processing`, `ready`, `failed` |
 | error_message | text | populated when `failed` |
 | created_at | timestamptz not null default now() | |
