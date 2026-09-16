@@ -8,10 +8,10 @@ export interface VideoListItem {
   duration_seconds: number | null
   thumbnail_url: string | null
   status: VideoStatus
+  error_message: string | null
   created_at: string
 }
 
 export interface VideoDetail extends VideoListItem {
-  error_message: string | null
   transcript_source: string | null
 }

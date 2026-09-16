@@ -5,7 +5,7 @@ All routes prefixed `/api`. No auth — single local user.
 ## Library
 
 ### `GET /videos`
-Returns the library. Each item: `id`, `youtube_id`, `title`, `channel`, `duration_seconds`, `thumbnail_url`, `status`, `created_at`.
+Returns the library. Each item: `id`, `youtube_id`, `title`, `channel`, `duration_seconds`, `thumbnail_url`, `status`, `error_message`, `created_at`.
 
 ### `POST /videos`
 ```json

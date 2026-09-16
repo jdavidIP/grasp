@@ -18,9 +18,9 @@ class VideoListItem(BaseModel):
     duration_seconds: int | None
     thumbnail_url: str | None
     status: str
+    error_message: str | None
     created_at: datetime
 
 
 class VideoDetail(VideoListItem):
-    error_message: str | None
     transcript_source: str | None
