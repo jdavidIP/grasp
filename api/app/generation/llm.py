@@ -20,13 +20,18 @@ def _get_client() -> AsyncOpenAI:
     return _client
 
 
-async def transcribe_audio(audio_path: Path) -> str:
-    """The only place in the app allowed to call the OpenAI audio API directly."""
+async def transcribe_audio(audio_path: Path) -> list[dict]:
+    """The only place in the app allowed to call the OpenAI audio API directly.
+
+    Returns cues in the same `{start, end, text}` shape as the captions path.
+    """
     started = time.monotonic()
     with audio_path.open("rb") as audio_file:
         transcription = await _get_client().audio.transcriptions.create(
             model=WHISPER_MODEL,
             file=audio_file,
+            response_format="verbose_json",
+            timestamp_granularities=["segment"],
         )
     elapsed = time.monotonic() - started
     logger.info(
@@ -35,4 +40,7 @@ async def transcribe_audio(audio_path: Path) -> str:
         audio_path.stat().st_size,
         elapsed,
     )
-    return transcription.text
+    return [
+        {"start": segment.start, "end": segment.end, "text": segment.text.strip()}
+        for segment in transcription.segments or []
+    ]
