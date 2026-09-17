@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import videos
+from app.routers import chat, videos
 
 app = FastAPI(title="Grasp")
 
@@ -13,6 +13,7 @@ app.add_middleware(
 )
 
 app.include_router(videos.router, prefix="/api")
+app.include_router(chat.router, prefix="/api")
 
 
 @app.get("/health")
