@@ -3,9 +3,10 @@ from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, ForeignKey, Text, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from app.models.flashcard import Flashcard
 
 
 class FlashcardDeck(Base):
@@ -19,4 +20,10 @@ class FlashcardDeck(Base):
     config: Mapped[dict] = mapped_column(JSONB, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    # passive_deletes="all": trust the DB's ON DELETE CASCADE (see the migration)
+    # instead of having the ORM null out each card's deck_id before deleting it.
+    cards: Mapped[list[Flashcard]] = relationship(
+        order_by=Flashcard.order_index, lazy="selectin", passive_deletes="all"
     )

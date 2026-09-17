@@ -91,6 +91,8 @@ Synchronous is acceptable here (a few seconds). If generation exceeds ~20s for w
 
 Response: the created deck with its cards, each carrying `front`, `back`, `segment_id`, `source_start_time`, `difficulty`.
 
+`422` if the generation + validation pipeline (see ARCHITECTURE.md) yields zero cards — e.g. the model's output failed every grounding check. No deck is persisted in that case.
+
 ### `GET /videos/{id}/flashcard-decks`
 Decks for a video, with card counts.
 
