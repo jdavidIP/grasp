@@ -179,14 +179,16 @@ async def test_hybrid_search_fuses_vector_and_keyword_results():
             end_time=2,
             embedding=_embedding(1),
         )
-        # Close embedding, but unrelated text.
+        # Close embedding (but not tied with `both` — a tie makes vector rank order
+        # between them arbitrary, which can flip the RRF result by a hair), unrelated
+        # text.
         vector_only = TranscriptChunk(
             video_id=video.id,
             segment_id=segment.id,
             text="something totally unrelated about gardening",
             start_time=2,
             end_time=3,
-            embedding=query_embedding,
+            embedding=_embedding(0, 50),
         )
         session.add_all([both, keyword_only, vector_only])
         await session.commit()
