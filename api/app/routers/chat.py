@@ -20,6 +20,9 @@ HISTORY_LIMIT = 10
 async def get_chat_history(
     video_id: uuid.UUID, db: AsyncSession = Depends(get_db)
 ) -> list[ChatMessage]:
+    if await db.get(Video, video_id) is None:
+        raise HTTPException(status_code=404, detail="Video not found.")
+
     result = await db.execute(
         select(ChatMessage).where(ChatMessage.video_id == video_id).order_by(ChatMessage.created_at)
     )
@@ -72,5 +75,8 @@ async def send_chat_message(
 
 @router.delete("/videos/{video_id}/chat", status_code=204)
 async def clear_chat_history(video_id: uuid.UUID, db: AsyncSession = Depends(get_db)) -> None:
+    if await db.get(Video, video_id) is None:
+        raise HTTPException(status_code=404, detail="Video not found.")
+
     await db.execute(delete(ChatMessage).where(ChatMessage.video_id == video_id))
     await db.commit()

@@ -79,6 +79,20 @@ async def test_chat_missing_video_returns_404():
     assert response.status_code == 404
 
 
+async def test_get_chat_history_missing_video_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        response = await client.get(f"/api/videos/{uuid.uuid4()}/chat")
+    assert response.status_code == 404
+
+
+async def test_clear_chat_history_missing_video_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        response = await client.delete(f"/api/videos/{uuid.uuid4()}/chat")
+    assert response.status_code == 404
+
+
 async def test_chat_passes_recent_history_to_generation(monkeypatch):
     mock_answer = AsyncMock(return_value=_fake_answer())
     monkeypatch.setattr(chat_router, "answer_question", mock_answer)
