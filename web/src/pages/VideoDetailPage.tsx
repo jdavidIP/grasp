@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { ChatPanel } from '../components/ChatPanel'
+import { FlashcardConfigModal } from '../components/FlashcardConfigModal'
+import { FlashcardDeckList } from '../components/FlashcardDeckList'
+import { FlashcardReview } from '../components/FlashcardReview'
 import { YouTubePlayer } from '../components/YouTubePlayer'
 import { useReprocessVideo, useVideoQuery } from '../hooks/useVideos'
 import { formatTime } from '../lib/time'
@@ -10,6 +13,7 @@ export function VideoDetailPage() {
   const { data: video, isLoading, error } = useVideoQuery(id!)
   const reprocess = useReprocessVideo(id!)
   const [seekSeconds, setSeekSeconds] = useState<number | null>(null)
+  const [reviewingDeckId, setReviewingDeckId] = useState<string | null>(null)
 
   return (
     <main>
@@ -56,6 +60,32 @@ export function VideoDetailPage() {
           )}
 
           {video.status === 'ready' && <ChatPanel videoId={video.id} onSeek={setSeekSeconds} />}
+
+          {video.status === 'ready' && (
+            <section>
+              <h2>Flashcards</h2>
+              <FlashcardConfigModal
+                videoId={video.id}
+                segments={video.segments}
+                onCreated={setReviewingDeckId}
+              />
+              <FlashcardDeckList
+                videoId={video.id}
+                onReview={setReviewingDeckId}
+                onDeleted={(deckId) =>
+                  setReviewingDeckId((current) => (current === deckId ? null : current))
+                }
+              />
+              {reviewingDeckId && (
+                <FlashcardReview
+                  key={reviewingDeckId}
+                  deckId={reviewingDeckId}
+                  onSeek={setSeekSeconds}
+                  onClose={() => setReviewingDeckId(null)}
+                />
+              )}
+            </section>
+          )}
         </>
       )}
     </main>
