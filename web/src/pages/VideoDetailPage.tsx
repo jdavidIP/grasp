@@ -1,16 +1,15 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router'
+import { ChatPanel } from '../components/ChatPanel'
+import { YouTubePlayer } from '../components/YouTubePlayer'
 import { useReprocessVideo, useVideoQuery } from '../hooks/useVideos'
-
-function formatTime(seconds: number): string {
-  const mins = Math.floor(seconds / 60)
-  const secs = Math.floor(seconds % 60)
-  return `${mins}:${secs.toString().padStart(2, '0')}`
-}
+import { formatTime } from '../lib/time'
 
 export function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: video, isLoading, error } = useVideoQuery(id!)
   const reprocess = useReprocessVideo(id!)
+  const [seekSeconds, setSeekSeconds] = useState<number | null>(null)
 
   return (
     <main>
@@ -35,6 +34,10 @@ export function VideoDetailPage() {
             </button>
           )}
 
+          {video.status === 'ready' && (
+            <YouTubePlayer videoId={video.youtube_id} seekSeconds={seekSeconds} />
+          )}
+
           <h2>Topics</h2>
           {video.segments.length === 0 ? (
             <p>No topics yet.</p>
@@ -51,6 +54,8 @@ export function VideoDetailPage() {
               ))}
             </ul>
           )}
+
+          {video.status === 'ready' && <ChatPanel videoId={video.id} onSeek={setSeekSeconds} />}
         </>
       )}
     </main>
