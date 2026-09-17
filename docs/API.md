@@ -55,6 +55,8 @@ Response:
 
 `grounded` is `false` when retrieval found nothing relevant and the model declined to answer. The UI should render that case differently — it is a feature, not an error.
 
+Broad questions ("summarize this video," "what's this about") are answered from segment summaries instead of individual chunks — see `docs/ARCHITECTURE.md`'s broad-vs-specific split. Their `sources` entries have `chunk_id: null` and cite a whole segment (`start_time`/`end_time` span the segment, `text` is its summary) rather than one chunk.
+
 ### `DELETE /videos/{id}/chat`
 Clears history.
 

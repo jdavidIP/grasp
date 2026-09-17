@@ -18,7 +18,9 @@ class ChatRequest(BaseModel):
 
 
 class ChatSource(BaseModel):
-    chunk_id: uuid.UUID
+    # None for a "broad" question's sources, which cite whole segments rather than
+    # individual chunks — see docs/ARCHITECTURE.md's broad-vs-specific split.
+    chunk_id: uuid.UUID | None
     segment_label: str
     start_time: float
     end_time: float
