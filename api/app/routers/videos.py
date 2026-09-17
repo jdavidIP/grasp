@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_db
-from app.ingestion.videos import extract_youtube_id, run_ingestion
+from app.ingestion.videos import extract_youtube_id, run_ingestion, run_reprocessing
 from app.models.video import Video
 from app.schemas.video import VideoCreate, VideoDetail, VideoListItem
 
@@ -48,6 +48,26 @@ async def get_video(video_id: uuid.UUID, db: AsyncSession = Depends(get_db)) -> 
     video = await db.get(Video, video_id)
     if video is None:
         raise HTTPException(status_code=404, detail="Video not found.")
+    return video
+
+
+@router.post("/videos/{video_id}/reprocess", response_model=VideoListItem, status_code=202)
+async def reprocess_video(
+    video_id: uuid.UUID,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db),
+) -> Video:
+    video = await db.get(Video, video_id)
+    if video is None:
+        raise HTTPException(status_code=404, detail="Video not found.")
+    if video.transcript is None:
+        raise HTTPException(status_code=400, detail="No stored transcript to reprocess.")
+
+    video.status = "processing"
+    await db.commit()
+    await db.refresh(video)
+
+    background_tasks.add_task(run_reprocessing, video.id)
     return video
 
 

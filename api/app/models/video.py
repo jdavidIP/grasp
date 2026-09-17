@@ -3,9 +3,10 @@ from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, Integer, Text, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from app.models.segment import TranscriptSegment
 
 
 class Video(Base):
@@ -23,4 +24,12 @@ class Video(Base):
     error_message: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    # passive_deletes="all": trust the DB's ON DELETE CASCADE (see the migration)
+    # instead of having the ORM null out each segment's video_id before deleting it,
+    # which would violate the not-null constraint. Plain passive_deletes=True isn't
+    # enough once the collection is already loaded, which lazy="selectin" guarantees.
+    segments: Mapped[list[TranscriptSegment]] = relationship(
+        order_by=TranscriptSegment.order_index, lazy="selectin", passive_deletes="all"
     )

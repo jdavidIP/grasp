@@ -23,6 +23,31 @@ def _fake_metadata(**overrides):
     }
 
 
+def _fake_segments():
+    return [
+        {
+            "order_index": 0,
+            "label": "Intro",
+            "summary": "The intro.",
+            "start_time": 0.0,
+            "end_time": 2.0,
+        }
+    ]
+
+
+def _fake_chunks():
+    return [
+        {
+            "text": "hello",
+            "start_time": 0.0,
+            "end_time": 2.0,
+            "token_count": 1,
+            "segment_order_index": 0,
+            "embedding": [0.1] * 1536,
+        }
+    ]
+
+
 @pytest.fixture(autouse=True)
 def mock_ingestion(monkeypatch):
     monkeypatch.setattr(ingestion, "_extract_metadata", lambda youtube_id: _fake_metadata())
@@ -30,6 +55,12 @@ def mock_ingestion(monkeypatch):
         ingestion,
         "_fetch_transcript",
         AsyncMock(return_value=([{"start": 0.0, "end": 2.0, "text": "hello"}], "captions")),
+    )
+    monkeypatch.setattr(
+        ingestion.segmentation, "segment_transcript", AsyncMock(return_value=_fake_segments())
+    )
+    monkeypatch.setattr(
+        ingestion.chunking, "chunk_transcript", AsyncMock(return_value=_fake_chunks())
     )
 
 
@@ -55,6 +86,8 @@ async def test_video_lifecycle():
         assert detail["status"] == "ready"
         assert detail["transcript_source"] == "captions"
         assert detail["title"] == "Test Video"
+        assert len(detail["segments"]) == 1
+        assert detail["segments"][0]["label"] == "Intro"
 
         delete_response = await client.delete(f"/api/videos/{video['id']}")
         assert delete_response.status_code == 204
@@ -120,6 +153,31 @@ async def test_empty_captions_falls_back_to_whisper(monkeypatch):
 
     assert source == "whisper"
     assert cues == [{"start": 0.0, "end": 1.0, "text": "hi"}]
+
+
+async def test_reprocess_regenerates_segments():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+
+        reprocess_response = await client.post(f"/api/videos/{video['id']}/reprocess")
+        assert reprocess_response.status_code == 202
+
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "ready"
+    assert len(detail["segments"]) == 1
+
+
+async def test_reprocess_missing_video_returns_404():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        response = await client.post(f"/api/videos/{uuid.uuid4()}/reprocess")
+    assert response.status_code == 404
 
 
 async def test_video_no_transcript_fails(monkeypatch):
