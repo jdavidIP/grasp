@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { useDeleteVideo } from '../hooks/useVideos'
 import type { VideoListItem } from '../types/video'
 
@@ -17,7 +18,7 @@ export function VideoList({ videos }: VideoListProps) {
       {videos.map((video) => (
         <li key={video.id}>
           {video.thumbnail_url && <img src={video.thumbnail_url} alt="" width={120} />}
-          <span>{video.title}</span>
+          <Link to={`/videos/${video.id}`}>{video.title}</Link>
           <span className={video.status === 'failed' ? 'status-failed' : undefined}>
             {video.status}
           </span>

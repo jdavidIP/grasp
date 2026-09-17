@@ -1,18 +1,36 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createVideo, deleteVideo, listVideos } from '../api/videos'
-import type { VideoListItem } from '../types/video'
+import { createVideo, deleteVideo, getVideo, listVideos, reprocessVideo } from '../api/videos'
+import type { VideoDetail, VideoListItem } from '../types/video'
 
 const VIDEOS_KEY = ['videos']
+const videoKey = (id: string) => ['videos', id]
 
-function isInProgress(videos: VideoListItem[] | undefined): boolean {
-  return videos?.some((v) => v.status === 'pending' || v.status === 'processing') ?? false
+function isInProgress(video: { status: string } | undefined): boolean {
+  return video?.status === 'pending' || video?.status === 'processing'
 }
 
 export function useVideosQuery() {
   return useQuery({
     queryKey: VIDEOS_KEY,
     queryFn: listVideos,
-    refetchInterval: (query) => (isInProgress(query.state.data) ? 1500 : false),
+    refetchInterval: (query) =>
+      (query.state.data as VideoListItem[] | undefined)?.some(isInProgress) ? 1500 : false,
+  })
+}
+
+export function useVideoQuery(id: string) {
+  return useQuery({
+    queryKey: videoKey(id),
+    queryFn: () => getVideo(id),
+    refetchInterval: (query) => (isInProgress(query.state.data as VideoDetail | undefined) ? 1500 : false),
+  })
+}
+
+export function useReprocessVideo(id: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => reprocessVideo(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: videoKey(id) }),
   })
 }
 
