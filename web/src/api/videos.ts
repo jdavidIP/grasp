@@ -1,17 +1,5 @@
+import { API_URL, handleResponse } from './client'
 import type { VideoDetail, VideoListItem } from '../types/video'
-
-const API_URL = import.meta.env.VITE_API_URL
-
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({ detail: response.statusText }))
-    throw new Error(body.detail ?? response.statusText)
-  }
-  if (response.status === 204) {
-    return undefined as T
-  }
-  return response.json()
-}
 
 export function listVideos(): Promise<VideoListItem[]> {
   return fetch(`${API_URL}/videos`).then((res) => handleResponse(res))
