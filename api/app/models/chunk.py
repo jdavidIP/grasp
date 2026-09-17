@@ -3,9 +3,10 @@ import uuid
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import Computed, ForeignKey, Integer, Numeric, Text
 from sqlalchemy.dialects.postgresql import TSVECTOR, UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from app.models.segment import TranscriptSegment
 
 EMBEDDING_DIM = 1536
 
@@ -28,3 +29,5 @@ class TranscriptChunk(Base):
     tsv: Mapped[str | None] = mapped_column(
         TSVECTOR, Computed("to_tsvector('english', text)", persisted=True)
     )
+
+    segment: Mapped[TranscriptSegment] = relationship(lazy="joined")
