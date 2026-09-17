@@ -6,6 +6,8 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import yt_dlp
+from sqlalchemy import delete
+from sqlalchemy.ext.asyncio import AsyncSession
 from youtube_transcript_api import (
     NoTranscriptFound,
     RequestBlocked,
@@ -18,6 +20,9 @@ from yt_dlp.utils import DownloadError
 from app.config import settings
 from app.db import async_session
 from app.generation import llm
+from app.ingestion import chunking, segmentation
+from app.models.chunk import TranscriptChunk
+from app.models.segment import TranscriptSegment
 from app.models.video import Video
 
 logger = logging.getLogger(__name__)
@@ -98,6 +103,43 @@ async def _fetch_transcript(youtube_id: str) -> tuple[list[dict], str]:
     return cues, "whisper"
 
 
+async def _store_segments_and_chunks(session: AsyncSession, video: Video, cues: list[dict]) -> None:
+    segment_dicts = await segmentation.segment_transcript(cues)
+    chunk_dicts = await chunking.chunk_transcript(cues, segment_dicts)
+
+    segment_rows = [
+        TranscriptSegment(
+            order_index=s["order_index"],
+            label=s["label"],
+            summary=s["summary"],
+            start_time=s["start_time"],
+            end_time=s["end_time"],
+        )
+        for s in segment_dicts
+    ]
+    # video.segments was already loaded (lazy="selectin") when this video was fetched,
+    # so it's the ORM's source of truth for this relationship in this session — adding
+    # rows via session.add_all() instead of through the collection gets their video_id
+    # silently nulled out at flush.
+    video.segments.extend(segment_rows)
+    await session.flush()  # assign real ids for the FK mapping below
+
+    segment_id_by_order_index = {row.order_index: row.id for row in segment_rows}
+    chunk_rows = [
+        TranscriptChunk(
+            video_id=video.id,
+            segment_id=segment_id_by_order_index[c["segment_order_index"]],
+            text=c["text"],
+            start_time=c["start_time"],
+            end_time=c["end_time"],
+            token_count=c["token_count"],
+            embedding=c["embedding"],
+        )
+        for c in chunk_dicts
+    ]
+    session.add_all(chunk_rows)
+
+
 async def run_ingestion(video_id: uuid.UUID) -> None:
     async with async_session() as session:
         video = await session.get(Video, video_id)
@@ -130,6 +172,9 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
 
             video.transcript = cues
             video.transcript_source = source
+
+            await _store_segments_and_chunks(session, video, cues)
+
             video.status = "ready"
         except IngestionError as e:
             video.status = "failed"
@@ -138,5 +183,25 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             logger.exception("ingestion failed unexpectedly for video %s", video_id)
             video.status = "failed"
             video.error_message = "Ingestion failed unexpectedly."
+
+        await session.commit()
+
+
+async def run_reprocessing(video_id: uuid.UUID) -> None:
+    async with async_session() as session:
+        video = await session.get(Video, video_id)
+        if video is None or video.transcript is None:
+            return
+
+        try:
+            await session.execute(
+                delete(TranscriptSegment).where(TranscriptSegment.video_id == video.id)
+            )
+            await _store_segments_and_chunks(session, video, video.transcript)
+            video.status = "ready"
+        except Exception:
+            logger.exception("reprocessing failed unexpectedly for video %s", video_id)
+            video.status = "failed"
+            video.error_message = "Reprocessing failed unexpectedly."
 
         await session.commit()

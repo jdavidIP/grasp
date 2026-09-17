@@ -3,6 +3,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.segment import SegmentOut
+
 
 class VideoCreate(BaseModel):
     url: str
@@ -24,3 +26,4 @@ class VideoListItem(BaseModel):
 
 class VideoDetail(VideoListItem):
     transcript_source: str | None
+    segments: list[SegmentOut] = []

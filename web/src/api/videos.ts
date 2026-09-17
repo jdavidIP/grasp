@@ -1,4 +1,4 @@
-import type { VideoListItem } from '../types/video'
+import type { VideoDetail, VideoListItem } from '../types/video'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -27,4 +27,14 @@ export function createVideo(url: string): Promise<VideoListItem> {
 
 export function deleteVideo(id: string): Promise<void> {
   return fetch(`${API_URL}/videos/${id}`, { method: 'DELETE' }).then((res) => handleResponse(res))
+}
+
+export function getVideo(id: string): Promise<VideoDetail> {
+  return fetch(`${API_URL}/videos/${id}`).then((res) => handleResponse(res))
+}
+
+export function reprocessVideo(id: string): Promise<VideoListItem> {
+  return fetch(`${API_URL}/videos/${id}/reprocess`, { method: 'POST' }).then((res) =>
+    handleResponse(res),
+  )
 }

@@ -12,6 +12,15 @@ export interface VideoListItem {
   created_at: string
 }
 
+export interface Segment {
+  id: string
+  label: string
+  summary: string
+  start_time: number
+  end_time: number
+}
+
 export interface VideoDetail extends VideoListItem {
   transcript_source: string | null
+  segments: Segment[]
 }
