@@ -125,7 +125,7 @@ Storing `config` as jsonb means you can show the user how a deck was generated a
 | id | uuid PK | |
 | quiz_id | uuid FK → quizzes on delete cascade | |
 | order_index | int not null | |
-| question_type | text not null | `multiple_choice`, `true_false`, `short_answer` |
+| question_type | text not null | `multiple_choice`, `multi_select`, `true_false` |
 | prompt | text not null | |
 | explanation | text not null | why the correct answer is correct |
 | segment_id | uuid FK → transcript_segments on delete set null | |
@@ -134,7 +134,7 @@ Storing `config` as jsonb means you can show the user how a deck was generated a
 
 ### quiz_options
 
-Multiple-choice and true/false options. Short-answer questions have none.
+Options for every question type. `is_correct` is the answer key, fixed when the question is generated; grading never calls an LLM.
 
 | Column | Type | Notes |
 |---|---|---|
@@ -144,7 +144,13 @@ Multiple-choice and true/false options. Short-answer questions have none.
 | is_correct | bool not null default false | |
 | order_index | int not null | |
 
-Add a constraint or a service-layer check: exactly one option per question has `is_correct = true`.
+Correct-option counts are enforced in the service layer at generation time, not by a constraint (a per-type count rule is awkward to express in SQL):
+
+| `question_type` | Options | Correct options |
+|---|---|---|
+| `multiple_choice` | 3–5 | exactly 1 |
+| `multi_select` | 3–5 | at least 1, and at least 1 incorrect |
+| `true_false` | 2 (`True`, `False`) | exactly 1 |
 
 ### quiz_attempts and quiz_answers
 
@@ -152,7 +158,11 @@ Attempt history, so a user can retake and compare.
 
 **quiz_attempts**: `id`, `quiz_id` FK, `score` numeric, `started_at`, `completed_at`.
 
-**quiz_answers**: `id`, `attempt_id` FK, `question_id` FK, `selected_option_id` (nullable), `text_answer` (nullable, short answer), `is_correct` bool.
+**quiz_answers**: `id`, `attempt_id` FK, `question_id` FK, `selected_option_ids` uuid[] (empty when the question was skipped), `is_correct` bool.
+
+An answer is correct iff the selected set equals the set of options with `is_correct = true` — all-or-nothing, no partial credit. `score` is the fraction of questions answered correctly.
+
+**Tradeoff — `uuid[]` vs. a join table for `selected_option_ids`.** A join table (`quiz_answer_options`) would keep foreign-key integrity, but nothing queries by selected option — answers are only ever read back per attempt — so it costs a table and a join for no query we run. The array loses the FK, so the service layer checks that every submitted option id belongs to the question before grading. Revisit if we ever want per-option statistics ("which distractor is chosen most").
 
 ## Why this shape
 

@@ -4,6 +4,10 @@ import { ChatPanel } from '../components/ChatPanel'
 import { FlashcardConfigModal } from '../components/FlashcardConfigModal'
 import { FlashcardDeckList } from '../components/FlashcardDeckList'
 import { FlashcardReview } from '../components/FlashcardReview'
+import { QuizAttemptHistory } from '../components/QuizAttemptHistory'
+import { QuizConfigModal } from '../components/QuizConfigModal'
+import { QuizList } from '../components/QuizList'
+import { QuizTake } from '../components/QuizTake'
 import { YouTubePlayer } from '../components/YouTubePlayer'
 import { useReprocessVideo, useVideoQuery } from '../hooks/useVideos'
 import { formatTime } from '../lib/time'
@@ -14,6 +18,9 @@ export function VideoDetailPage() {
   const reprocess = useReprocessVideo(id!)
   const [seekSeconds, setSeekSeconds] = useState<number | null>(null)
   const [reviewingDeckId, setReviewingDeckId] = useState<string | null>(null)
+  const [activeQuiz, setActiveQuiz] = useState<{ id: string; mode: 'take' | 'history' } | null>(
+    null,
+  )
 
   return (
     <main>
@@ -82,6 +89,42 @@ export function VideoDetailPage() {
                   deckId={reviewingDeckId}
                   onSeek={setSeekSeconds}
                   onClose={() => setReviewingDeckId(null)}
+                />
+              )}
+            </section>
+          )}
+
+          {video.status === 'ready' && (
+            <section>
+              <h2>Quizzes</h2>
+              <QuizConfigModal
+                videoId={video.id}
+                segments={video.segments}
+                onCreated={(quizId) => setActiveQuiz({ id: quizId, mode: 'take' })}
+              />
+              <QuizList
+                videoId={video.id}
+                onTake={(quizId) => setActiveQuiz({ id: quizId, mode: 'take' })}
+                onHistory={(quizId) => setActiveQuiz({ id: quizId, mode: 'history' })}
+                onDeleted={(quizId) =>
+                  setActiveQuiz((current) => (current?.id === quizId ? null : current))
+                }
+              />
+              {activeQuiz?.mode === 'take' && (
+                <QuizTake
+                  key={activeQuiz.id}
+                  videoId={video.id}
+                  quizId={activeQuiz.id}
+                  onSeek={setSeekSeconds}
+                  onClose={() => setActiveQuiz(null)}
+                />
+              )}
+              {activeQuiz?.mode === 'history' && (
+                <QuizAttemptHistory
+                  key={activeQuiz.id}
+                  quizId={activeQuiz.id}
+                  onSeek={setSeekSeconds}
+                  onClose={() => setActiveQuiz(null)}
                 />
               )}
             </section>

@@ -112,7 +112,7 @@ Full deck with cards.
   "count": 10,
   "scope": "topics",
   "segment_ids": ["…"],
-  "question_types": ["multiple_choice", "true_false"],
+  "question_types": ["multiple_choice", "multi_select", "true_false"],
   "options_per_question": 4,
   "difficulty": "mixed",
   "title": "Mid-episode check"
@@ -124,14 +124,16 @@ Full deck with cards.
 | `count` | 3–30 | |
 | `scope` | `whole_video`, `topics` | |
 | `segment_ids` | uuid[] | required when scope is `topics` |
-| `question_types` | subset of `multiple_choice`, `true_false`, `short_answer` | more than one means assorted |
-| `options_per_question` | 3–5 | multiple choice only |
+| `question_types` | non-empty subset of `multiple_choice` (one correct option), `multi_select` (select all that apply), `true_false` | more than one means assorted |
+| `options_per_question` | 3–5, default 4 | `multiple_choice` and `multi_select` only; `true_false` always has two options |
 | `difficulty` | `easy`, `medium`, `hard`, `mixed` | |
 
-Response: the quiz with questions and options. **Never return `is_correct` from this endpoint or from `GET /quizzes/{id}`** — the client would leak the answers. Correctness is revealed only through the submit response.
+Response: the quiz with questions and options. **Never return `is_correct` or `explanation` from this endpoint or from `GET /quizzes/{id}`** — the client would leak the answers. The answer key is fixed when the quiz is generated and is revealed only through the submit response.
+
+`422` if the generation + validation pipeline yields zero questions. No quiz is persisted in that case.
 
 ### `GET /videos/{id}/quizzes`
-Quizzes for a video, with question counts and best score.
+Quizzes for a video, each with `question_count` and `best_score` (fraction 0–1, `null` if never attempted).
 
 ### `GET /quizzes/{id}`
 Questions and options, answers withheld.
@@ -140,11 +142,15 @@ Questions and options, answers withheld.
 ```json
 {
   "answers": [
-    { "question_id": "…", "selected_option_id": "…" },
-    { "question_id": "…", "text_answer": "gradient descent" }
+    { "question_id": "…", "selected_option_ids": ["…"] },
+    { "question_id": "…", "selected_option_ids": ["…", "…"] }
   ]
 }
 ```
+
+One entry per answered question; a question left out counts as skipped (incorrect). `selected_option_ids` has exactly one id for `multiple_choice` and `true_false`, any number for `multi_select`.
+
+`422` (and nothing is persisted) if a `question_id` is not in the quiz or appears twice, if a selected option does not belong to that question, if an option id is repeated, or if a single-answer question has more than one selection.
 
 Response:
 ```json
@@ -155,18 +161,23 @@ Response:
     {
       "question_id": "…",
       "is_correct": true,
-      "correct_option_id": "…",
+      "selected_option_ids": ["…"],
+      "correct_option_ids": ["…"],
       "explanation": "…",
+      "segment_id": "…",
       "source_start_time": 412.0
     }
   ]
 }
 ```
 
-Short answers are graded by an LLM call comparing against the stored correct answer, with semantic leniency. Note that limitation in the UI.
+Grading is deterministic and makes no LLM call: a question is correct only if the selected set of options exactly equals the set marked correct at generation time (all-or-nothing, no partial credit). `score` is correct questions divided by all questions in the quiz, skipped ones included.
 
 ### `GET /quizzes/{id}/attempts`
-Attempt history for comparison.
+Attempt history for comparison, newest first: `id`, `score`, `correct_count`, `question_count`, `started_at`, `completed_at`.
+
+### `GET /quizzes/{id}/attempts/{attempt_id}`
+Per-question detail for one past attempt, in the same shape as the submit response (`attempt_id`, `score`, `results` with the selected and correct options, explanation, and source timestamp). `404` if the attempt does not belong to that quiz.
 
 ### `DELETE /quizzes/{id}`
 

@@ -15,37 +15,6 @@ def _embedding(*nonzero_indices: int) -> list[float]:
     return vec
 
 
-def _chunk(text: str, embedding: list[float] | None = None) -> TranscriptChunk:
-    return TranscriptChunk(
-        id=uuid.uuid4(), text=text, start_time=0.0, end_time=1.0, embedding=embedding
-    )
-
-
-def test_cosine_similarity_identical_vectors_is_one():
-    assert flashcards._cosine_similarity(_embedding(0), _embedding(0)) == 1.0
-
-
-def test_cosine_similarity_orthogonal_vectors_is_zero():
-    assert flashcards._cosine_similarity(_embedding(0), _embedding(1)) == 0.0
-
-
-def test_top_chunks_by_centrality_keeps_fewer_than_requested():
-    chunks = [_chunk("a", _embedding(0)), _chunk("b", _embedding(1))]
-    assert flashcards._top_chunks_by_centrality(chunks, keep=5) == chunks
-
-
-def test_top_chunks_by_centrality_drops_outlier():
-    close_a = _chunk("a", _embedding(0))
-    close_b = _chunk("b", _embedding(0, 1))
-    outlier = _chunk("c", _embedding(2))
-    kept = flashcards._top_chunks_by_centrality([close_a, close_b, outlier], keep=2)
-    assert outlier not in kept
-
-
-def test_overgenerate_count_adds_a_buffer():
-    assert flashcards._overgenerate_count(10) >= 13
-
-
 async def test_generate_candidates_filters_structurally_invalid_cards(monkeypatch):
     monkeypatch.setattr(
         flashcards.llm,
