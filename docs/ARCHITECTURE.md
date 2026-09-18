@@ -125,7 +125,7 @@ Config form  →  select segments  →  summarize  →  generate  →  validate 
 **Step 5 — Validate.** This is where quality actually comes from:
 - Every item must cite a `segment_id` and a timestamp range.
 - Reject items whose claimed source text doesn't support them (a second LLM call scoring faithfulness, or embedding similarity between the item and its cited chunk).
-- For multiple choice: exactly one correct option; no duplicate options; distractors must not be arguably correct.
+- For quiz questions: per-type correct-option counts (`multiple_choice` and `true_false` exactly one; `multi_select` at least one correct and at least one incorrect); no duplicate options; distractors must not be arguably correct. The model returns the answer key with the question, so grading later is a set comparison with no second LLM call.
 - Deduplicate near-identical items by embedding similarity.
 
 **Step 6 — Store.** Persist the deck or quiz with its config so the user can see how it was generated.

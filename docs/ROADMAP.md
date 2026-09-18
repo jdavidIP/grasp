@@ -51,10 +51,10 @@ Done when clicking a citation jumps the player to the right moment.
 ## Phase 6 — Quizzes
 
 - `quizzes`, `quiz_questions`, `quiz_options`, `quiz_attempts`, `quiz_answers`.
-- Config form with question types, options per question, difficulty.
-- Generation with distractors drawn from other segments.
-- Validation: exactly one correct option, no duplicate options, no arguably-correct distractors.
-- Attempt submission, grading (LLM-assisted for short answer), results view with explanations and source links.
+- Config form with question types (`multiple_choice`, `multi_select`, `true_false`), options per question, difficulty.
+- Generation with distractors drawn from other segments. The answer key is produced at generation time.
+- Validation: per-type correct-option counts, no duplicate options, no arguably-correct distractors.
+- Attempt submission with deterministic grading (selected set must equal the correct set — no LLM call), results view with explanations and source links.
 - Frontend: take-quiz flow, results, attempt history.
 
 ## Phase 7 — Evaluation
