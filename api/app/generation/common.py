@@ -91,5 +91,12 @@ async def build_topic_contexts(
     return contexts
 
 
+def segment_text(cues: list[dict], segment: TranscriptSegment) -> str:
+    """The raw transcript text inside a segment's time range. Uses cues rather than
+    chunks because chunks overlap and would repeat text."""
+    start, end = float(segment.start_time), float(segment.end_time)
+    return " ".join(c["text"] for c in cues if c["end"] > start and c["start"] < end)
+
+
 def overgenerate_count(count: int) -> int:
     return count + max(3, round(count * 0.3))

@@ -45,13 +45,15 @@ GENERATION_SYSTEM_PROMPT = (
 )
 
 VALIDATION_SYSTEM_PROMPT = (
-    "You audit quiz questions against video transcript topics. Each topic and each "
-    "candidate question is numbered. A question is valid only if ALL of these hold: "
-    "(1) its cited topic's content explicitly states every claim marked correct — "
+    "You audit quiz questions against the transcript of the video section they were "
+    "written from. Each candidate question is numbered. Its incorrect options may "
+    "mention things from other parts of the video; that is intended. A question is "
+    "valid only if ALL of these hold: "
+    "(1) the transcript explicitly states every claim marked correct — "
     "reject keys that are only inferred, combined from separate remarks, or supplied by "
     "general knowledge; "
-    "(2) every option marked incorrect is actually wrong according to the video — none "
-    "is correct, partially correct, or arguably correct under a reasonable reading, and "
+    "(2) no option marked incorrect is a correct answer to the question — none is "
+    "correct, partially correct, or arguably correct under a reasonable reading, and "
     "for multi_select the correct set is exactly the set of correct options; "
     "(3) the question is unambiguous and answerable from the video alone; "
     "(4) for true_false, a true statement restates something said, and a false one is "
@@ -112,11 +114,11 @@ def _render_question(index: int, question: dict) -> str:
         )
         body = f"Question: {question['prompt']}\nOptions:\n{options}"
     return (
-        f"[{index}] type {question['question_type']}, topic {question['topic_index']}\n"
+        f"[{index}] type {question['question_type']}\n"
         f"{body}\nExplanation: {question['explanation']}"
     )
 
 
-def build_validation_user_prompt(topics: list[tuple[str, str]], questions: list[dict]) -> str:
+def build_validation_user_prompt(transcript: str, questions: list[dict]) -> str:
     numbered_questions = "\n\n".join(_render_question(i, q) for i, q in enumerate(questions))
-    return f"Topics:\n\n{_numbered_topics(topics)}\n\nCandidate questions:\n\n{numbered_questions}"
+    return f"Transcript:\n{transcript}\n\nCandidate questions:\n\n{numbered_questions}"
