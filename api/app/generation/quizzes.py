@@ -22,6 +22,10 @@ from app.prompts.quizzes import (
 )
 
 VALID_QUESTION_TYPES = {"multiple_choice", "multi_select", "true_false"}
+# The full-transcript validator rejects more than the old one did (issue #16), so a
+# long video's quiz can come up short. One top-up round for the shortfall; capped so
+# a hard-to-quiz topic can't loop.
+TOP_UP_ROUNDS = 1
 SELECT_ALL_SUFFIX = "Select all that apply."
 
 
@@ -102,6 +106,7 @@ async def _generate_candidates(
     options_per_question: int,
     topics: list[tuple[str, str]],
     other_topics: list[tuple[str, str]],
+    existing_prompts: list[str] | None = None,
 ) -> list[dict]:
     result = await llm.generate_json(
         GENERATION_SYSTEM_PROMPT,
@@ -112,6 +117,7 @@ async def _generate_candidates(
             options_per_question,
             topics,
             other_topics,
+            existing_prompts or [],
         ),
     )
     raw_questions = result.get("questions")
@@ -184,8 +190,7 @@ async def generate_quiz(
     `explanation`, `segment_id`, `source_start_time`, `difficulty`, `order_index`, and
     `options` (each `text`, `is_correct`, `order_index`). The answer key comes from
     generation, so grading needs no LLM call. May return fewer than `count` if
-    generation and validation don't yield enough —
-    ponytail: no regeneration retry loop yet, add one if yield is a problem.
+    generation and validation still don't yield enough after TOP_UP_ROUNDS.
     If `trace` is given, it is filled with the pipeline's intermediate state for the
     offline eval: `segments`, `candidates` (parsed model output before validation),
     `validated` (those the LLM validation pass accepted), and `kept` (the same
@@ -201,12 +206,26 @@ async def generate_quiz(
         other_topics = [(s.label, s.summary) for s in all_segments if s.id not in selected_ids]
 
     topics = await build_topic_contexts(session, segments, scope)
-    candidates = await _generate_candidates(
-        count, difficulty, question_types, options_per_question, topics, other_topics
-    )
     transcripts = await segment_transcripts(session, video_id, segments)
-    valid = await _filter_valid(transcripts, candidates)
-    deduped = await _dedupe(valid)
+    candidates: list[dict] = []
+    valid: list[dict] = []
+    deduped: list[dict] = []
+    for _ in range(1 + TOP_UP_ROUNDS):
+        shortfall = count - len(deduped)
+        if shortfall <= 0:
+            break
+        round_candidates = await _generate_candidates(
+            shortfall,
+            difficulty,
+            question_types,
+            options_per_question,
+            topics,
+            other_topics,
+            existing_prompts=[q["prompt"] for q in deduped],
+        )
+        candidates += round_candidates
+        valid += await _filter_valid(transcripts, round_candidates)
+        deduped = await _dedupe(valid)
     if trace is not None:
         trace.update(
             segments=segments, candidates=candidates, validated=valid, kept=deduped[:count]

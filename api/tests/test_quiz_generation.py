@@ -275,7 +275,7 @@ async def test_generate_quiz_happy_path_keeps_key_and_feeds_other_segments_as_di
         await session.commit()
 
         result = await quizzes.generate_quiz(
-            session, video.id, 5, "topics", [selected.id], ["multiple_choice"], 4, "mixed"
+            session, video.id, 1, "topics", [selected.id], ["multiple_choice"], 4, "mixed"
         )
 
         assert len(result) == 1
@@ -323,13 +323,59 @@ async def test_generate_quiz_whole_video_has_no_other_topics_block(monkeypatch):
         await session.commit()
 
         result = await quizzes.generate_quiz(
-            session, video.id, 5, "whole_video", [], ["multiple_choice"], 4, "mixed"
+            session, video.id, 1, "whole_video", [], ["multiple_choice"], 4, "mixed"
         )
 
         assert len(result) == 1
         generation_prompt = mock_generate.call_args_list[0].args[1]
         assert "Other topics in the video" not in generation_prompt
         assert "[0] Topic 0" in generation_prompt and "[1] Topic 1" in generation_prompt
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_generate_quiz_tops_up_a_shortfall_once_without_repeats(monkeypatch):
+    mock_generate = AsyncMock(
+        side_effect=[
+            {"questions": [_raw(prompt="First?"), _raw(prompt="Rejected?")]},
+            {"valid_question_indices": [0]},  # validator keeps only "First?"
+            {"questions": [_raw(prompt="Second?")]},
+            {"valid_question_indices": [0]},
+        ]
+    )
+    monkeypatch.setattr(quizzes.llm, "generate_json", mock_generate)
+    monkeypatch.setattr(
+        quizzes.llm, "embed_texts", AsyncMock(return_value=[_embedding(0), _embedding(1)])
+    )
+
+    async with async_session() as session:
+        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        session.add(video)
+        await session.flush()
+        session.add(
+            TranscriptSegment(
+                video_id=video.id,
+                order_index=0,
+                label="Topic",
+                summary="Summary.",
+                start_time=0.0,
+                end_time=10.0,
+            )
+        )
+        await session.commit()
+
+        trace: dict = {}
+        result = await quizzes.generate_quiz(
+            session, video.id, 2, "whole_video", [], ["multiple_choice"], 4, "mixed", trace=trace
+        )
+
+        assert [q["prompt"] for q in result] == ["First?", "Second?"]
+        assert mock_generate.call_count == 4  # one top-up round, then stop
+        # The top-up asks only for the shortfall and lists what's already kept.
+        top_up_prompt = mock_generate.call_args_list[2].args[1]
+        assert "Already in this quiz" in top_up_prompt and "- First?" in top_up_prompt
+        assert [c["prompt"] for c in trace["candidates"]] == ["First?", "Rejected?", "Second?"]
 
         await session.delete(video)
         await session.commit()

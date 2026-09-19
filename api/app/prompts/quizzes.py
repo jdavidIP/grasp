@@ -83,6 +83,7 @@ def build_generation_user_prompt(
     options_per_question: int,
     topics: list[tuple[str, str]],
     other_topics: list[tuple[str, str]],
+    existing_prompts: list[str],
 ) -> str:
     difficulty_instruction = (
         "Use a mix of difficulties."
@@ -95,11 +96,18 @@ def build_generation_user_prompt(
         if len(question_types) > 1
         else ""
     )
+    existing = (
+        "\n\nAlready in this quiz — write different questions, not rephrasings:\n"
+        + "\n".join(f"- {p}" for p in existing_prompts)
+        if existing_prompts
+        else ""
+    )
     return (
         f"Write {count} questions. {difficulty_instruction}\n\n"
         f"Question types:{spread}\n{type_lines}\n\n"
         f"Every multiple_choice and multi_select question has exactly {options_per_question} "
         f"options.\n\nTopics:\n\n{_numbered_topics(topics)}{_other_topics_block(other_topics)}"
+        f"{existing}"
     )
 
 
