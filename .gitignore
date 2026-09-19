@@ -10,3 +10,4 @@ web/dist/
 .pytest_cache/
 *.egg-info/
 .DS_Store
+api/eval/golden_set.draft.json
