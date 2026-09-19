@@ -137,7 +137,10 @@ async def test_keyword_search_ranks_matching_text_first():
         session.add_all([relevant, irrelevant])
         await session.commit()
 
-        results = await keyword_search(session, video.id, "transformer attention", k=5)
+        # Not every query term appears in the chunk: must still match (OR, not AND).
+        results = await keyword_search(
+            session, video.id, "how do transformer attention heads work", k=5
+        )
 
         assert len(results) == 1
         assert results[0].text == relevant.text

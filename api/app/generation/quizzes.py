@@ -181,13 +181,18 @@ async def generate_quiz(
     question_types: list[str],
     options_per_question: int,
     difficulty: str,
+    trace: dict | None = None,
 ) -> list[dict]:
     """Returns up to `count` validated questions, each with `question_type`, `prompt`,
     `explanation`, `segment_id`, `source_start_time`, `difficulty`, `order_index`, and
     `options` (each `text`, `is_correct`, `order_index`). The answer key comes from
     generation, so grading needs no LLM call. May return fewer than `count` if
     generation and validation don't yield enough —
-    ponytail: no regeneration retry loop yet, add one if yield is a problem."""
+    ponytail: no regeneration retry loop yet, add one if yield is a problem.
+    If `trace` is given, it is filled with the pipeline's intermediate state for the
+    offline eval: `segments`, `candidates` (parsed model output before validation),
+    `validated` (those the LLM validation pass accepted), and `kept` (the same
+    candidate objects that also survived dedupe and the count cap)."""
     segments = await select_segments(session, video_id, scope, segment_ids)
     if not segments:
         return []
@@ -204,6 +209,10 @@ async def generate_quiz(
     )
     valid = await _filter_valid(topics, other_topics, candidates)
     deduped = await _dedupe(valid)
+    if trace is not None:
+        trace.update(
+            segments=segments, candidates=candidates, validated=valid, kept=deduped[:count]
+        )
 
     questions = []
     for order_index, question in enumerate(deduped[:count]):

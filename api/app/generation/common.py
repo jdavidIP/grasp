@@ -13,7 +13,8 @@ VALID_DIFFICULTIES = {"easy", "medium", "hard"}
 
 # ponytail: representative-chunk count for whole-video context, and the
 # overgenerate/dedupe constants below, are hand-picked with no tuning data yet.
-# Revisit against Phase 7's golden set if card/question quality or yield looks off.
+# Phase 7's faithfulness eval says it does look off: 2 excerpts per segment starves
+# both generation and the validators on long segments (see issue #15).
 CENTRALITY_CHUNKS_PER_SEGMENT = 2
 DEDUPE_SIMILARITY_THRESHOLD = 0.93
 

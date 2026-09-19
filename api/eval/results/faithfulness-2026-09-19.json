@@ -1,0 +1,1731 @@
+{
+  "run_at": "2026-09-19T19:20:33+00:00",
+  "label": null,
+  "judge_model": "gpt-4o",
+  "generation_model": "gpt-4o-mini",
+  "config": {
+    "flashcards": {
+      "count": 10,
+      "scope": "whole_video",
+      "difficulty": "medium",
+      "style": "mixed"
+    },
+    "quizzes": {
+      "count": 10,
+      "scope": "whole_video",
+      "question_types": [
+        "multiple_choice",
+        "multi_select",
+        "true_false"
+      ],
+      "options_per_question": 4,
+      "difficulty": "medium"
+    }
+  },
+  "videos": [
+    "BDqvzFY72mg",
+    "fWjsdhR3z3c",
+    "qiP1E6iAVS8"
+  ],
+  "summary": {
+    "flashcards": {
+      "raw": {
+        "n": 36,
+        "unjudged": 0,
+        "supported": 0.8611111111111112,
+        "answerable": 0.8888888888888888,
+        "faithful": 0.8611111111111112,
+        "speaker_slips": 0
+      },
+      "rejected": {
+        "n": 7,
+        "unjudged": 0,
+        "supported": 1.0,
+        "answerable": 1.0,
+        "faithful": 1.0,
+        "speaker_slips": 0
+      },
+      "kept": {
+        "n": 27,
+        "unjudged": 0,
+        "supported": 0.8148148148148148,
+        "answerable": 0.8518518518518519,
+        "faithful": 0.8148148148148148,
+        "speaker_slips": 0
+      }
+    },
+    "quizzes": {
+      "raw": {
+        "n": 34,
+        "unjudged": 0,
+        "supported": 0.8235294117647058,
+        "answerable": 0.9411764705882353,
+        "key_correct": 0.7647058823529411,
+        "faithful": 0.7647058823529411,
+        "speaker_slips": 1
+      },
+      "rejected": {
+        "n": 2,
+        "unjudged": 0,
+        "supported": 0.5,
+        "answerable": 0.5,
+        "key_correct": 0.5,
+        "faithful": 0.5,
+        "speaker_slips": 0
+      },
+      "kept": {
+        "n": 30,
+        "unjudged": 0,
+        "supported": 0.8333333333333334,
+        "answerable": 0.9666666666666667,
+        "key_correct": 0.8,
+        "faithful": 0.8,
+        "speaker_slips": 1
+      }
+    }
+  },
+  "items": [
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "What Python keyword indicates that a function's body is intentionally left empty?",
+      "back": "The keyword 'pass' indicates that a function's body is intentionally left empty.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions the keyword 'pass' is used in cases where a function's body is intentionally left empty."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "Explain how the try and except block is used in error handling in Python.",
+      "back": "The try block allows you to execute code that may cause an exception, and if an exception occurs, control moves to the except block where you can handle the error gracefully.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains the use of try and except blocks for handling errors in Python as described in the answer."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "What happens when you try to add a string to an integer without conversion in Python?",
+      "back": "Python will raise an exception indicating that you cannot combine a string with an integer without converting types first.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explicitly states that adding a string to an integer without conversion results in an exception."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "How do you create a list in Python?",
+      "back": "You create a list in Python by using a pair of angle brackets and inserting the values you want inside.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript incorrectly states that lists are created with angle brackets, which is incorrect; square brackets are used. This claim is unsupported."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "What is the purpose of converting an integer to a string when combining values in Python?",
+      "back": "Converting an integer to a string allows for concatenation with another string, avoiding type errors when combining different data types.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The purpose of converting an integer to a string for concatenation is clearly explained in the transcript."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "Describe the basic arithmetic operators in Python and their functions.",
+      "back": "The basic arithmetic operators are: + for addition, - for subtraction, * for multiplication, / for division, and ** for exponentiation.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes the basic arithmetic operators in Python and their respective functions as stated."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": false,
+      "kept": false,
+      "front": "What happens when using a logical statement without the correct conditions in Python?",
+      "back": "If the conditions in a logical statement are not met, the corresponding block of code will not execute, which can affect the program flow.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The impact of unmet conditions in logical statements is described, but the card's wording is somewhat vague compared to the specific examples."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": false,
+      "kept": false,
+      "front": "How do you indicate a conditional statement in Python that checks if a person's age is greater than 21?",
+      "back": "You can use an if statement to check if the age variable is greater than 21 and then execute the print function to display a message.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes using an if statement to check if the age is greater than 21 and executing a print function."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": false,
+      "kept": false,
+      "front": "What do you need to do to avoid errors when mixing data types like strings and integers in operations?",
+      "back": "You must convert the data types appropriately using functions like str() for strings and int() for integers before performing operations.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions the need to convert data types using str() and int() functions to avoid errors."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": false,
+      "kept": false,
+      "front": "What does the else statement do in a conditional block?",
+      "back": "The else statement executes a block of code if none of the preceding conditions in if or elif statements are met.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The function of the else statement as executing when no preceding conditions are met is explained in the transcript."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "What does Python do when it encounters an exception in the try block?",
+      "back": "When Python encounters an exception in the try block, it jumps to the except block and executes the code there to handle the exception.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly states that exceptions in the try block result in jumping to the except block."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": false,
+      "kept": false,
+      "front": "In Python, how does using 'elif' change the flow of a conditional statement?",
+      "back": "Using 'elif' allows for multiple, mutually exclusive conditions to be checked in sequence, providing an additional check before falling back to 'else'.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The 'elif' statement's role in controlling flow based on multiple conditions is explained in the transcript."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What is the purpose of the 'pass' keyword in Python functions?",
+      "options": [
+        {
+          "text": "It allows the program to run without errors even if the function is empty.",
+          "is_correct": true
+        },
+        {
+          "text": "It permanently removes the function from the program.",
+          "is_correct": false
+        },
+        {
+          "text": "It automatically fills the function with default values.",
+          "is_correct": false
+        },
+        {
+          "text": "It executes the function immediately upon definition.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "'pass' serves as a placeholder to allow the function to exist without implementation, avoiding errors. The other options misinterpret the function of 'pass' entirely.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that the 'pass' keyword allows a function to exist without implementation, preventing errors."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following statements about error handling in Python are true? Select all that apply.",
+      "options": [
+        {
+          "text": "The 'try' block is used to execute code that may throw an exception.",
+          "is_correct": true
+        },
+        {
+          "text": "The 'accept' block is used to manage exceptions.",
+          "is_correct": false
+        },
+        {
+          "text": "If an exception occurs, the program automatically shuts down.",
+          "is_correct": false
+        },
+        {
+          "text": "The 'except' block will run if there is an exception in the 'try' block.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The 'try' block attempts to run code while 'except' handles exceptions. 'accept' is incorrect terminology, and the program does not shut down when exceptions are thrown; it uses the handling to manage them.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": true,
+        "reason": "'accept' is indeed a mistake in the transcript; it should be 'except'. The other statements correctly describe the 'try' and 'except' behavior."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Using a string value directly in arithmetic operations will not raise an exception in Python.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "In Python, attempting to perform arithmetic with a string value will indeed raise an exception, as the types must be compatible for operations.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript confirms that using a string in arithmetic operations raises an exception, aligning with the 'False' answer."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What must be done to combine a string and an integer in a print statement?",
+      "options": [
+        {
+          "text": "No conversion is needed; they can be combined directly.",
+          "is_correct": false
+        },
+        {
+          "text": "The integer must be converted to a string first.",
+          "is_correct": true
+        },
+        {
+          "text": "The string must be converted to an integer.",
+          "is_correct": false
+        },
+        {
+          "text": "They must be separated by a space for proper output.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "To combine a string and an integer, the integer must be converted to a string; otherwise, an error will occur. The other options do not correctly explain the required process.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that to print an integer with a string, one must convert the integer to a string."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "In the context of defining variables in Python, which of the following statements are accurate? Select all that apply.",
+      "options": [
+        {
+          "text": "Variables can be reassigned to different data types.",
+          "is_correct": true
+        },
+        {
+          "text": "All variable names must start with a number.",
+          "is_correct": false
+        },
+        {
+          "text": "Variables can be created without prior declaration.",
+          "is_correct": true
+        },
+        {
+          "text": "Only specific keywords can be used as variable names.",
+          "is_correct": true
+        }
+      ],
+      "explanation": "In Python, variables can change types and are created upon assignment without prior declaration. However, variable names cannot start with numbers, and certain keywords are reserved from use. The statements correctly reflect the rules except where noted.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript mentions that variable names cannot start with numbers and keywords can't be used as names, but they must not be specific keywords rather than 'only specific keywords can'."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Python interprets incorrectly combining data types in operations without error notifications.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "When data types are incorrectly combined in operations, Python raises an error, indicating that such operations are invalid.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that Python raises an error when data types are incorrectly combined in operations, matching the 'False' answer."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "Which operator is used in Python for exponentiation?",
+      "options": [
+        {
+          "text": "^^",
+          "is_correct": false
+        },
+        {
+          "text": "**",
+          "is_correct": true
+        },
+        {
+          "text": "^^^",
+          "is_correct": false
+        },
+        {
+          "text": "exp()",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The correct operator for exponentiation in Python is '**'; the other options do not represent Python syntax for exponentiation.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript indicates that '**' is the operator for exponentiation in Python."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "When using control structures in Python, which of the following statements are true? Select all that apply.",
+      "options": [
+        {
+          "text": "If-else statements can be used to execute code based on conditions.",
+          "is_correct": true
+        },
+        {
+          "text": "Loops are only used for iterating over strings.",
+          "is_correct": false
+        },
+        {
+          "text": "Control structures help in making decisions in a program.",
+          "is_correct": true
+        },
+        {
+          "text": "Only one if statement can be used in a loop.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "If-else statements execute code based on conditions, and control structures facilitate decision-making in programs. However, loops can iterate over multiple data types, and multiple if statements can exist within a loop.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript covers the use of control structures like if-else and loops. However, loops are not only for strings, and multiple if statements can be used within loops."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Loops in Python are used exclusively to iterate over numbers only.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Python loops can iterate over various data types, including lists, strings, and dictionaries, not just numbers.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions that loops can iterate over lists and other types, not just numbers."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What is required in a 'try' block for proper error handling?",
+      "options": [
+        {
+          "text": "At least one function must be defined inside.",
+          "is_correct": false
+        },
+        {
+          "text": "Code that may potentially throw an exception should be placed inside.",
+          "is_correct": true
+        },
+        {
+          "text": "Only variable declarations are allowed inside.",
+          "is_correct": false
+        },
+        {
+          "text": "All input must be sanitized before placing it in a try block.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "'try' blocks are meant for the execution of code that might cause exceptions. The other statements impose incorrect limitations or conditions for using a try block.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clarifies that the 'try' block should contain code that might cause exceptions."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "In variable assignment, which of the following are valid ways to define variables in Python? Select all that apply.",
+      "options": [
+        {
+          "text": "Using letters, numbers, and underscores in the variable name.",
+          "is_correct": true
+        },
+        {
+          "text": "Starting variable names with special characters.",
+          "is_correct": false
+        },
+        {
+          "text": "Variables cannot contain spaces.",
+          "is_correct": true
+        },
+        {
+          "text": "Datatypes must be declared before the variable name.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Variable names in Python can contain letters, numbers, and underscores but must not start with special characters. They also cannot have spaces, and datatype declarations are not necessary prior to name assignment.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript confirms that variable names can include letters, numbers, and underscores, cannot contain spaces, but does not mention special characters starting names which is false."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": false,
+      "question_type": "true_false",
+      "prompt": "Functions in Python must contain at least one operation to be valid.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "A function can be defined without any operations by using the 'pass' keyword, making it valid in Python.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript shows that a function can be empty by using 'pass', which aligns with the 'False' answer."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": true,
+      "kept": true,
+      "front": "What significant period does the DeVane Lectures focus on?",
+      "back": "The DeVane Lectures focus on the period from 1989 to the present.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that the DeVane Lectures will deal with power and politics in the 30 years since 1989, meaning it focuses on the period from 1989 to the present."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": true,
+      "kept": true,
+      "front": "How did the political stability experienced after World War II differ from the changes seen since 1989?",
+      "back": "The period after World War II was marked by relative stability and prosperity, whereas the three decades since 1989 have been tumultuous with significant changes.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript contrasts the relative stability and prosperity after World War II with the tumultuous changes of the 30 years since 1989."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": true,
+      "kept": true,
+      "front": "What comparative perspective does the speaker emphasize about the past 30 years?",
+      "back": "The speaker emphasizes that while the past 30 years have been characterized by incredible change, the previous 40 years were largely stable due to factors like the Cold War.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes the past 30 years as a period of significant change, contrasting it with the stable post-World War II era, partly due to the Cold War."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Democracy Movements Post-1989",
+      "validated": true,
+      "kept": true,
+      "front": "Which important democracy movements emerged after the decline of Soviet control in 1989?",
+      "back": "Massive resistance movements across Eastern Europe emerged, leading to widespread democratization in the region.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions massive resistance movements across Eastern Europe leading to democratization, which supports the flashcard."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Democracy Movements Post-1989",
+      "validated": true,
+      "kept": true,
+      "front": "What notable event in China contrasted the global optimism for democratic change in the early '90s?",
+      "back": "The Tiananmen Square protests, which resulted in a violent crackdown, stood in stark contrast to the global optimism for democracy.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that the demonstrations in Tiananmen Square in China had a very different result compared to the democratic changes elsewhere, indicating a violent crackdown."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Rise of Far-Right Politics",
+      "validated": true,
+      "kept": true,
+      "front": "What impact did the rise of the Alternative for Deutschland (AFD) party have on German politics?",
+      "back": "The rise of the AFD party, characterized by anti-immigrant and anti-establishment sentiments, indicated a significant shift in the political landscape of Germany.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "speaker_slip": false,
+        "reason": "The transcript mentions that the Alternative for Deutschland is a far-right anti-immigrant, anti-system political party and that they have crossed the 5% threshold, but it does not explicitly state that this indicated a significant shift in the political landscape of Germany."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "German Parliamentary Dynamics",
+      "validated": true,
+      "kept": true,
+      "front": "How did the 5% electoral threshold in Germany affect smaller political parties?",
+      "back": "The 5% threshold means parties must receive at least that percentage of the vote to gain seats in parliament, which previously excluded parties like AFD until they surpassed it.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that parties must receive at least 5% of the vote to gain seats in parliament. This threshold had previously excluded parties like AFD until they reached it, as the transcript indicates the AFD saw themselves as getting a foothold after reaching 5%."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "German Parliamentary Dynamics",
+      "validated": true,
+      "kept": true,
+      "front": "What were the political dynamics in Germany in 2017 regarding coalition formations?",
+      "back": "The SPD announced they would not participate in another grand coalition, leading Angela Merkel to attempt forming a new coalition but facing challenges due to AFD's rising popularity.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "speaker_slip": false,
+        "reason": "The transcript explains the SPD's decision not to participate in another grand coalition and the difficulties Angela Merkel faced in forming a new coalition, noting the issue with AFD as a separate point. The card incorrectly attributes AFD's popularity as a reason for coalition challenges, which is not mentioned in this context in the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Rise of Extremist Parties",
+      "validated": true,
+      "kept": true,
+      "front": "What historical parallels are drawn between the rise of extremist parties today and in the early 1930s in Germany?",
+      "back": "Concerns are raised that the empowerment of extremist parties today may echo the political instability that allowed the Nazis to rise in Germany after the July 1932 elections.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses the empowerment of extremist parties today and compares it to the instability after the July 1932 elections in Germany, with concerns of a replay of history. The flashcard accurately summarizes this comparison."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Rise of Far-Right Parties in Europe",
+      "validated": true,
+      "kept": true,
+      "front": "What recent election trends have been seen in European countries since 2016?",
+      "back": "Far-right parties have gained influence and seats in various European elections, indicating a shift in support from traditional establishment parties.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses the increasing influence and seat gains of far-right parties in various European countries since 2016, contrasting it with the decreasing support for traditional establishment parties."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Course Overview and Approach",
+      "validated": true,
+      "kept": false,
+      "front": "What central questions does the course aim to address regarding historical political developments?",
+      "back": "The course will explore how we got from historical events to the present, the challenges and prospects ahead, and how to achieve better outcomes in political contexts.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard accurately captures the three central questions addressed by the course: the transition from past to present, future challenges, and achieving better outcomes, which are mentioned in the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Course Overview and Approach",
+      "validated": true,
+      "kept": false,
+      "front": "What role do historical events play in the political science approach discussed in the course?",
+      "back": "Historical events serve as natural experiments that allow for the testing of political science theories against new data arising from significant changes.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard correctly summarizes the role of historical events in providing new data for testing theories, as described in the context of the events of 1989 in the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Democracy Movements Post-1989",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What event is considered a significant turning point in the shift towards democratization in Eastern Europe?",
+      "options": [
+        {
+          "text": "The end of the Vietnam War",
+          "is_correct": false
+        },
+        {
+          "text": "The fall of the Berlin Wall",
+          "is_correct": true
+        },
+        {
+          "text": "The signing of the Good Friday Accords",
+          "is_correct": false
+        },
+        {
+          "text": "The election of Angela Merkel",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The fall of the Berlin Wall in 1989 symbolized the end of Soviet control and sparked a wave of democratization throughout Eastern Europe. Other options relate to different events that did not have this specific impact on democratization.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes the period in which the Soviet Union was losing its grip on Eastern Europe and the emergence of democracy. The fall of the Berlin Wall in 1989 is consistent with the timeline and significance mentioned in the transcript. The other options are unrelated to the events described from this period."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Democracy Movements Post-1989",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following events occurred in the early 1990s following the decline of Soviet control? Select all that apply.",
+      "options": [
+        {
+          "text": "The transition of South Africa to a multi-racial democracy",
+          "is_correct": true
+        },
+        {
+          "text": "The implementation of the Oslo Accords",
+          "is_correct": true
+        },
+        {
+          "text": "The establishment of a grand coalition in Germany",
+          "is_correct": false
+        },
+        {
+          "text": "The assassination of Yitzhak Rabin",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Both the transition of South Africa to a multi-racial democracy and the implementation of the Oslo Accords occurred in the early 1990s after the decline of Soviet control. The other events listed occurred in different contexts or time periods.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transition of South Africa to a multi-racial democracy and the implementation of the Oslo Accords are both mentioned as outcomes of the early 1990s shift following the Soviet Union's decline. The assassination of Yitzhak Rabin happened in 1995, which was mentioned in the transcript as part of the timeline, making this option also correct. The establishment of a grand coalition in Germany wasn't mentioned and is irrelevant."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Democracy Movements Post-1989",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "According to the discussion, what did Francis Fukuyama mean by 'the end of history'?",
+      "options": [
+        {
+          "text": "The complete decline of democratic ideals.",
+          "is_correct": false
+        },
+        {
+          "text": "The widespread global triumph of liberal democracy.",
+          "is_correct": true
+        },
+        {
+          "text": "The cessation of all forms of conflict.",
+          "is_correct": false
+        },
+        {
+          "text": "The return to authoritarian regimes worldwide.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "'The end of history' referred to Fukuyama's view of the global triumph of liberal democracy, contrasting the false options which imply conflict or decline.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "Fukuyama's concept of 'the end of history' is discussed in the transcript as meaning the global triumph of liberal democracy, directly supporting the correct option. The other options are clearly incorrect based on the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Rise of Far-Right Politics",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Angela Merkel led Germany to a significant increase in support for the Alternative for Deutschland party during her chancellorship.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Merkel's leadership saw the rise of the Alternative for Deutschland party, which gained substantial support and seats in German Parliament, indicating a shift in political dynamics.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript does not mention Angela Merkel or her leadership in relation to the Alternative for Deutschland party's increase in support. It only discusses a member of the party celebrating crossing the 5% threshold, with no context on Merkel's influence. Thus, the question is not supported by the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "German Parliamentary Dynamics",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What was a notable political challenge faced by the Social Democratic Party (SPD) in Germany in 2017?",
+      "options": [
+        {
+          "text": "They successfully formed a coalition with the Alternative for Deutschland.",
+          "is_correct": false
+        },
+        {
+          "text": "They refused to join in another grand coalition.",
+          "is_correct": true
+        },
+        {
+          "text": "They increased their electoral threshold to 10%.",
+          "is_correct": false
+        },
+        {
+          "text": "They formed a coalition with the Green Party and the Free Democrats.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The SPD faced dissatisfaction with their participation in a grand coalition and ultimately decided not to join again, indicating significant internal challenges. Other options misrepresent their political strategies.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that the SPD refused to join another grand coalition, marking it as a notable challenge in 2017. The other options are not supported by the transcript: there's no mention of them forming a coalition with Alternative for Deutschland, increasing the threshold to 10%, or forming a coalition with the Green Party and Free Democrats."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "German Political Landscape Changes",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Select all factors that contributed to the SPD's decision to re-enter the grand coalition in Germany. Select all that apply.",
+      "options": [
+        {
+          "text": "Fear of losing further support to the Alternative for Deutschland party.",
+          "is_correct": true
+        },
+        {
+          "text": "Desire to hold significant ministerial positions, including Finance.",
+          "is_correct": true
+        },
+        {
+          "text": "Successful negotiation with the Free Democrats and Greens.",
+          "is_correct": false
+        },
+        {
+          "text": "Strong public support for their opposition stance.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The SPD's rationale to return to the coalition was motivated by fears of increased support for the AFD and the promise of significant ministerial positions. The other options do not reflect the SPD's actual circumstances.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript supports the correct options: fear of the AFD gaining support and gaining concessions in the form of ministries. There's no mention of successful negotiations with the Free Democrats or Greens, or strong public support for opposition."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Rise of Far-Right Parties in Europe",
+      "validated": false,
+      "kept": false,
+      "question_type": "true_false",
+      "prompt": "The rise of far-right parties in Europe since 2016 has been isolated to Germany alone.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The rise of far-right parties has been a widespread trend in multiple countries across Europe, not just Germany.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions the rise of far-right parties in various countries across Europe, including Austria, Belgium, and Italy, rather than being isolated to Germany alone."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Approach",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Select all that describe the approach taken in the course regarding the analysis of political change. Select all that apply.",
+      "options": [
+        {
+          "text": "Utilizing historical events as a case study for political theory.",
+          "is_correct": true
+        },
+        {
+          "text": "Exclusively focusing on modern political theories without historical context.",
+          "is_correct": false
+        },
+        {
+          "text": "Employing political science tools to analyze historical developments.",
+          "is_correct": true
+        },
+        {
+          "text": "Only concentrating on electoral outcomes.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The course approach includes using historical events to inform political theory and employing political science tools in analysis, while the other options misrepresent the course's intent.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript explicitly states the course uses history as a case study for political theory and employs political science tools to analyze historical developments. It makes clear the focus is not exclusive to modern theories, nor solely on electoral outcomes. The correct options accurately reflect this approach, and incorrect ones misrepresent it."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Structure",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The new politics of insecurity primarily stemmed from the financial crisis itself.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The new politics of insecurity was more about how governments responded to the financial crisis, rather than the crisis itself.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that the new politics of insecurity was ushered in by the way governments responded to the financial crisis rather than the crisis itself. Thus, the explanation aligns with the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Structure",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What impact did the financial crisis of 2008 have on political sentiment in advanced democracies?",
+      "options": [
+        {
+          "text": "Increased government support for working citizens.",
+          "is_correct": false
+        },
+        {
+          "text": "Heightened insecurity among workforces.",
+          "is_correct": true
+        },
+        {
+          "text": "Led to a surge in support for establishment parties.",
+          "is_correct": false
+        },
+        {
+          "text": "Resulted in the complete recovery of economies.",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The financial crisis exposed and exacerbated existing insecurities among workforces rather than creating immediate security or support for establishment parties.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "According to the transcript, the financial crisis highlighted the insecurity felt by workforces and the lack of adequate government response, supporting the correct choice. The transcript does not mention increased support for working citizens, a surge in support for establishment parties, or complete economic recovery as outcomes of the crisis, making these options incorrect."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Copyright and Course Logistics",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The course allows for a wide selection of topics for papers based solely on the syllabus provided.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Students can write their papers based entirely on the readings in the syllabus, highlighting the course's emphasis on focused study.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions that the topics for the papers will be posted two weeks before they are due and that there will be a significant amount of choice, with four or five possible topics. Students are not expected to go beyond the syllabus to write a first-rate paper. This supports the idea of a wide selection based on the syllabus alone."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "front": "What evidence has been presented regarding alien encounters, and why is it considered insufficient?",
+      "back": "The evidence for aliens is deemed insufficient because the speaker believes it does not excite their research interest, despite it exciting others. They emphasize a lack of compelling proof to warrant further investigation.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker discusses how the evidence for aliens is insufficient to excite their research interest, describing a lack of compelling proof, which aligns with the transcript. However, the card omits the part about the speaker respecting others' interest in UAPs."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "front": "How does the speaker view the current military program on UAPs?",
+      "back": "The speaker does not advocate defunding the military program on UAPs, acknowledging its evolution from UFO to UAP but finds the terminology change somewhat embarrassing.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "speaker_slip": false,
+        "reason": "The transcript states that the term 'UAP' instead of 'UFO' is viewed by the speaker as slightly embarrassing and they acknowledge the military’s investigation, but it doesn't explicitly say they don't advocate defunding it."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "front": "Describe the significance of Commander David Fravor's encounter with the tic tac-shaped craft.",
+      "back": "Commander Fravor's encounter is significant because the craft was tracked dropping from 80,000 feet to sea level in less than a second, with no visible propulsion system, and actively blocked radar tracking.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The encounter with the tic-tac-shaped craft is described in the transcript as having the mentioned characteristics such as rapid descent and the radar blocking features exactly as on the card."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "front": "What distinction does the speaker make about reporting information in scientific contexts?",
+      "back": "The speaker stresses that in scientific contexts, it's crucial to report information with attention to detail and avoid stating events as facts without corroborating sensor data.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses the importance of accurately reporting scientific data and questioning sensor data, matching the card's description of the speaker’s emphasis on detail in scientific reporting."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Future of Technology and Humanity",
+      "validated": true,
+      "kept": true,
+      "front": "What are the implications of advancements in technology like neural interfaces, according to the conversation?",
+      "back": "The conversation suggests that advancements like neural interfaces could improve the working of the human brain in a symbiotic manner, raising concerns about potential deception and the complexity of truth.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "speaker_slip": false,
+        "reason": "The conversation discusses neural interfaces improving brain function and the challenges of deception and truth, supported by dialogue about technology enhancing communication and detecting deception, but not directly stated as a symbiotic improvement of the brain."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Future of Technology and Humanity",
+      "validated": false,
+      "kept": false,
+      "front": "What is the relevance of billionaires in the context of technological influence?",
+      "back": "Billionaires, as discussed in the conversation, have historically influenced society through technological advancements and groundbreaking innovations, with some worrying about them abandoning the rest of humanity.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The conversation does mention billionaires influencing technological advancement and innovation, and the concern about them leaving others behind, although specific historical context is not directly addressed."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Future of Technology and Humanity",
+      "validated": false,
+      "kept": false,
+      "front": "In what ways does the speaker suggest self-deception complicates truth in technology?",
+      "back": "The speaker indicates that the potential for self-deception complicates our ability to program technology to accurately discern truth, as truth itself is often more nuanced than binary.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The conversation mentions the complexity of truth, self-deception, and the challenges of programming technology to discern truth accurately, directly supporting the flashcard."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Existential Universe Questions",
+      "validated": true,
+      "kept": true,
+      "front": "How does the conversation describe the emergence of new ideas in science?",
+      "back": "New ideas in science often emerge through collaboration and critical discussion among colleagues, highlighting the importance of bouncing ideas off skeptics to refine them.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses the emergence of new ideas in science through collaboration and critical discussion among colleagues. This is supported and answerable from the section that describes how physicists and biologists create new ideas and the role of critical discussion."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Existential Universe Questions",
+      "validated": true,
+      "kept": true,
+      "front": "What are multiverses and how do they relate to the laws of physics?",
+      "back": "Multiverses are theoretical constructs that propose an infinite number of universes with potentially different laws of physics, leading to various manifestations of existence.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript talks about multiverses and the possibility of different laws of physics in those universes, supporting the claim that multiverses relate to different manifestations of existence according to different potential laws of physics."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Existential Universe Questions",
+      "validated": true,
+      "kept": true,
+      "front": "What is the importance of research peer review in scientific idea development?",
+      "back": "Research peer review is vital for ensuring the validity of new ideas by subjecting them to critical scrutiny, which is necessary before they can contribute to public knowledge.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The importance of research peer review is discussed as ensuring the validity of ideas before they inform public knowledge. This aligns with the transcript's emphasis on collaboration, idea refinement, and peer engagement."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Science and Misconceptions",
+      "validated": true,
+      "kept": true,
+      "front": "What misconceptions in science are highlighted in the video?",
+      "back": "The conversation discusses misconceptions such as the myth that humans only use 10% of their brains and the erroneous belief in psychic abilities, influenced by confirmation bias.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker addresses the misconception about using 10% of our brains, explaining its origin. Psychic abilities and confirmation bias are discussed, confirming the flashcard's assertions."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Science and Misconceptions",
+      "validated": true,
+      "kept": true,
+      "front": "How does the speaker relate the phenomenon of prediction to science?",
+      "back": "The speaker asserts that scientists possess the power of prediction through equations and calculations, contrasting this with the mystique surrounding prophetic figures in culture.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker describes scientists' predictive capabilities using equations and calculations, contrasting it with cultural mystique around prophecy, which supports the flashcard's content."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What does the discussion suggest as the primary reason for many believing in UFOs?",
+      "options": [
+        {
+          "text": "Their excitement and personal experiences with sightings",
+          "is_correct": true
+        },
+        {
+          "text": "The solid scientific evidence supporting alien existence",
+          "is_correct": false
+        },
+        {
+          "text": "Government secrecy about extraterrestrial technology",
+          "is_correct": false
+        },
+        {
+          "text": "Fear of advanced technologies affecting humanity",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The conversation indicates that although some have personal beliefs and experiences regarding UFOs, the actual evidence presented is considered insufficient to provoke genuine scientific interest. This showcases the contrast between belief and scientific scrutiny.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The discussion suggests that while many people have personal experiences or beliefs about UFOs, the actual scientific evidence is insufficient to spark genuine interest. However, the keyed distractor is 'their excitement and personal experiences with sightings', which aligns with the transcript observations about personal beliefs but isn't explicitly stated as primary in the discussion."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Alien Encounters and Technology",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What key distinction is emphasized in reporting scientific findings?",
+      "options": [
+        {
+          "text": "The factual nature of visual observations versus sensor data",
+          "is_correct": true
+        },
+        {
+          "text": "The importance of emotional responses over evidence",
+          "is_correct": false
+        },
+        {
+          "text": "The reliance on historical beliefs rather than current evidence",
+          "is_correct": false
+        },
+        {
+          "text": "The use of metaphors to explain scientific concepts",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The dialogue underscores the necessity of distinguishing between direct observations and what is reported by sensors, highlighting the rigor required in scientific reporting.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly emphasizes the importance of distinguishing between what sensors report and direct visual observations, and this distinction is heavily scrutinized in the context of the UFO discussion. This aligns accurately with the correct answer and explanation."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Future of Technology and Humanity",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following statements are discussed regarding the capabilities of advanced technologies? Select all that apply.",
+      "options": [
+        {
+          "text": "Technologies like neural interfaces could enhance human cognitive abilities",
+          "is_correct": true
+        },
+        {
+          "text": "Self-driving cars will eliminate traffic incidents entirely",
+          "is_correct": false
+        },
+        {
+          "text": "Advanced technology could potentially help in understanding truth and deception",
+          "is_correct": true
+        },
+        {
+          "text": "All technological advancements have a positive impact on society",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The discussion addresses that advanced technologies may enhance cognitive abilities and help discern truths, but it does not claim all advancements are beneficial, nor that self-driving cars will completely eliminate traffic issues.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript talks about neural interfaces potentially enhancing cognitive abilities and advanced technology possibly aiding in understanding truth and deception, but it does not claim that self-driving cars will eliminate traffic incidents entirely or that all technological advancements are beneficial."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Future of Technology and Humanity",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "What concerns are expressed regarding technological advancements? Select all that apply.",
+      "options": [
+        {
+          "text": "They may enable manipulation and deception in communication",
+          "is_correct": true
+        },
+        {
+          "text": "They can eliminate all previous knowledge of human interaction",
+          "is_correct": false
+        },
+        {
+          "text": "They trace a potentially questionable path regarding truth",
+          "is_correct": true
+        },
+        {
+          "text": "They are universally accepted by society with no concern",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The conversation points to concerns about technological advancements leading to increased deception and complications in understanding truth, not that they can entirely erase human interaction knowledge.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses concerns about technological advancements leading to manipulation in communication and potential issues with understanding truth. There is no mention of erasing human interaction knowledge or society universally accepting technology without concern."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Future of Technology and Humanity",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of these concepts about technology's future are highlighted in the conversation? Select all that apply.",
+      "options": [
+        {
+          "text": "Technology could enhance our understanding of reality",
+          "is_correct": true
+        },
+        {
+          "text": "Technological advancements will definitely solve all human problems",
+          "is_correct": false
+        },
+        {
+          "text": "Dependency on technology might complicate human truths",
+          "is_correct": true
+        },
+        {
+          "text": "Future advancements guarantee no risks to society",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The discussion indicates potential benefits of technology for understanding reality while cautioning about dependence complicating the nature of human truths, without claiming absolute solutions or safety from risks.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript highlights that technology could enhance our understanding of reality and that dependency on technology might complicate human truths. It does not claim that technology will solve all problems or ensure no risks."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Science and Misconceptions",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The conversation suggests that psychic abilities have been scientifically proven to exist.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The excerpt discusses how psychic abilities and associated beliefs stem from human desires for prophecy and prediction but emphasizes that these have no scientific basis, contrasting them with established scientific knowledge.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript explicitly states suspicion about psychic abilities and reflects skepticism regarding their scientific credibility and evidence, supporting the keyed answer, 'False.'"
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Science and Misconceptions",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Astrology and astronomy are described as fundamentally the same in the conversation.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The excerpt discusses how astrology and astronomy are often confused, but strictly, they are different—one is a science based on evidence, the other lacks scientific support.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript refers to astrology and astronomy as different fields, with astronomy being scientific and astrology lacking scientific backing, aligning with the 'False' answer."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Science and Misconceptions",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What is said to often create a false belief due to confirmation bias?",
+      "options": [
+        {
+          "text": "Anecdotal evidence about psychic abilities",
+          "is_correct": true
+        },
+        {
+          "text": "Scientific research conducted under rigorous conditions",
+          "is_correct": false
+        },
+        {
+          "text": "Randomized controlled trials yielding conflicting results",
+          "is_correct": false
+        },
+        {
+          "text": "Historical events described in unbiased sources",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The video points out that anecdotal evidence, especially concerning psychic abilities, can lead to misbeliefs through confirmation bias, distinguishing it from rigorous scientific research.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses how confirmation bias occurs with anecdotal evidence about psychic abilities, pointing to these as mistaken beliefs, validating 'Anecdotal evidence about psychic abilities' as correct and the other choices as incorrect."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Existential Universe Questions",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "How are scientific ideas reportedly developed according to the dialogue?",
+      "options": [
+        {
+          "text": "Through readings and discussions among critical peers",
+          "is_correct": true
+        },
+        {
+          "text": "By solitary contemplation and personal insight",
+          "is_correct": false
+        },
+        {
+          "text": "Via trial and error in experimental settings alone",
+          "is_correct": false
+        },
+        {
+          "text": "Only through formal educational courses",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The dialogue highlights that bouncing ideas off critically-minded peers is crucial for scientific development, rather than relying solely on personal insight or formal education.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions that bouncing ideas off critically-minded peers is important, making the correct option accurately supported. While solitary contemplation is mentioned, it's in contrast, and trial and error in experiments alone or through formal education isn't mentioned or directly supported in this context."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Existential Universe Questions",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The theory of multiverses discussed implies that there cannot be variations in laws of physics.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The discussion on multiverses suggests that various universes can have different laws of physics, including instances where such laws do not exist at all.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses multiverses with different laws of physics and even universes with no laws, directly contradicting the notion that variations are impossible."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Existential Universe Questions",
+      "validated": false,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "Which factors demonstrate the connection between mass and cosmic events discussed? Select all that apply.",
+      "options": [
+        {
+          "text": "Mass influences the gravitational interactions within galaxies",
+          "is_correct": true
+        },
+        {
+          "text": "Higher mass limits the number of possible cosmic life forms",
+          "is_correct": false
+        },
+        {
+          "text": "Large masses can affect the stability of celestial bodies",
+          "is_correct": true
+        },
+        {
+          "text": "Mass is unrelated to the overall structure of the universe",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The dialogue reflects on the impact of mass on gravitational interactions and stability in cosmic contexts, not suggesting any disconnection from the universe’s structure.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript does not mention mass influencing cosmic life forms or any stability aspects. It focuses on cosmic scales and events like expansion, but specific connections to mass aren't discussed in the passage given."
+      }
+    }
+  ]
+}

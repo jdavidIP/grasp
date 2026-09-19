@@ -94,11 +94,16 @@ async def generate_flashcards(
     segment_ids: list[uuid.UUID],
     difficulty: str,
     style: str,
+    trace: dict | None = None,
 ) -> list[dict]:
     """Returns up to `count` validated cards, each with `front`, `back`,
     `segment_id`, `source_start_time`, `difficulty`, `order_index`. May return
     fewer than `count` if generation and validation don't yield enough —
-    ponytail: no regeneration retry loop yet, add one if yield is a problem."""
+    ponytail: no regeneration retry loop yet, add one if yield is a problem.
+    If `trace` is given, it is filled with the pipeline's intermediate state for the
+    offline eval: `segments`, `candidates` (parsed model output before validation),
+    `validated` (those the LLM validation pass accepted), and `kept` (the same
+    candidate objects that also survived dedupe and the count cap)."""
     segments = await select_segments(session, video_id, scope, segment_ids)
     if not segments:
         return []
@@ -107,6 +112,10 @@ async def generate_flashcards(
     candidates = await _generate_candidates(count, difficulty, style, topics)
     grounded = await _filter_grounded(topics, candidates)
     deduped = await _dedupe(grounded)
+    if trace is not None:
+        trace.update(
+            segments=segments, candidates=candidates, validated=grounded, kept=deduped[:count]
+        )
 
     cards = []
     for order_index, card in enumerate(deduped[:count]):

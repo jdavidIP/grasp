@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str
     openai_api_key: str = ""
-    max_video_duration_seconds: int = 10800
+    max_video_duration_seconds: int = 14400
     segmentation_breakpoint_percentile: float = 90.0
     min_segment_duration_seconds: int = 60
     max_segments_per_video: int = 40

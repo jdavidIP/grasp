@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 WHISPER_MODEL = "whisper-1"
 EMBEDDING_MODEL = "text-embedding-3-small"
 GENERATION_MODEL = "gpt-4o-mini"
+EVAL_MODEL = "gpt-4o"
 
 _client: AsyncOpenAI | None = None
 
@@ -59,11 +60,15 @@ async def embed_texts(texts: list[str]) -> list[list[float]]:
     return [item.embedding for item in sorted(response.data, key=lambda item: item.index)]
 
 
-async def generate_json(system_prompt: str, user_prompt: str) -> dict:
-    """Runs a chat completion constrained to JSON output and parses the result."""
+async def generate_json(
+    system_prompt: str, user_prompt: str, model: str = GENERATION_MODEL
+) -> dict:
+    """Runs a chat completion constrained to JSON output and parses the result.
+    `model` is overridden only by offline eval tooling (drafting, judging), so the
+    eval doesn't grade the generator with itself."""
     started = time.monotonic()
     response = await _get_client().chat.completions.create(
-        model=GENERATION_MODEL,
+        model=model,
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": system_prompt},
@@ -74,7 +79,7 @@ async def generate_json(system_prompt: str, user_prompt: str) -> dict:
     usage = response.usage
     logger.info(
         "chat completion complete model=%s tokens=%s elapsed=%.1fs",
-        GENERATION_MODEL,
+        model,
         usage.total_tokens if usage else "unknown",
         elapsed,
     )
