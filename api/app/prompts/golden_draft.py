@@ -21,9 +21,13 @@ QUESTION_SYSTEM_PROMPT = (
     "question — use synonyms or describe the idea — so the question can't be answered "
     "by keyword matching alone.\n"
     "- The question must be specific enough that this excerpt, not the video in "
-    "general, is where the answer lives. No summary or 'what is this about' questions.\n\n"
+    "general, is where the answer lives. No summary or 'what is this about' questions.\n"
+    "- The transcript is the source of truth for what the video says, but speakers "
+    "misspeak. If the excerpt contains an apparent slip or factual error (wrong name, "
+    "country, date, number), phrase the question so it doesn't depend on the slip, "
+    "and describe the slip in note. Otherwise note is null.\n\n"
     'Respond with a JSON object: {"question": string or null, "answer": string '
-    "(one short sentence, or null)}."
+    '(one short sentence, or null), "note": string or null}.'
 )
 
 

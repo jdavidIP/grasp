@@ -71,6 +71,7 @@ async def _draft_question(
         "youtube_id": video.youtube_id,
         "question": question.strip(),
         "answer": result.get("answer"),
+        "note": result.get("note"),
         "span": [round(window[0]["start"], 1), round(window[-1]["end"], 1)],
         "excerpt": excerpt,
     }
@@ -107,7 +108,8 @@ async def draft(youtube_ids: list[str], per_video: int, out_of_scope: int) -> No
         topics = [(s.label, s.summary) for s in video.segments]
         # Oversample: the prompt nulls out off-topic windows (logistics, small talk).
         windows = sample_windows(video.transcript or [], per_video * OVERSAMPLE)
-        drafted = await asyncio.gather(*(_draft_question(video, topics, w) for w in windows))
+        # Sequential, not gathered: parallel gpt-4o calls blow the org's tokens-per-minute cap.
+        drafted = [await _draft_question(video, topics, w) for w in windows]
         entries += spread_pick([d for d in drafted if d is not None], per_video)
         entries += await _draft_out_of_scope(video, out_of_scope)
 
