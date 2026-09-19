@@ -30,6 +30,15 @@ def test_group_cues_splits_on_silence_gap():
     assert [u.text for u in units] == ["First thought here", "second thought here"]
 
 
+def test_group_cues_caps_unpunctuated_run_on_speech():
+    # Auto-captions: no punctuation, back-to-back cues. Must not become one unit.
+    cues = [_cue(i * 3.0, i * 3.0 + 3.0, f"words {i}") for i in range(20)]  # 60s
+    units = seg._group_cues_into_units(cues)
+    assert len(units) == 4
+    assert all(u.end - u.start <= seg.MAX_UNIT_SECONDS for u in units)
+    assert " ".join(u.text for u in units) == " ".join(c["text"] for c in cues)
+
+
 def test_group_cues_skips_blank_cues():
     cues = [_cue(0.0, 1.0, "  "), _cue(1.0, 2.0, "Real text.")]
     units = seg._group_cues_into_units(cues)
@@ -81,6 +90,25 @@ def test_merge_short_segments_merges_leading_segment_forward(monkeypatch):
     merged = seg._merge_short_segments([short_seg, long_seg])
     assert len(merged) == 1
     assert [u.text for u in merged[0].units] == ["short", "long"]
+
+
+def test_merge_short_segments_minimum_scales_with_video_length(monkeypatch):
+    monkeypatch.setattr(seg.settings, "min_segment_duration_seconds", 60)
+    monkeypatch.setattr(seg.settings, "min_segment_duration_fraction", 0.015)
+    # 3-hour video: the 2-minute segment is under 1.5% (162s) and gets merged...
+    long_video = [
+        seg.SegmentDraft([seg.Unit(0.0, 5000.0, "a")]),
+        seg.SegmentDraft([seg.Unit(5000.0, 5120.0, "b")]),
+        seg.SegmentDraft([seg.Unit(5120.0, 10800.0, "c")]),
+    ]
+    assert len(seg._merge_short_segments(long_video)) == 2
+    # ...but in a 10-minute video the same 2 minutes clears the 60s floor.
+    short_video = [
+        seg.SegmentDraft([seg.Unit(0.0, 240.0, "a")]),
+        seg.SegmentDraft([seg.Unit(240.0, 360.0, "b")]),
+        seg.SegmentDraft([seg.Unit(360.0, 600.0, "c")]),
+    ]
+    assert len(seg._merge_short_segments(short_video)) == 3
 
 
 async def test_segment_transcript_end_to_end(monkeypatch):
