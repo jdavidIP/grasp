@@ -121,7 +121,13 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
                             "back": "A weighting mechanism.",
                             "topic_index": 0,
                             "difficulty": "easy",
-                        }
+                        },
+                        {
+                            "front": "Who invented attention?",
+                            "back": "Not stated in the video.",
+                            "topic_index": 0,
+                            "difficulty": "easy",
+                        },
                     ]
                 },
                 {"grounded_card_indices": [0]},
@@ -157,6 +163,7 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
         session.add(chunk)
         await session.commit()
 
+        trace: dict = {}
         cards = await flashcards.generate_flashcards(
             session,
             video.id,
@@ -165,10 +172,19 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
             segment_ids=[segment.id],
             difficulty="mixed",
             style="mixed",
+            trace=trace,
         )
 
         assert len(cards) == 1
         assert cards[0]["front"] == "What is attention?"
+        # The eval trace exposes the ungrounded candidate the user never sees.
+        assert [c["front"] for c in trace["candidates"]] == [
+            "What is attention?",
+            "Who invented attention?",
+        ]
+        assert trace["validated"] == [trace["candidates"][0]]
+        assert trace["kept"] == [trace["candidates"][0]]
+        assert trace["segments"][0].id == segment.id
         assert cards[0]["segment_id"] == segment.id
         assert float(cards[0]["source_start_time"]) == 5.0
         assert cards[0]["order_index"] == 0

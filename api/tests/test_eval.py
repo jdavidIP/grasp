@@ -1,6 +1,15 @@
+from types import SimpleNamespace
+
 import pytest
 
 from app.eval.draft_golden import sample_windows, spread_pick
+from app.eval.faithfulness import (
+    _parse_judgments,
+    segment_transcript,
+)
+from app.eval.faithfulness import (
+    summarize as summarize_faithfulness,
+)
 from app.eval.retrieval import first_hit_rank, span_coverage, summarize
 
 
@@ -41,3 +50,55 @@ def test_sample_windows_spreads_across_transcript():
 def test_spread_pick_keeps_order_and_spreads():
     assert spread_pick(list(range(10)), 3) == [0, 3, 6]
     assert spread_pick([1, 2], 5) == [1, 2]
+
+
+def _judgment(**flags):
+    base = {"supported": True, "answerable": True, "key_correct": True, "speaker_slip": False}
+    return base | flags
+
+
+def test_faithfulness_summary_splits_raw_and_kept():
+    records = [
+        {"kind": "quizzes", "validated": True, "kept": True, "judgment": _judgment()},
+        {
+            "kind": "quizzes",
+            "validated": True,
+            "kept": True,
+            "judgment": _judgment(speaker_slip=True),
+        },
+        {
+            "kind": "quizzes",
+            "validated": False,
+            "kept": False,
+            "judgment": _judgment(key_correct=False),
+        },
+        {"kind": "quizzes", "validated": True, "kept": False, "judgment": None},
+    ]
+    summary = summarize_faithfulness(records)["quizzes"]
+    assert summary["raw"]["n"] == 4
+    assert summary["raw"]["unjudged"] == 1
+    assert summary["raw"]["key_correct"] == pytest.approx(2 / 3)
+    assert summary["raw"]["faithful"] == pytest.approx(2 / 3)
+    assert summary["rejected"]["n"] == 1
+    assert summary["rejected"]["faithful"] == 0.0
+    assert summary["kept"]["faithful"] == 1.0
+    assert summary["kept"]["speaker_slips"] == 1  # a slip is flagged, not failed
+
+
+def test_parse_judgments_drops_malformed_and_out_of_range():
+    result = {
+        "judgments": [
+            {"index": 0, "supported": True, "answerable": False, "speaker_slip": False},
+            {"index": 1, "supported": "yes", "answerable": True, "speaker_slip": False},
+            {"index": 7, "supported": True, "answerable": True, "speaker_slip": False},
+        ]
+    }
+    parsed = _parse_judgments(result, 2, ("supported", "answerable"))
+    assert parsed[0]["answerable"] is False
+    assert parsed[1] is None
+
+
+def test_segment_transcript_takes_cues_overlapping_the_segment():
+    cues = [{"start": s, "end": s + 5, "text": str(s)} for s in (0, 5, 10, 15)]
+    segment = SimpleNamespace(start_time=6, end_time=12)
+    assert segment_transcript(cues, segment) == "5 10"
