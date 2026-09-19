@@ -47,16 +47,19 @@ The segmentation fix ([#15](https://github.com/jdavidIP/grasp/issues/15)) then c
 
 gpt-4o judges every generated flashcard and quiz question against the raw transcript of the segment it cites. It uses a different model from the gpt-4o-mini generator, so the generator isn't grading itself. Rates are reported before the pipeline's own validation pass (raw) and after it (what users see).
 
-| | raw | shipped to user |
+| | Phase 7 baseline (1 run) | now (2 runs) |
 |---|---|---|
-| flashcards: faithful | 0.81 (n=36) | 0.86 (n=28) |
-| quiz questions: faithful | 0.85 (n=34) | 0.86 (n=29) |
-| quiz questions: answer key correct | 0.85 | 0.86 |
+| quiz questions: answer key correct | 0.80 | 0.93, 0.93 |
+| quiz questions shipped, of 30 requested | 30 | 30, 30 |
+| flashcards: faithful | 0.81 | 0.83, 0.90 |
+| flashcards shipped, of 30 requested | 27 | 30, 30 |
 
-With about 30 items per group, differences under about 0.1 are within run-to-run noise. The judge's per-item reasoning is in [the results file](api/eval/results/faithfulness-2026-09-19-segmentation.json). What it shows:
+Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 on quiz key correctness. So every change below was judged on at least two runs, and the per-run results are all committed under [`api/eval/results/`](api/eval/results/). The judge's per-item reasoning is in each results file. What it shows:
 
-- **Fixing segmentation turned the flashcard validator from harmful to useful.** At the [first baseline](api/eval/results/faithfulness-2026-09-19.json), all 7 cards the validator rejected were judged faithful, and shipped cards scored *below* raw output (0.81 vs 0.86). The validator only sees each topic's summary plus two excerpts, and the podcast's 4 hour-long "topics" left it almost nothing to check against. With 20 real topics, shipped cards now score above raw (0.86 vs 0.81). The validator still rejects some good cards (3 of the 5 it rejected were faithful, down from 7 of 7), so it is far from precise, but on balance it now helps. The tutorial deck also went from 7 to 10 of the 10 cards requested.
-- **Quiz answer keys are the weakest link.** About 1 in 7 shipped questions (1 in 5 at baseline) has a wrong or unsupported answer key. At baseline these were mostly multi-select questions with a "wrong" option that is actually true; in the latest run 3 of the 4 are true/false statements the transcript doesn't support ([#16](https://github.com/jdavidIP/grasp/issues/16)). Grading is deterministic, so a bad key marks a correct answer wrong.
+- **The validators were checking against the wrong context, and one run made that look fixed.** After the segmentation fix ([#15](https://github.com/jdavidIP/grasp/issues/15)) a single run showed shipped flashcards scoring above raw output, so the flashcard validator looked net-useful. Two more runs said otherwise: it rejected 11 and 14 cards, of which 11 and 12 were faithful, and shipped decks of 23 and 21 of 30. The cause, for both flashcards and quizzes, was that each validator checked items against the same summary-plus-two-excerpts context the generator had seen. It couldn't verify items grounded elsewhere in a topic (so it rejected good ones), and it couldn't tell a fact stated in the video from one the generator filled in from general knowledge (so it kept bad ones).
+- **Fix ([#16](https://github.com/jdavidIP/grasp/issues/16)): validate each item against the full transcript of the segment it cites,** one call per cited segment, in parallel. By my token estimate it costs about the same, because only cited segments are sent (I haven't measured it: [#21](https://github.com/jdavidIP/grasp/issues/21)). Wrongly rejected cards fell from 11 and 12 per run to between 0 and 2 across the four runs since, and quiz answer keys went from 0.80 to 0.93. The validator now discriminates: rejected quiz questions score 0.54 and 0.62 faithful against 0.93 for the ones shipped. Two prompt changes went with it (keyed claims must be stated, not inferred; true/false statements must restate or be contradicted by the video), but by themselves they didn't move the overall number outside noise.
+- **A stricter validator ships shorter quizzes, so it tops up.** A 10-question podcast quiz came back with 7, 9, 10 and 5 questions across four runs. If validation leaves a quiz short, it now generates once more for just the shortfall, validates it the same way, and stops (`TOP_UP_ROUNDS = 1`). Both runs then shipped the full 30. On longer videos that roughly doubles the generation calls, all on gpt-4o-mini.
+- **What's left:** about 2 in 30 shipped quiz questions still have a debatable key, mostly multi-select questions where a distractor is arguably true. Shipped flashcard faithfulness is 0.83-0.93 across four runs, within noise of before: the flashcard fix restored full decks and stopped false rejections, but it didn't measurably make cards more faithful. Grading is deterministic, so a bad key marks a correct answer wrong.
 
 ### Known limitations
 
