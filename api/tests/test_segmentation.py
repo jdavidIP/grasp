@@ -115,6 +115,7 @@ async def test_segment_transcript_end_to_end(monkeypatch):
     monkeypatch.setattr(seg.settings, "segmentation_breakpoint_percentile", 90.0)
     monkeypatch.setattr(seg.settings, "max_segments_per_video", 40)
     monkeypatch.setattr(seg.settings, "min_segment_duration_seconds", 0)
+    monkeypatch.setattr(seg.settings, "min_segment_duration_fraction", 0)
 
     cues = [_cue(float(i), float(i + 1), f"Sentence {i}.") for i in range(6)]
 
