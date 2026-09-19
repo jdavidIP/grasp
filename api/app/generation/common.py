@@ -1,13 +1,18 @@
 """Helpers shared by the flashcard and quiz generation pipelines: segment selection,
-per-topic context building, an over-request buffer, and embedding-similarity math."""
+per-topic context building, per-segment validation, an over-request buffer, and
+embedding-similarity math."""
 
+import asyncio
 import uuid
+from collections.abc import Callable
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.generation import llm
 from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
+from app.models.video import Video
 
 VALID_DIFFICULTIES = {"easy", "medium", "hard"}
 
@@ -89,6 +94,56 @@ async def build_topic_contexts(
         )
         contexts.append((segment.label, text))
     return contexts
+
+
+def segment_text(cues: list[dict], segment: TranscriptSegment) -> str:
+    """The raw transcript text inside a segment's time range. Uses cues rather than
+    chunks because chunks overlap and would repeat text."""
+    start, end = float(segment.start_time), float(segment.end_time)
+    return " ".join(c["text"] for c in cues if c["end"] > start and c["start"] < end)
+
+
+async def segment_transcripts(
+    session: AsyncSession, video_id: uuid.UUID, segments: list[TranscriptSegment]
+) -> list[str]:
+    """Each segment's raw transcript text, in the same order as `segments`."""
+    video = await session.get(Video, video_id)
+    cues = (video.transcript if video else None) or []
+    return [segment_text(cues, s) for s in segments]
+
+
+async def audit_by_segment(
+    items: list[dict],
+    transcripts: list[str],
+    system_prompt: str,
+    build_user_prompt: Callable[[str, list[dict]], str],
+    result_key: str,
+) -> list[dict]:
+    """Keeps the items an LLM audit accepts, in their original order.
+
+    Each item is checked against the full transcript of the segment it cites
+    (`topic_index`), one call per cited segment, in parallel. The generator only saw
+    summaries plus a few excerpts, so a validator looking at that same thin context
+    can neither verify items grounded elsewhere in the segment (it rejects good ones)
+    nor catch facts filled in from general knowledge (it keeps bad ones) — issue #16.
+    The model answers with the in-group indices it accepts under `result_key`."""
+    by_topic: dict[int, list[int]] = {}
+    for i, item in enumerate(items):
+        by_topic.setdefault(item["topic_index"], []).append(i)
+
+    async def audit(topic_index: int, indices: list[int]) -> list[int]:
+        result = await llm.generate_json(
+            system_prompt,
+            build_user_prompt(transcripts[topic_index], [items[i] for i in indices]),
+        )
+        accepted = result.get(result_key)
+        if not isinstance(accepted, list):
+            return []
+        return [indices[j] for j in accepted if isinstance(j, int) and 0 <= j < len(indices)]
+
+    kept = await asyncio.gather(*(audit(t, indices) for t, indices in by_topic.items()))
+    kept_indices = {i for indices in kept for i in indices}
+    return [item for i, item in enumerate(items) if i in kept_indices]
 
 
 def overgenerate_count(count: int) -> int:

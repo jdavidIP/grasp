@@ -124,9 +124,10 @@ Config form  →  select segments  →  summarize  →  generate  →  validate 
 
 **Step 5 — Validate.** This is where quality actually comes from:
 - Every item must cite a `segment_id` and a timestamp range.
-- Reject items whose claimed source text doesn't support them (a second LLM call scoring faithfulness, or embedding similarity between the item and its cited chunk).
+- Reject items whose cited source doesn't support them, with a second LLM call that checks each item against the **full transcript of the segment it cites**, one call per cited segment, in parallel. Do not audit against the same summary-plus-excerpts context the generator saw: that validator can't verify items grounded elsewhere in the segment (it rejects good ones) and can't tell a stated fact from one filled in from general knowledge (it keeps bad ones). Measured in [#16](https://github.com/jdavidIP/grasp/issues/16): 11 and 12 good cards wrongly rejected per run before, 0 to 2 per run over four runs after.
 - For quiz questions: per-type correct-option counts (`multiple_choice` and `true_false` exactly one; `multi_select` at least one correct and at least one incorrect); no duplicate options; distractors must not be arguably correct. The model returns the answer key with the question, so grading later is a set comparison with no second LLM call.
 - Deduplicate near-identical items by embedding similarity.
+- If validation and dedupe leave a quiz short of the requested count, generate once more for just the shortfall (telling the model what is already kept), validate it the same way, and stop (`TOP_UP_ROUNDS = 1`). A stricter validator rejects more, and a 10-question podcast quiz otherwise shipped as few as 5.
 
 **Step 6 — Store.** Persist the deck or quiz with its config so the user can see how it was generated.
 
@@ -181,7 +182,7 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 - **Checks:** `supported` (every claim is in the transcript), `answerable` (someone who watched could answer it), and, for quizzes, `key_correct` (every keyed option is right and no distractor is actually true, whether per the transcript or plainly in general). `faithful` means all checks pass. `speaker_slip` is tracked separately: an item that faithfully repeats a misspoken fact is flagged, not failed.
 - **Reason before verdict:** the judge writes its reasoning before the booleans. With the verdict first, the flags contradicted their own reasons.
 - **Stages:** rates are reported for `raw` (all candidates), `rejected` (what the pipeline's own LLM validation dropped), and `kept` (what a user sees). This measures what validation actually buys.
-- **Noise:** there are ~30 items per group, and generation is stochastic (fresh items every run), so one item moves a rate by ~0.03. Two runs differing only in judge wording differed by 0.09 on kept-flashcard faithfulness. Treat differences under ~0.1 as noise until repeated runs say otherwise.
+- **Noise, and the multiple-runs rule:** there are ~30 items per group, and generation is stochastic (fresh items every run), so one item moves a rate by ~0.03. *Identical* code scored 0.71 and 0.87 on quiz key correctness in two runs, so treat single-run differences under ~0.15 as noise. **Run every variant at least twice before drawing a conclusion.** A single run once made the flashcard validator look fixed when it wasn't (see the README).
 
 ### Segmentation
 

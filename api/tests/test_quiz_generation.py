@@ -155,7 +155,7 @@ async def test_filter_valid_keeps_only_listed_indices(monkeypatch):
     )
     questions = [quizzes._parse_question(_raw(prompt=f"Q{i}"), 4, 1) for i in range(2)]
 
-    valid = await quizzes._filter_valid([("Topic", "text")], [], questions)
+    valid = await quizzes._filter_valid(["text"], questions)
 
     assert valid == [questions[1]]
 
@@ -163,7 +163,29 @@ async def test_filter_valid_keeps_only_listed_indices(monkeypatch):
 async def test_filter_valid_malformed_response_drops_all(monkeypatch):
     monkeypatch.setattr(quizzes.llm, "generate_json", AsyncMock(return_value={}))
     questions = [quizzes._parse_question(_raw(), 4, 1)]
-    assert await quizzes._filter_valid([("Topic", "text")], [], questions) == []
+    assert await quizzes._filter_valid(["text"], questions) == []
+
+
+async def test_filter_valid_audits_each_cited_segment_against_its_own_transcript(monkeypatch):
+    mock_generate = AsyncMock(
+        side_effect=[{"valid_question_indices": [0]}, {"valid_question_indices": []}]
+    )
+    monkeypatch.setattr(quizzes.llm, "generate_json", mock_generate)
+    questions = [
+        quizzes._parse_question(_raw(prompt="A", topic_index=0), 4, 2),
+        quizzes._parse_question(_raw(prompt="B", topic_index=1), 4, 2),
+        quizzes._parse_question(_raw(prompt="C", topic_index=0), 4, 2),
+    ]
+
+    valid = await quizzes._filter_valid(["zero text", "one text"], questions)
+
+    # One call per cited segment, each seeing only its own transcript.
+    prompts = [call.args[1] for call in mock_generate.call_args_list]
+    assert len(prompts) == 2
+    assert "zero text" in prompts[0] and "one text" not in prompts[0]
+    assert "one text" in prompts[1]
+    # Segment 0 kept its first question (A) only; segment 1 kept nothing.
+    assert valid == [questions[0]]
 
 
 async def test_dedupe_drops_near_duplicate_prompts(monkeypatch):
@@ -210,7 +232,15 @@ async def test_generate_quiz_happy_path_keeps_key_and_feeds_other_segments_as_di
     monkeypatch.setattr(quizzes.llm, "embed_texts", AsyncMock(return_value=[_embedding(0)]))
 
     async with async_session() as session:
-        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        video = Video(
+            youtube_id=f"test-{uuid.uuid4().hex[:8]}",
+            title="t",
+            status="ready",
+            transcript=[
+                {"start": 5.0, "end": 10.0, "text": "attention weighs tokens by relevance"},
+                {"start": 20.0, "end": 25.0, "text": "adam adapts the learning rate"},
+            ],
+        )
         session.add(video)
         await session.flush()
 
@@ -245,7 +275,7 @@ async def test_generate_quiz_happy_path_keeps_key_and_feeds_other_segments_as_di
         await session.commit()
 
         result = await quizzes.generate_quiz(
-            session, video.id, 5, "topics", [selected.id], ["multiple_choice"], 4, "mixed"
+            session, video.id, 1, "topics", [selected.id], ["multiple_choice"], 4, "mixed"
         )
 
         assert len(result) == 1
@@ -257,6 +287,10 @@ async def test_generate_quiz_happy_path_keeps_key_and_feeds_other_segments_as_di
         # The unselected segment reaches the generation prompt as distractor material.
         generation_prompt = mock_generate.call_args_list[0].args[1]
         assert "Optimizers: Adam and SGD compared." in generation_prompt
+        # The validator checks the cited segment's raw transcript, not the summary.
+        validation_prompt = mock_generate.call_args_list[1].args[1]
+        assert "attention weighs tokens by relevance" in validation_prompt
+        assert "adam adapts" not in validation_prompt
 
         await session.delete(video)
         await session.commit()
@@ -289,13 +323,100 @@ async def test_generate_quiz_whole_video_has_no_other_topics_block(monkeypatch):
         await session.commit()
 
         result = await quizzes.generate_quiz(
-            session, video.id, 5, "whole_video", [], ["multiple_choice"], 4, "mixed"
+            session, video.id, 1, "whole_video", [], ["multiple_choice"], 4, "mixed"
         )
 
         assert len(result) == 1
         generation_prompt = mock_generate.call_args_list[0].args[1]
         assert "Other topics in the video" not in generation_prompt
         assert "[0] Topic 0" in generation_prompt and "[1] Topic 1" in generation_prompt
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_generate_quiz_tops_up_a_shortfall_once_without_repeats(monkeypatch):
+    mock_generate = AsyncMock(
+        side_effect=[
+            {"questions": [_raw(prompt="First?"), _raw(prompt="Rejected?")]},
+            {"valid_question_indices": [0]},  # validator keeps only "First?"
+            {"questions": [_raw(prompt="Second?")]},
+            {"valid_question_indices": [0]},
+        ]
+    )
+    monkeypatch.setattr(quizzes.llm, "generate_json", mock_generate)
+    monkeypatch.setattr(
+        quizzes.llm, "embed_texts", AsyncMock(return_value=[_embedding(0), _embedding(1)])
+    )
+
+    async with async_session() as session:
+        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        session.add(video)
+        await session.flush()
+        session.add(
+            TranscriptSegment(
+                video_id=video.id,
+                order_index=0,
+                label="Topic",
+                summary="Summary.",
+                start_time=0.0,
+                end_time=10.0,
+            )
+        )
+        await session.commit()
+
+        trace: dict = {}
+        result = await quizzes.generate_quiz(
+            session, video.id, 2, "whole_video", [], ["multiple_choice"], 4, "mixed", trace=trace
+        )
+
+        assert [q["prompt"] for q in result] == ["First?", "Second?"]
+        assert mock_generate.call_count == 4  # first round + one top-up (the quiz filled)
+        # The top-up asks only for the shortfall and lists what's already kept.
+        top_up_prompt = mock_generate.call_args_list[2].args[1]
+        assert "Already in this quiz" in top_up_prompt and "- First?" in top_up_prompt
+        assert [c["prompt"] for c in trace["candidates"]] == ["First?", "Rejected?", "Second?"]
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_generate_quiz_stops_after_top_up_rounds_even_if_still_short(monkeypatch):
+    # Every round's candidates are all rejected: the quiz stays empty, and the loop
+    # must stop at TOP_UP_ROUNDS instead of retrying forever.
+    mock_generate = AsyncMock(
+        side_effect=[
+            {"questions": [_raw(prompt="A?")]},
+            {"valid_question_indices": []},
+            {"questions": [_raw(prompt="B?")]},
+            {"valid_question_indices": []},
+        ]
+    )
+    monkeypatch.setattr(quizzes.llm, "generate_json", mock_generate)
+    monkeypatch.setattr(quizzes.llm, "embed_texts", AsyncMock(return_value=[]))
+
+    async with async_session() as session:
+        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        session.add(video)
+        await session.flush()
+        session.add(
+            TranscriptSegment(
+                video_id=video.id,
+                order_index=0,
+                label="Topic",
+                summary="Summary.",
+                start_time=0.0,
+                end_time=10.0,
+            )
+        )
+        await session.commit()
+
+        result = await quizzes.generate_quiz(
+            session, video.id, 3, "whole_video", [], ["multiple_choice"], 4, "mixed"
+        )
+
+        assert result == []
+        assert mock_generate.call_count == 2 * (1 + quizzes.TOP_UP_ROUNDS)  # generate + audit
 
         await session.delete(video)
         await session.commit()

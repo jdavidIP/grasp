@@ -5,12 +5,12 @@ import pytest
 from app.eval.draft_golden import sample_windows, spread_pick
 from app.eval.faithfulness import (
     _parse_judgments,
-    segment_transcript,
 )
 from app.eval.faithfulness import (
     summarize as summarize_faithfulness,
 )
 from app.eval.retrieval import first_hit_rank, span_coverage, summarize
+from app.generation.common import segment_text
 
 
 def test_first_hit_rank_is_one_based_and_ignores_touching_edges():
@@ -98,7 +98,7 @@ def test_parse_judgments_drops_malformed_and_out_of_range():
     assert parsed[1] is None
 
 
-def test_segment_transcript_takes_cues_overlapping_the_segment():
+def test_segment_text_takes_cues_overlapping_the_segment():
     cues = [{"start": s, "end": s + 5, "text": str(s)} for s in (0, 5, 10, 15)]
     segment = SimpleNamespace(start_time=6, end_time=12)
-    assert segment_transcript(cues, segment) == "5 10"
+    assert segment_text(cues, segment) == "5 10"

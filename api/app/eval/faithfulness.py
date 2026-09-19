@@ -20,9 +20,9 @@ from sqlalchemy import select
 from app.db import async_session
 from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR
 from app.generation import llm
+from app.generation.common import segment_text
 from app.generation.flashcards import generate_flashcards
 from app.generation.quizzes import generate_quiz
-from app.models.segment import TranscriptSegment
 from app.models.video import Video
 from app.prompts.faithfulness_judge import (
     FLASHCARD_SYSTEM_PROMPT,
@@ -43,13 +43,6 @@ CHECKS = {
     "flashcards": ("supported", "answerable"),
     "quizzes": ("supported", "answerable", "key_correct"),
 }
-
-
-def segment_transcript(cues: list[dict], segment: TranscriptSegment) -> str:
-    """The raw transcript text inside a segment's time range. Uses cues rather than
-    chunks because chunks overlap and would repeat text."""
-    start, end = float(segment.start_time), float(segment.end_time)
-    return " ".join(c["text"] for c in cues if c["end"] > start and c["start"] < end)
 
 
 def summarize(records: list[dict]) -> dict:
@@ -150,7 +143,7 @@ async def run(label: str | None) -> None:
             # Sequential: parallel gpt-4o calls blow the org's tokens-per-minute cap.
             for topic_index, items in by_topic.items():
                 segment = segments[topic_index]
-                transcript = segment_transcript(video.transcript or [], segment)
+                transcript = segment_text(video.transcript or [], segment)
                 judgments = await _judge(kind, transcript, items)
                 for item, judgment in zip(items, judgments, strict=True):
                     records.append(

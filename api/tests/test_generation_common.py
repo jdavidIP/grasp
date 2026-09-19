@@ -1,4 +1,5 @@
 import uuid
+from unittest.mock import AsyncMock
 
 from app.generation import common
 from app.models.chunk import TranscriptChunk
@@ -40,3 +41,42 @@ def test_top_chunks_by_centrality_drops_outlier():
 
 def test_overgenerate_count_adds_a_buffer():
     assert common.overgenerate_count(10) >= 13
+
+
+async def _audit(monkeypatch, items, responses):
+    monkeypatch.setattr(common.llm, "generate_json", AsyncMock(side_effect=responses))
+    return await common.audit_by_segment(
+        items,
+        ["seg zero", "seg one"],
+        "system",
+        lambda transcript, group: transcript,
+        "accepted",
+    )
+
+
+async def test_audit_by_segment_maps_group_indices_back_and_keeps_order(monkeypatch):
+    items = [{"topic_index": 0}, {"topic_index": 1}, {"topic_index": 0}, {"topic_index": 1}]
+    # Segment 0's group is items 0 and 2: accepting its index 1 means item 2.
+    # Segment 1's group is items 1 and 3: accepting its index 0 means item 1.
+    kept = await _audit(monkeypatch, items, [{"accepted": [1]}, {"accepted": [0]}])
+    assert kept == [items[1], items[2]]
+
+
+async def test_audit_by_segment_ignores_duplicate_and_out_of_range_indices(monkeypatch):
+    items = [{"topic_index": 0}, {"topic_index": 0}]
+    # A duplicate keeps an item once; out-of-range, negative, and non-int are dropped.
+    kept = await _audit(monkeypatch, items, [{"accepted": [0, 0, 5, -1, "1", None]}])
+    assert kept == [items[0]]
+
+
+async def test_audit_by_segment_drops_only_the_group_with_a_malformed_response(monkeypatch):
+    items = [{"topic_index": 0}, {"topic_index": 1}]
+    kept = await _audit(monkeypatch, items, [{}, {"accepted": [0]}])
+    assert kept == [items[1]]
+
+
+async def test_audit_by_segment_with_no_items_makes_no_calls(monkeypatch):
+    mock = AsyncMock()
+    monkeypatch.setattr(common.llm, "generate_json", mock)
+    assert await common.audit_by_segment([], [], "system", lambda t, g: t, "accepted") == []
+    mock.assert_not_called()
