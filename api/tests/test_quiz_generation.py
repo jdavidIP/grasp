@@ -371,11 +371,52 @@ async def test_generate_quiz_tops_up_a_shortfall_once_without_repeats(monkeypatc
         )
 
         assert [q["prompt"] for q in result] == ["First?", "Second?"]
-        assert mock_generate.call_count == 4  # one top-up round, then stop
+        assert mock_generate.call_count == 4  # first round + one top-up (the quiz filled)
         # The top-up asks only for the shortfall and lists what's already kept.
         top_up_prompt = mock_generate.call_args_list[2].args[1]
         assert "Already in this quiz" in top_up_prompt and "- First?" in top_up_prompt
         assert [c["prompt"] for c in trace["candidates"]] == ["First?", "Rejected?", "Second?"]
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_generate_quiz_stops_after_top_up_rounds_even_if_still_short(monkeypatch):
+    # Every round's candidates are all rejected: the quiz stays empty, and the loop
+    # must stop at TOP_UP_ROUNDS instead of retrying forever.
+    mock_generate = AsyncMock(
+        side_effect=[
+            {"questions": [_raw(prompt="A?")]},
+            {"valid_question_indices": []},
+            {"questions": [_raw(prompt="B?")]},
+            {"valid_question_indices": []},
+        ]
+    )
+    monkeypatch.setattr(quizzes.llm, "generate_json", mock_generate)
+    monkeypatch.setattr(quizzes.llm, "embed_texts", AsyncMock(return_value=[]))
+
+    async with async_session() as session:
+        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        session.add(video)
+        await session.flush()
+        session.add(
+            TranscriptSegment(
+                video_id=video.id,
+                order_index=0,
+                label="Topic",
+                summary="Summary.",
+                start_time=0.0,
+                end_time=10.0,
+            )
+        )
+        await session.commit()
+
+        result = await quizzes.generate_quiz(
+            session, video.id, 3, "whole_video", [], ["multiple_choice"], 4, "mixed"
+        )
+
+        assert result == []
+        assert mock_generate.call_count == 2 * (1 + quizzes.TOP_UP_ROUNDS)  # generate + audit
 
         await session.delete(video)
         await session.commit()
