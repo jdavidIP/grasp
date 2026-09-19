@@ -10,6 +10,7 @@ same golden set. See docs/ARCHITECTURE.md §6 for the metric definitions.
 import argparse
 import asyncio
 import json
+import uuid
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -82,7 +83,7 @@ def summarize(results: list[tuple[list[Span], Span]], ks: tuple[int, ...] = KS) 
 
 
 async def _retrieve(
-    strategy: str, video_id, question: str, embedding: list[float]
+    strategy: str, video_id: uuid.UUID, question: str, embedding: list[float]
 ) -> list[TranscriptChunk]:
     async with async_session() as session:
         if strategy == "vector":
@@ -93,7 +94,7 @@ async def _retrieve(
         return await rerank(question, candidates)
 
 
-async def _decline(video_id, question: str) -> dict:
+async def _decline(video_id: uuid.UUID, question: str) -> dict:
     async with async_session() as session:
         return await answer_question(session, video_id, question, [])
 

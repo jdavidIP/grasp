@@ -11,6 +11,7 @@ as `api/eval/golden_set.json`. The retrieval eval only reads the reviewed file.
 import argparse
 import asyncio
 import json
+from typing import Any
 
 from sqlalchemy import select
 
@@ -30,7 +31,7 @@ WINDOW_SECONDS = 40.0
 OVERSAMPLE = 2
 
 
-def spread_pick(items: list, count: int) -> list:
+def spread_pick(items: list[Any], count: int) -> list[Any]:
     """Up to `count` items chosen evenly across the list, preserving order."""
     if len(items) <= count:
         return items

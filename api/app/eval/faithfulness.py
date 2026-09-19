@@ -12,6 +12,7 @@ raw-produced and what a user would actually see — i.e. what validation buys.
 import argparse
 import asyncio
 import json
+import uuid
 from datetime import UTC, datetime
 
 from sqlalchemy import select
@@ -107,7 +108,7 @@ async def _judge(kind: str, transcript: str, items: list[dict]) -> list[dict | N
     return _parse_judgments(result, len(items), CHECKS[kind])
 
 
-async def _generate(kind: str, video_id) -> dict:
+async def _generate(kind: str, video_id: uuid.UUID) -> dict:
     trace: dict = {}
     async with async_session() as session:
         if kind == "flashcards":

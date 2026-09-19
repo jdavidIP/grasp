@@ -35,7 +35,7 @@ async def keyword_search(
 
     Matches chunks containing ANY of the query's terms, ranked by ts_rank (more
     and rarer matches rank higher). plainto_tsquery alone ANDs every term, which
-    for natural-language questions matched nothing on 19/20 golden questions and
+    for natural-language questions matched nothing on 24/26 golden questions and
     made hybrid search silently equal to pure vector search."""
     and_query = cast(func.plainto_tsquery("english", query), Text)
     ts_query = cast(func.replace(and_query, " & ", " | "), TSQUERY)

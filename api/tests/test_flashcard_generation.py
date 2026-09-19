@@ -182,8 +182,9 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
             "What is attention?",
             "Who invented attention?",
         ]
-        assert trace["validated"] == [trace["candidates"][0]]
-        assert trace["kept"] == [trace["candidates"][0]]
+        # Identity, not equality: the faithfulness eval tags candidates by id().
+        assert [id(c) for c in trace["validated"]] == [id(trace["candidates"][0])]
+        assert [id(c) for c in trace["kept"]] == [id(trace["candidates"][0])]
         assert trace["segments"][0].id == segment.id
         assert cards[0]["segment_id"] == segment.id
         assert float(cards[0]["source_start_time"]) == 5.0

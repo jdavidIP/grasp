@@ -39,7 +39,7 @@ A retrieved chunk counts as a hit if it overlaps the golden time span. Productio
 
 **Out-of-scope questions correctly declined: 6/6.**
 
-The eval paid for itself on its first run. Keyword search used `plainto_tsquery`, which requires *every* term in the question to appear in a chunk. It matched nothing on 19 of 20 questions, so "hybrid" search had silently been pure vector search. Switching to any-term matching raised hybrid + rerank hit@1 from **0.81 to 0.88** and MRR from **0.86 to 0.92**. A lecture question about the Marshall Plan, which no strategy had retrieved at any rank, went to rank 1: an exact name the embedding had flattened, which is the case hybrid search exists for. ([before](api/eval/results/retrieval-2026-09-19.json) / [after](api/eval/results/retrieval-2026-09-19-keyword-or.json))
+The eval paid for itself on its first run. Keyword search used `plainto_tsquery`, which requires *every* term in the question to appear in a chunk. It matched nothing on 24 of the 26 questions, so "hybrid" search had silently been pure vector search. Switching to any-term matching raised hybrid + rerank hit@1 from **0.81 to 0.88** and MRR from **0.86 to 0.92**. A lecture question about the Marshall Plan, which no strategy had retrieved at any rank, went to rank 1: an exact name the embedding had flattened, which is the case hybrid search exists for. ([before](api/eval/results/retrieval-2026-09-19.json) / [after](api/eval/results/retrieval-2026-09-19-keyword-or.json))
 
 ### Generation faithfulness
 
@@ -54,7 +54,7 @@ gpt-4o judges every generated flashcard and quiz question against the raw transc
 With about 30 items per group, differences under about 0.1 are within run-to-run noise. The judge's per-item reasoning is in [the results file](api/eval/results/faithfulness-2026-09-19.json). What it shows:
 
 - **The flashcard grounding validator is counterproductive right now.** All 7 cards it rejected were judged faithful. It only sees each segment's summary and two excerpts, so it can't verify cards grounded elsewhere in the segment ([#15](https://github.com/jdavidIP/grasp/issues/15)).
-- **Quiz answer keys are the weakest link.** About 1 in 5 shipped questions has a "wrong" option that is actually true, mostly in multi-select ([#16](https://github.com/jdavidIP/grasp/issues/16)). Grading is deterministic, so a bad key marks a correct answer wrong.
+- **Quiz answer keys are the weakest link.** About 1 in 5 shipped questions has a wrong or unsupported answer key, mostly in multi-select where a "wrong" option is actually true ([#16](https://github.com/jdavidIP/grasp/issues/16)). Grading is deterministic, so a bad key marks a correct answer wrong.
 
 ### Known limitations
 
