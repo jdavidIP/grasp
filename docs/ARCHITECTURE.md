@@ -48,17 +48,17 @@ This is the step most implementations skip, and it is the one that carries the m
 
 **Approach**
 
-1. Group raw cues into sentence-ish units (cues are often fragmentary).
+1. Group raw cues into sentence-ish units (cues are often fragmentary). A unit closes on sentence-ending punctuation, a pause in speech, or after 15 seconds, whichever comes first. The cap matters: auto-generated captions have no punctuation and almost no pauses, and without it a single "sentence" swallowed minutes of speech, which left breakpoint detection nothing to compare. A 3-hour podcast came out as 4 topics ([#15](https://github.com/jdavidIP/grasp/issues/15)).
 2. Embed each unit.
 3. Find semantic breakpoints: compute cosine distance between consecutive units and cut where distance exceeds a percentile threshold (configurable, start around the 90th percentile). This is the same idea as semantic chunking, applied at a coarser scale.
-4. Merge segments shorter than a minimum duration (~60s) into their neighbour so you don't end up with dozens of micro-topics.
+4. Merge segments shorter than a minimum duration into their neighbour so you don't end up with dozens of micro-topics. The minimum is `max(60s, 1.5% of the video)`. A single fixed minimum can't serve both extremes: 60 seconds leaves a 3-hour podcast with ~30 fragmentary topics, while the ~2 minutes that suits the podcast would fold a 10-minute tutorial's genuine 1-minute "Functions" topic into its neighbour. The topic list is a menu for a person, so a rambling podcast should offer ~20 recognisable topics, not every sub-topic.
 5. Send each resulting segment's text to the LLM for a short topic label and a 1–2 sentence summary. Store both.
 
 **Output per segment:** `start_time`, `end_time`, `label`, `summary`, `order_index`.
 
 The labels become the checkboxes in the flashcard and quiz config forms. The summaries are what the generation pipelines consume instead of raw transcript, which is what keeps whole-video generation inside the context window.
 
-**Tunables worth exposing in config:** breakpoint percentile, minimum segment duration, max segments per video. These are the knobs you will iterate on, so make them settings, not magic numbers.
+**Tunables worth exposing in config:** breakpoint percentile, minimum segment duration (seconds and fraction of video), max segments per video. These are the knobs you will iterate on, so make them settings, not magic numbers.
 
 ---
 
@@ -185,7 +185,7 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 
 ### Segmentation
 
-Segmentation is not scored automatically. Boundaries are reviewed by hand, and that is a limitation. Reviewing the three eval videos found that auto-captioned videos collapse into a few huge segments: a 3-hour podcast became 4 segments and a 10-minute tutorial became 1. Punctuation-free captions defeat sentence grouping ([#15](https://github.com/jdavidIP/grasp/issues/15)). The retrieval eval is unaffected because it scores timestamps. The faithfulness eval shows the downstream cost: generation context under-samples large segments.
+Segmentation is not scored automatically. Boundaries are reviewed by hand, and that is a limitation. Reviewing the three eval videos found that auto-captioned videos collapsed into a few huge segments: a 3-hour podcast became 4 segments and a 10-minute tutorial became 1, because punctuation-free captions defeated sentence grouping ([#15](https://github.com/jdavidIP/grasp/issues/15), fixed in §2). The golden set survived the fix unchanged because it scores timestamps, which let both evals measure the change directly: faithfulness of shipped items rose (flashcards 0.81 → 0.86, quizzes 0.80 → 0.86), and retrieval hit@1 dipped (0.88 → 0.81) because every chunk boundary moved.
 
 ### Rate limits
 

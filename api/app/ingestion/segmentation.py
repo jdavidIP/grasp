@@ -9,6 +9,10 @@ from app.prompts.segment_label import SYSTEM_PROMPT, build_user_prompt
 
 SENTENCE_END_RE = re.compile(r"[.!?][\"')\]]?\s*$")
 SILENCE_GAP_SECONDS = 0.6
+# Auto-generated captions have no punctuation and almost no gaps, so without a cap
+# one "sentence" swallows minutes of speech (issue #15). ~2x the typical unit length
+# on punctuated captions (~8s), so punctuated transcripts are essentially unaffected.
+MAX_UNIT_SECONDS = 15.0
 MIN_UNITS_FOR_BREAKPOINTS = 5
 
 
@@ -42,7 +46,8 @@ class SegmentDraft:
 
 def _group_cues_into_units(cues: list[dict]) -> list[Unit]:
     """Groups fragmentary transcript cues into sentence-ish units, splitting on
-    sentence-ending punctuation or a gap in speech — whichever comes first."""
+    sentence-ending punctuation, a gap in speech, or MAX_UNIT_SECONDS of speech —
+    whichever comes first."""
     units: list[Unit] = []
     buffer: list[str] = []
     buffer_start: float | None = None
@@ -63,7 +68,7 @@ def _group_cues_into_units(cues: list[dict]) -> list[Unit]:
         buffer.append(text)
         buffer_end = cue["end"]
 
-        if SENTENCE_END_RE.search(text):
+        if SENTENCE_END_RE.search(text) or buffer_end - buffer_start >= MAX_UNIT_SECONDS:
             units.append(Unit(buffer_start, buffer_end, " ".join(buffer)))
             buffer, buffer_start = [], None
 
@@ -121,18 +126,29 @@ def _build_segments(units: list[Unit], breakpoints: list[int]) -> list[SegmentDr
 
 def _merge_short_segments(segments: list[SegmentDraft]) -> list[SegmentDraft]:
     """Merges segments under the minimum duration into the preceding one, and a
-    too-short leading segment into the one after it."""
+    too-short leading segment into the one after it.
+
+    The minimum scales with video length: a fixed floor keeps short videos from
+    fragmenting, while the fraction keeps a 3-hour podcast's topic list at a size a
+    person can pick from, without folding a tutorial's genuine 1-minute topics away.
+    """
     if len(segments) <= 1:
         return segments
 
+    total_duration = segments[-1].end - segments[0].start
+    min_duration = max(
+        settings.min_segment_duration_seconds,
+        total_duration * settings.min_segment_duration_fraction,
+    )
+
     merged: list[SegmentDraft] = []
     for segment in segments:
-        if merged and segment.duration < settings.min_segment_duration_seconds:
+        if merged and segment.duration < min_duration:
             merged[-1].units.extend(segment.units)
         else:
             merged.append(segment)
 
-    if len(merged) > 1 and merged[0].duration < settings.min_segment_duration_seconds:
+    if len(merged) > 1 and merged[0].duration < min_duration:
         merged[1].units = merged[0].units + merged[1].units
         merged = merged[1:]
 
