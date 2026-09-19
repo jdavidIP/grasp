@@ -11,10 +11,12 @@ from app.models.segment import TranscriptSegment
 
 VALID_DIFFICULTIES = {"easy", "medium", "hard"}
 
-# ponytail: representative-chunk count for whole-video context, and the
-# overgenerate/dedupe constants below, are hand-picked with no tuning data yet.
-# Phase 7's faithfulness eval says it does look off: 2 excerpts per segment starves
-# both generation and the validators on long segments (see issue #15).
+# ponytail: every segment gets the same 2 excerpts in whole-video context, however
+# long it is. Since the #15 segmentation fix, coverage is 46-100% on the eval videos
+# and the faithfulness eval shows no harm, but a 28-minute podcast topic is only
+# ~15% represented. Upgrade: split a total excerpt budget in proportion to segment
+# length, once an eval shows long-segment items failing. The overgenerate/dedupe
+# constants below are still hand-picked with no tuning data.
 CENTRALITY_CHUNKS_PER_SEGMENT = 2
 DEDUPE_SIMILARITY_THRESHOLD = 0.93
 
