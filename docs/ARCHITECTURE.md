@@ -147,10 +147,46 @@ Define it concretely rather than asking the model for "hard":
 
 Do not skip this. It is the clearest differentiator against the many similar projects.
 
-**Retrieval** — build a small golden set (20–30 question/expected-chunk pairs across 3–4 videos). Measure recall@k, MRR, and hit rate. Use it to compare chunk sizes, `k`, and hybrid vs pure vector.
+Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` container. Each writes a dated JSON file to `api/eval/results/` (`<eval>-YYYY-MM-DD[-label].json`) that is committed, so the improvement curve lives in git history. Current numbers are in the README.
 
-**Generation faithfulness** — LLM-as-judge scoring each generated card or question against its cited source: is it supported, is it answerable from the video, is exactly one option correct.
+### Golden set
 
-**Segmentation** — harder to score automatically. Manual review of segment boundaries on a couple of videos is acceptable; note it as a limitation rather than pretending otherwise.
+`api/eval/golden_set.json` has question → **time span** pairs (`youtube_id`, `[start, end]` in seconds) across three deliberately different videos: a punctuated-caption lecture, a 3-hour auto-captioned podcast, and a 10-minute auto-captioned tutorial. Entries with `span: null` are out-of-scope questions the video doesn't answer.
 
-Store results in a versioned file under `api/eval/results/` so improvements are visible over time. Being able to say "hybrid retrieval raised recall@5 from 0.71 to 0.86" is worth more than any feature.
+- **Spans, not chunk ids.** Chunk ids change every time a video is reprocessed, and chunk boundaries move whenever chunking parameters change. Scoring against timestamps keeps the golden set valid across reprocessing, and lets different chunk sizes be compared on the same questions. The cost: a span holds one answer location, so a question also answered elsewhere in the video gets scored as a miss. Review removes those questions (it reworded one, `BDqvzFY72mg-16`).
+- **Drafted by LLM, reviewed by a human.** `python -m app.eval.draft_golden <youtube_ids>` samples evenly spaced 40-second transcript windows, and gpt-4o writes one paraphrased question per window. Paraphrasing matters: questions that copy the transcript's wording would make keyword search look better than it is. The prompt gets the video's topic list and must skip incidental content: logistics, classroom remarks, "what this course will cover", small talk. Every entry is then reviewed by hand. Questions are never edited just because retrieval missed them, since that would bias the set toward the system.
+- **Speaker slips.** The transcript is the source of truth, but speakers misspeak (the lecture says "the Soviet Union invaded Ukraine"). The drafter flags apparent slips in a `note` and words the question so it doesn't depend on the slip.
+- **Out-of-scope questions** have to be adjacent to the video's subject to be a real test. Each one is grep-checked against the transcript. Two drafted podcast questions turned out to be covered and were replaced.
+
+### Retrieval
+
+`python -m app.eval.retrieval [--label X]` runs every in-scope question through the production retrieval functions (`vector`, `hybrid`, `hybrid_rerank`) with production parameters. A retrieved chunk is a hit when its time range overlaps the golden span.
+
+- **hit_rate@k:** fraction of questions with a hit in the top k.
+- **recall@k:** mean fraction of the span's *duration* covered by the union of the top-k chunks. This depends only on timestamps, so it is comparable across chunk sizes.
+- **MRR:** mean of 1 / rank of the first hit, where a miss counts as 0.
+- **Out-of-scope decline rate:** each span-less question runs through the full chat path. A decline is `grounded: false`.
+
+**Limitations:**
+- With ~500-token chunks, a 10-minute video has 6 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
+- The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With 26 questions, one question is worth ~0.04 at @1.
+- Every golden question is *specific*. Broad questions ("what is this video about?") take a different chat path and are not measured yet.
+- Both lecture misses in the baseline were answers diluted inside a chunk mostly about something else. That is the case for testing smaller chunks ([#17](https://github.com/jdavidIP/grasp/issues/17)).
+
+### Generation faithfulness
+
+`python -m app.eval.faithfulness [--label X]` generates one deck and one quiz per golden-set video from fixed configs, using the production pipelines. The pipelines' optional `trace` argument exposes the intermediate candidates. gpt-4o judges every candidate against the **raw transcript of the segment it cites**, rather than the summary and excerpts the generator saw.
+
+- **Why gpt-4o and not the generator model:** a model grading its own output inflates scores. Eval tooling passes `model=llm.EVAL_MODEL` to the single LLM wrapper.
+- **Checks:** `supported` (every claim is in the transcript), `answerable` (someone who watched could answer it), and, for quizzes, `key_correct` (every keyed option is right and no distractor is actually true, whether per the transcript or plainly in general). `faithful` means all checks pass. `speaker_slip` is tracked separately: an item that faithfully repeats a misspoken fact is flagged, not failed.
+- **Reason before verdict:** the judge writes its reasoning before the booleans. With the verdict first, the flags contradicted their own reasons.
+- **Stages:** rates are reported for `raw` (all candidates), `rejected` (what the pipeline's own LLM validation dropped), and `kept` (what a user sees). This measures what validation actually buys.
+- **Noise:** there are ~30 items per group, and generation is stochastic (fresh items every run), so one item moves a rate by ~0.03. Two runs differing only in judge wording differed by 0.09 on kept-flashcard faithfulness. Treat differences under ~0.1 as noise until repeated runs say otherwise.
+
+### Segmentation
+
+Segmentation is not scored automatically. Boundaries are reviewed by hand, and that is a limitation. Reviewing the three eval videos found that auto-captioned videos collapse into a few huge segments: a 3-hour podcast became 4 segments and a 10-minute tutorial became 1. Punctuation-free captions defeat sentence grouping ([#15](https://github.com/jdavidIP/grasp/issues/15)). The retrieval eval is unaffected because it scores timestamps. The faithfulness eval shows the downstream cost: generation context under-samples large segments.
+
+### Rate limits
+
+gpt-4o calls in the eval tools run sequentially. Running them in parallel exceeds the account's tokens-per-minute limit.
