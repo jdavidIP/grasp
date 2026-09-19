@@ -1,7 +1,8 @@
 import asyncio
 import uuid
 
-from sqlalchemy import func, select
+from sqlalchemy import Text, cast, func, select
+from sqlalchemy.dialects.postgresql import TSQUERY
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.chunk import TranscriptChunk
@@ -30,8 +31,14 @@ async def vector_search(
 async def keyword_search(
     session: AsyncSession, video_id: uuid.UUID, query: str, k: int = KEYWORD_SEARCH_K
 ) -> list[TranscriptChunk]:
-    """Postgres full-text search over a video's chunks, best rank first."""
-    ts_query = func.plainto_tsquery("english", query)
+    """Postgres full-text search over a video's chunks, best rank first.
+
+    Matches chunks containing ANY of the query's terms, ranked by ts_rank (more
+    and rarer matches rank higher). plainto_tsquery alone ANDs every term, which
+    for natural-language questions matched nothing on 19/20 golden questions and
+    made hybrid search silently equal to pure vector search."""
+    and_query = cast(func.plainto_tsquery("english", query), Text)
+    ts_query = cast(func.replace(and_query, " & ", " | "), TSQUERY)
     result = await session.execute(
         select(TranscriptChunk)
         .where(TranscriptChunk.video_id == video_id)
