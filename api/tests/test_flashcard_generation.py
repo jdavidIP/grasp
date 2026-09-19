@@ -53,7 +53,7 @@ async def test_filter_grounded_keeps_only_listed_indices(monkeypatch):
         {"front": "Q2", "back": "A2", "topic_index": 0, "difficulty": "easy"},
     ]
 
-    grounded = await flashcards._filter_grounded([("Topic", "text")], cards)
+    grounded = await flashcards._filter_grounded(["text"], cards)
 
     assert grounded == [cards[1]]
 
@@ -62,7 +62,7 @@ async def test_filter_grounded_malformed_response_drops_all(monkeypatch):
     monkeypatch.setattr(flashcards.llm, "generate_json", AsyncMock(return_value={}))
     cards = [{"front": "Q1", "back": "A1", "topic_index": 0, "difficulty": "easy"}]
 
-    assert await flashcards._filter_grounded([("Topic", "text")], cards) == []
+    assert await flashcards._filter_grounded(["text"], cards) == []
 
 
 async def test_dedupe_drops_near_duplicate_embeddings(monkeypatch):
@@ -137,7 +137,15 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
     monkeypatch.setattr(flashcards.llm, "embed_texts", AsyncMock(return_value=[_embedding(0)]))
 
     async with async_session() as session:
-        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        video = Video(
+            youtube_id=f"test-{uuid.uuid4().hex[:8]}",
+            title="t",
+            status="ready",
+            transcript=[
+                {"start": 5.0, "end": 10.0, "text": "attention weighs tokens by relevance"},
+                {"start": 40.0, "end": 45.0, "text": "unrelated later remark"},
+            ],
+        )
         session.add(video)
         await session.flush()
 
@@ -186,6 +194,10 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
         assert [id(c) for c in trace["validated"]] == [id(trace["candidates"][0])]
         assert [id(c) for c in trace["kept"]] == [id(trace["candidates"][0])]
         assert trace["segments"][0].id == segment.id
+        # Grounding checks the cited segment's raw transcript, not the summary.
+        grounding_prompt = flashcards.llm.generate_json.call_args_list[1].args[1]
+        assert "attention weighs tokens by relevance" in grounding_prompt
+        assert "unrelated later remark" not in grounding_prompt
         assert cards[0]["segment_id"] == segment.id
         assert float(cards[0]["source_start_time"]) == 5.0
         assert cards[0]["order_index"] == 0

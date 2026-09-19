@@ -1,4 +1,3 @@
-import asyncio
 import random
 import uuid
 
@@ -8,13 +7,13 @@ from app.generation import llm
 from app.generation.common import (
     DEDUPE_SIMILARITY_THRESHOLD,
     VALID_DIFFICULTIES,
+    audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
     overgenerate_count,
-    segment_text,
+    segment_transcripts,
     select_segments,
 )
-from app.models.video import Video
 from app.prompts.quizzes import (
     GENERATION_SYSTEM_PROMPT,
     VALIDATION_SYSTEM_PROMPT,
@@ -132,30 +131,15 @@ async def _generate_candidates(
 
 
 async def _filter_valid(transcripts: list[str], questions: list[dict]) -> list[dict]:
-    """LLM audit: keeps only questions whose key is stated in the cited segment and
-    whose distractors are verifiably wrong (not arguably correct).
-
-    Each question is checked against the full transcript of the segment it cites, one
-    call per segment, rather than the summary-plus-excerpts the generator saw: keys
-    built from facts that thin context lacks are exactly what the validator must catch
-    (issue #16), and it can't catch them looking at the same thin context."""
-    by_topic: dict[int, list[int]] = {}
-    for i, question in enumerate(questions):
-        by_topic.setdefault(question["topic_index"], []).append(i)
-
-    async def audit(topic_index: int, indices: list[int]) -> list[int]:
-        result = await llm.generate_json(
-            VALIDATION_SYSTEM_PROMPT,
-            build_validation_user_prompt(transcripts[topic_index], [questions[i] for i in indices]),
-        )
-        valid = result.get("valid_question_indices")
-        if not isinstance(valid, list):
-            return []
-        return [indices[j] for j in valid if isinstance(j, int) and 0 <= j < len(indices)]
-
-    kept = await asyncio.gather(*(audit(t, indices) for t, indices in by_topic.items()))
-    kept_indices = {i for indices in kept for i in indices}
-    return [q for i, q in enumerate(questions) if i in kept_indices]
+    """LLM audit against each cited segment's full transcript: keeps only questions
+    whose key is stated there and whose distractors are verifiably wrong."""
+    return await audit_by_segment(
+        questions,
+        transcripts,
+        VALIDATION_SYSTEM_PROMPT,
+        build_validation_user_prompt,
+        "valid_question_indices",
+    )
 
 
 async def _dedupe(questions: list[dict]) -> list[dict]:
@@ -220,9 +204,8 @@ async def generate_quiz(
     candidates = await _generate_candidates(
         count, difficulty, question_types, options_per_question, topics, other_topics
     )
-    video = await session.get(Video, video_id)
-    cues = (video.transcript if video else None) or []
-    valid = await _filter_valid([segment_text(cues, s) for s in segments], candidates)
+    transcripts = await segment_transcripts(session, video_id, segments)
+    valid = await _filter_valid(transcripts, candidates)
     deduped = await _dedupe(valid)
     if trace is not None:
         trace.update(

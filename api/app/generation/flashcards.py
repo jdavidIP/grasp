@@ -6,9 +6,11 @@ from app.generation import llm
 from app.generation.common import (
     DEDUPE_SIMILARITY_THRESHOLD,
     VALID_DIFFICULTIES,
+    audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
     overgenerate_count,
+    segment_transcripts,
     select_segments,
 )
 from app.prompts.flashcards import (
@@ -56,16 +58,16 @@ async def _generate_candidates(
     return cards
 
 
-async def _filter_grounded(topics: list[tuple[str, str]], cards: list[dict]) -> list[dict]:
-    if not cards:
-        return []
-    result = await llm.generate_json(
-        GROUNDING_SYSTEM_PROMPT, build_grounding_user_prompt(topics, cards)
+async def _filter_grounded(transcripts: list[str], cards: list[dict]) -> list[dict]:
+    """LLM audit against each cited segment's full transcript: keeps only cards the
+    transcript supports."""
+    return await audit_by_segment(
+        cards,
+        transcripts,
+        GROUNDING_SYSTEM_PROMPT,
+        build_grounding_user_prompt,
+        "grounded_card_indices",
     )
-    grounded_indices = result.get("grounded_card_indices")
-    if not isinstance(grounded_indices, list):
-        return []
-    return [cards[i] for i in grounded_indices if isinstance(i, int) and 0 <= i < len(cards)]
 
 
 async def _dedupe(cards: list[dict]) -> list[dict]:
@@ -110,7 +112,8 @@ async def generate_flashcards(
 
     topics = await build_topic_contexts(session, segments, scope)
     candidates = await _generate_candidates(count, difficulty, style, topics)
-    grounded = await _filter_grounded(topics, candidates)
+    transcripts = await segment_transcripts(session, video_id, segments)
+    grounded = await _filter_grounded(transcripts, candidates)
     deduped = await _dedupe(grounded)
     if trace is not None:
         trace.update(

@@ -22,11 +22,14 @@ GENERATION_SYSTEM_PROMPT = (
 )
 
 GROUNDING_SYSTEM_PROMPT = (
-    "You check flashcards for accuracy against video transcript topics. Each topic "
-    "and each candidate card is numbered. A card is grounded only if its claimed "
-    "topic's content actually supports both its front and back. Respond with a "
-    'JSON object: {"grounded_card_indices": [int, ...]} listing the numbers of '
-    "every card that is grounded."
+    "You check flashcards against the transcript of the video section they were "
+    "written from. Each candidate card is numbered. A card is grounded if the "
+    "transcript states or directly implies what its front asks about and what its back "
+    "answers, and the back is a correct answer to the front. Reject a card whose back "
+    "adds facts the transcript doesn't contain (embellishment or general knowledge). "
+    "Don't reject a card just for paraphrasing, or for condensing what the section "
+    'says. Respond with a JSON object: {"grounded_card_indices": [int, ...]} listing '
+    "the numbers of every card that is grounded."
 )
 
 
@@ -48,12 +51,8 @@ def build_generation_user_prompt(
     )
 
 
-def build_grounding_user_prompt(topics: list[tuple[str, str]], cards: list[dict]) -> str:
-    numbered_topics = "\n\n".join(
-        f"[{i}] {label}\n{text}" for i, (label, text) in enumerate(topics)
-    )
+def build_grounding_user_prompt(transcript: str, cards: list[dict]) -> str:
     numbered_cards = "\n\n".join(
-        f"[{i}] topic {card['topic_index']}\nFront: {card['front']}\nBack: {card['back']}"
-        for i, card in enumerate(cards)
+        f"[{i}] Front: {card['front']}\nBack: {card['back']}" for i, card in enumerate(cards)
     )
-    return f"Topics:\n\n{numbered_topics}\n\nCandidate cards:\n\n{numbered_cards}"
+    return f"Transcript:\n{transcript}\n\nCandidate cards:\n\n{numbered_cards}"
