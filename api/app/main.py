@@ -24,7 +24,7 @@ app.include_router(quizzes.router, prefix="/api")
 async def llm_error_handler(request: Request, exc: LLMError) -> JSONResponse:
     """A request-time OpenAI failure (chat, flashcard/quiz generation). Ingestion
     background tasks handle LLMError themselves and never reach here."""
-    return JSONResponse(status_code=503, content={"detail": str(exc)})
+    return JSONResponse(status_code=502, content={"detail": str(exc)})
 
 
 @app.get("/health")

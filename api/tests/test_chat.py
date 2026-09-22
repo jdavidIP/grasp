@@ -94,7 +94,7 @@ async def test_clear_chat_history_missing_video_returns_404():
     assert response.status_code == 404
 
 
-async def test_chat_llm_error_returns_503_with_its_message(monkeypatch):
+async def test_chat_llm_error_returns_502_with_its_message(monkeypatch):
     monkeypatch.setattr(
         chat_router,
         "answer_question",
@@ -108,7 +108,7 @@ async def test_chat_llm_error_returns_503_with_its_message(monkeypatch):
     async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
         response = await client.post(f"/api/videos/{video_id}/chat", json={"message": "hi"})
 
-    assert response.status_code == 503
+    assert response.status_code == 502
     assert response.json() == {
         "detail": "Hit an OpenAI rate limit or quota. Try again in a moment."
     }
