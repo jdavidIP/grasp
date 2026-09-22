@@ -44,6 +44,7 @@ export function VideoDetailPage() {
               Reprocess
             </button>
           )}
+          {reprocess.isError && <p role="alert">{reprocess.error.message}</p>}
 
           {video.status === 'ready' && (
             <YouTubePlayer videoId={video.youtube_id} seekSeconds={seekSeconds} />

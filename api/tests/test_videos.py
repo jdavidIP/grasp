@@ -180,6 +180,48 @@ async def test_reprocess_missing_video_returns_404():
     assert response.status_code == 404
 
 
+async def test_video_llm_error_during_ingestion_stores_its_message(monkeypatch):
+    monkeypatch.setattr(
+        ingestion.segmentation,
+        "segment_transcript",
+        AsyncMock(side_effect=ingestion.llm.LLMError("OpenAI rejected the API key.")),
+    )
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "failed"
+    assert detail["error_message"] == "OpenAI rejected the API key."
+
+
+async def test_reprocess_llm_error_stores_its_message(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+
+        monkeypatch.setattr(
+            ingestion.segmentation,
+            "segment_transcript",
+            AsyncMock(side_effect=ingestion.llm.LLMError("Hit an OpenAI rate limit or quota.")),
+        )
+        reprocess_response = await client.post(f"/api/videos/{video['id']}/reprocess")
+        assert reprocess_response.status_code == 202
+
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "failed"
+    assert detail["error_message"] == "Hit an OpenAI rate limit or quota."
+
+
 async def test_video_no_transcript_fails(monkeypatch):
     monkeypatch.setattr(ingestion, "_fetch_transcript", AsyncMock(return_value=([], "captions")))
     url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"

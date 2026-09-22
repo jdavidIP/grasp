@@ -5,6 +5,7 @@ import logging
 import time
 from pathlib import Path
 
+import openai
 from openai import AsyncOpenAI
 
 from app.config import settings
@@ -19,6 +20,12 @@ EVAL_MODEL = "gpt-4o"
 _client: AsyncOpenAI | None = None
 
 
+class LLMError(Exception):
+    """An OpenAI call failed. The message is written for a user, not a stack trace:
+    ingestion stores it verbatim as `videos.error_message`, and the app-level handler
+    in main.py returns it verbatim as a 503 `detail`."""
+
+
 def _get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
@@ -26,16 +33,37 @@ def _get_client() -> AsyncOpenAI:
     return _client
 
 
+def _user_message(error: openai.OpenAIError) -> str:
+    """Translates an OpenAI SDK exception into a cause-specific, user-facing message.
+    Order matters: a subclass is checked before the parent class it derives from
+    (AuthenticationError and RateLimitError are APIStatusError; APITimeoutError is
+    APIConnectionError)."""
+    if isinstance(error, openai.AuthenticationError):
+        return "OpenAI rejected the API key. Check the OPENAI_API_KEY setting."
+    if isinstance(error, openai.RateLimitError):
+        return "Hit an OpenAI rate limit or quota. Try again in a moment."
+    if isinstance(error, openai.APITimeoutError):
+        return "OpenAI didn't respond in time. Try again."
+    if isinstance(error, openai.APIConnectionError):
+        return "Could not reach OpenAI. Check the network connection."
+    if isinstance(error, openai.APIStatusError):
+        return "OpenAI is temporarily unavailable. Try again shortly."
+    return "The OpenAI request failed."
+
+
 async def transcribe_audio(audio_path: Path) -> list[dict]:
     """Returns cues in the same `{start, end, text}` shape as the captions path."""
     started = time.monotonic()
-    with audio_path.open("rb") as audio_file:
-        transcription = await _get_client().audio.transcriptions.create(
-            model=WHISPER_MODEL,
-            file=audio_file,
-            response_format="verbose_json",
-            timestamp_granularities=["segment"],
-        )
+    try:
+        with audio_path.open("rb") as audio_file:
+            transcription = await _get_client().audio.transcriptions.create(
+                model=WHISPER_MODEL,
+                file=audio_file,
+                response_format="verbose_json",
+                timestamp_granularities=["segment"],
+            )
+    except openai.OpenAIError as e:
+        raise LLMError(_user_message(e)) from e
     elapsed = time.monotonic() - started
     logger.info(
         "whisper transcription complete file=%s bytes=%d elapsed=%.1fs",
@@ -54,7 +82,10 @@ async def embed_texts(texts: list[str]) -> list[list[float]]:
     if not texts:
         return []
     started = time.monotonic()
-    response = await _get_client().embeddings.create(model=EMBEDDING_MODEL, input=texts)
+    try:
+        response = await _get_client().embeddings.create(model=EMBEDDING_MODEL, input=texts)
+    except openai.OpenAIError as e:
+        raise LLMError(_user_message(e)) from e
     elapsed = time.monotonic() - started
     logger.info("embedded %d texts in %.1fs", len(texts), elapsed)
     return [item.embedding for item in sorted(response.data, key=lambda item: item.index)]
@@ -67,14 +98,17 @@ async def generate_json(
     `model` is overridden only by offline eval tooling (drafting, judging), so the
     eval doesn't grade the generator with itself."""
     started = time.monotonic()
-    response = await _get_client().chat.completions.create(
-        model=model,
-        response_format={"type": "json_object"},
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    )
+    try:
+        response = await _get_client().chat.completions.create(
+            model=model,
+            response_format={"type": "json_object"},
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+    except openai.OpenAIError as e:
+        raise LLMError(_user_message(e)) from e
     elapsed = time.monotonic() - started
     usage = response.usage
     logger.info(
@@ -83,4 +117,12 @@ async def generate_json(
         usage.total_tokens if usage else "unknown",
         elapsed,
     )
-    return json.loads(response.choices[0].message.content)
+    choice = response.choices[0]
+    if choice.message.content is None:
+        raise LLMError("OpenAI returned an empty response. Try again.")
+    try:
+        return json.loads(choice.message.content)
+    except json.JSONDecodeError as e:
+        if choice.finish_reason == "length":
+            raise LLMError("OpenAI's response was cut off before it finished. Try again.") from e
+        raise LLMError("OpenAI returned a response that couldn't be parsed. Try again.") from e
