@@ -14,7 +14,7 @@ interface AnswerMeta {
 }
 
 export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
-  const { data: history, isLoading } = useChatHistoryQuery(videoId)
+  const { data: history, isLoading, error: historyError } = useChatHistoryQuery(videoId)
   const sendMessage = useSendChatMessage(videoId)
   const clearChat = useClearChat(videoId)
   const [draft, setDraft] = useState('')
@@ -27,22 +27,35 @@ export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
     event.preventDefault()
     const question = draft.trim()
     if (!question) return
-    setDraft('')
-    const response = await sendMessage.mutateAsync(question)
-    setMetaByAnswer((prev) =>
-      new Map(prev).set(response.answer, { sources: response.sources, grounded: response.grounded }),
-    )
+    try {
+      const response = await sendMessage.mutateAsync(question)
+      setDraft('')
+      setMetaByAnswer((prev) =>
+        new Map(prev).set(response.answer, {
+          sources: response.sources,
+          grounded: response.grounded,
+        }),
+      )
+    } catch {
+      // Left in the input for the person to retry; sendMessage.error renders below.
+    }
   }
 
   async function handleClear() {
-    await clearChat.mutateAsync()
-    setMetaByAnswer(new Map())
+    if (!window.confirm('Clear the chat history for this video? This cannot be undone.')) return
+    try {
+      await clearChat.mutateAsync()
+      setMetaByAnswer(new Map())
+    } catch {
+      // clearChat.error renders below.
+    }
   }
 
   return (
     <section>
       <h2>Chat</h2>
       {isLoading && <p>Loading...</p>}
+      {historyError && <p role="alert">{historyError.message}</p>}
 
       <ul>
         {history?.map((message) => {
@@ -64,20 +77,25 @@ export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
           )
         })}
       </ul>
+      {sendMessage.isPending && <p aria-live="polite">Generating answer...</p>}
 
       <form onSubmit={handleSubmit}>
         <input
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           placeholder="Ask about this video..."
+          disabled={sendMessage.isPending}
         />
         <button type="submit" disabled={sendMessage.isPending}>
           Send
         </button>
       </form>
+      {sendMessage.isError && <p role="alert">{sendMessage.error.message}</p>}
+
       <button type="button" onClick={handleClear} disabled={clearChat.isPending}>
         Clear chat
       </button>
+      {clearChat.isError && <p role="alert">{clearChat.error.message}</p>}
     </section>
   )
 }
