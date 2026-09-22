@@ -8,10 +8,18 @@ interface QuizListProps {
 }
 
 export function QuizList({ videoId, onTake, onHistory, onDeleted }: QuizListProps) {
-  const { data: quizzes, isLoading } = useQuizzesQuery(videoId)
+  const { data: quizzes, isLoading, error } = useQuizzesQuery(videoId)
   const deleteQuiz = useDeleteQuiz(videoId)
 
+  function handleDelete(quizId: string, title: string) {
+    if (!window.confirm(`Delete the quiz "${title}"? This deletes its attempt history too, and cannot be undone.`)) {
+      return
+    }
+    deleteQuiz.mutate(quizId, { onSuccess: () => onDeleted(quizId) })
+  }
+
   if (isLoading) return <p>Loading quizzes...</p>
+  if (error) return <p role="alert">{error.message}</p>
   if (!quizzes || quizzes.length === 0) return <p>No quizzes yet.</p>
 
   return (
@@ -28,11 +36,14 @@ export function QuizList({ videoId, onTake, onHistory, onDeleted }: QuizListProp
           </button>
           <button
             type="button"
-            onClick={() => deleteQuiz.mutate(quiz.id, { onSuccess: () => onDeleted(quiz.id) })}
+            onClick={() => handleDelete(quiz.id, quiz.title)}
             disabled={deleteQuiz.isPending}
           >
             Delete
           </button>
+          {deleteQuiz.isError && deleteQuiz.variables === quiz.id && (
+            <p role="alert">{deleteQuiz.error.message}</p>
+          )}
         </li>
       ))}
     </ul>

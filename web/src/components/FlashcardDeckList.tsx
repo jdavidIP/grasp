@@ -7,10 +7,16 @@ interface FlashcardDeckListProps {
 }
 
 export function FlashcardDeckList({ videoId, onReview, onDeleted }: FlashcardDeckListProps) {
-  const { data: decks, isLoading } = useFlashcardDecksQuery(videoId)
+  const { data: decks, isLoading, error } = useFlashcardDecksQuery(videoId)
   const deleteDeck = useDeleteFlashcardDeck(videoId)
 
+  function handleDelete(deckId: string, title: string) {
+    if (!window.confirm(`Delete the deck "${title}"? This cannot be undone.`)) return
+    deleteDeck.mutate(deckId, { onSuccess: () => onDeleted(deckId) })
+  }
+
   if (isLoading) return <p>Loading decks...</p>
+  if (error) return <p role="alert">{error.message}</p>
   if (!decks || decks.length === 0) return <p>No flashcard decks yet.</p>
 
   return (
@@ -23,11 +29,14 @@ export function FlashcardDeckList({ videoId, onReview, onDeleted }: FlashcardDec
           </button>
           <button
             type="button"
-            onClick={() => deleteDeck.mutate(deck.id, { onSuccess: () => onDeleted(deck.id) })}
+            onClick={() => handleDelete(deck.id, deck.title)}
             disabled={deleteDeck.isPending}
           >
             Delete
           </button>
+          {deleteDeck.isError && deleteDeck.variables === deck.id && (
+            <p role="alert">{deleteDeck.error.message}</p>
+          )}
         </li>
       ))}
     </ul>

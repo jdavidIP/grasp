@@ -13,6 +13,17 @@ export function VideoList({ videos }: VideoListProps) {
     return <p>No videos yet. Add one above to get started.</p>
   }
 
+  function handleDelete(video: VideoListProps['videos'][number]) {
+    if (
+      !window.confirm(
+        `Delete "${video.title}"? This removes its chat history, flashcards, and quizzes too, and cannot be undone.`,
+      )
+    ) {
+      return
+    }
+    deleteVideo.mutate(video.id)
+  }
+
   return (
     <ul>
       {videos.map((video) => (
@@ -27,13 +38,12 @@ export function VideoList({ videos }: VideoListProps) {
               {video.error_message}
             </p>
           )}
-          <button
-            type="button"
-            onClick={() => deleteVideo.mutate(video.id)}
-            disabled={deleteVideo.isPending}
-          >
+          <button type="button" onClick={() => handleDelete(video)} disabled={deleteVideo.isPending}>
             Delete
           </button>
+          {deleteVideo.isError && deleteVideo.variables === video.id && (
+            <p role="alert">{deleteVideo.error.message}</p>
+          )}
         </li>
       ))}
     </ul>
