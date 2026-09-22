@@ -6,6 +6,7 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy import select
 
 from app.db import async_session
+from app.generation.llm import LLMError
 from app.main import app
 from app.models.chat_message import ChatMessage
 from app.models.video import Video
@@ -91,6 +92,26 @@ async def test_clear_chat_history_missing_video_returns_404():
     async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
         response = await client.delete(f"/api/videos/{uuid.uuid4()}/chat")
     assert response.status_code == 404
+
+
+async def test_chat_llm_error_returns_503_with_its_message(monkeypatch):
+    monkeypatch.setattr(
+        chat_router,
+        "answer_question",
+        AsyncMock(
+            side_effect=LLMError("Hit an OpenAI rate limit or quota. Try again in a moment.")
+        ),
+    )
+    video_id = await _create_ready_video()
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        response = await client.post(f"/api/videos/{video_id}/chat", json={"message": "hi"})
+
+    assert response.status_code == 503
+    assert response.json() == {
+        "detail": "Hit an OpenAI rate limit or quota. Try again in a moment."
+    }
 
 
 async def test_chat_passes_recent_history_to_generation(monkeypatch):

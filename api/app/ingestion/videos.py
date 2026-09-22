@@ -176,7 +176,7 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             await _store_segments_and_chunks(session, video, cues)
 
             video.status = "ready"
-        except IngestionError as e:
+        except (IngestionError, llm.LLMError) as e:
             video.status = "failed"
             video.error_message = str(e)
         except Exception:
@@ -199,6 +199,9 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             )
             await _store_segments_and_chunks(session, video, video.transcript)
             video.status = "ready"
+        except llm.LLMError as e:
+            video.status = "failed"
+            video.error_message = str(e)
         except Exception:
             logger.exception("reprocessing failed unexpectedly for video %s", video_id)
             video.status = "failed"
