@@ -16,6 +16,21 @@ docker compose exec api alembic upgrade head
 
 The web app runs at http://localhost:5173 and the API at http://localhost:8000/api.
 
+## Architecture
+
+```mermaid
+flowchart TD
+    A["Add video by URL"] --> B["Fetch transcript<br/>captions, or yt-dlp + Whisper fallback"]
+    B --> C["Segment into topics<br/>semantic breakpoints, LLM-labelled"]
+    C --> D["Chunk + embed<br/>text-embedding-3-small"]
+    D --> E[("Postgres + pgvector")]
+    E --> F["Chat<br/>hybrid search → LLM rerank → grounded answer"]
+    E --> G["Flashcards<br/>select topics → generate → validate → store"]
+    E --> H["Quizzes<br/>select topics → generate → validate → store"]
+```
+
+Ingestion runs once per video as a background task. Chat, flashcards, and quizzes are three separate UI sections hitting three separate endpoint groups — there's no app-level query router; which section you're in tells the API what you want. Flashcards and quizzes share one pipeline shape (`docs/ARCHITECTURE.md` §5): pick segments, build context from their summaries and transcript excerpts, generate with a strict JSON schema, validate every item against its cited segment's actual transcript, store. Full detail, including the retrieval and generation steps, is in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
 ## Evaluation
 
 Two offline evals, run inside the `api` container. Results are committed as dated JSON under [`api/eval/results/`](api/eval/results/). Methodology and trade-offs are in [`docs/ARCHITECTURE.md` §6](docs/ARCHITECTURE.md#6-evaluation).
@@ -70,6 +85,31 @@ Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 o
 - **Speaker slips reach learners.** When a speaker misspeaks (the tutorial says lists use "angle brackets"), generated cards repeat it as fact ([#18](https://github.com/jdavidIP/grasp/issues/18)).
 - **The judge is an LLM.** It follows a strict rubric and writes its reasoning before each verdict, but it still makes mistakes. For example, it treated a caption mishearing ("accept" for `except`) as a speaker slip.
 - **Test isolation** ([#14](https://github.com/jdavidIP/grasp/issues/14)). The test suite currently writes to the dev database.
+
+## Design decisions
+
+- **pgvector in the same Postgres instance, not a separate vector database.** Retrieval needs vector similarity *and* a relational filter together — "closest chunks, but only within the topics the user selected" — and pgvector makes that one SQL query instead of a round trip between two systems. See [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md#why-this-shape) for the query.
+- **Golden-set questions are pinned to a time span, not a chunk id.** Chunk ids and boundaries change every time a video is reprocessed or chunking parameters change; timestamps don't. This is what let the retrieval eval survive the segmentation fix ([#15](https://github.com/jdavidIP/grasp/issues/15)) and the keyword-search fix without being rewritten.
+- **Quiz grading is a deterministic set comparison, not a second LLM call.** The answer key is fixed at generation time and validated then; grading later is "does the selected option set equal the correct set," so a submitted attempt is graded instantly and identically every time.
+- **A generated deck or quiz's `config` is stored as jsonb**, not normalized columns, so the UI can show exactly how each one was generated (`docs/DATA_MODEL.md`) without a migration every time a generation parameter is added.
+- **`source_start_time` is copied onto each flashcard and quiz question at generation time**, separate from the FK to its segment. Reprocessing deletes and rebuilds segments (`ON DELETE SET NULL`), which would otherwise break every existing card's timestamp link along with its topic label.
+- **The full-transcript validator, not the generator's thin context.** Flashcard and quiz items are generated from a segment's summary plus a couple of excerpts, to stay inside the context window on long videos. Validating against that *same* thin context turned out to reject good items and miss fabricated ones ([#16](https://github.com/jdavidIP/grasp/issues/16), see [Evaluation](#evaluation)) — the validator needs to see more than the generator did, not the same thing again.
+
+## What's deliberately out of scope
+
+Same list as `CLAUDE.md`'s scope guardrails, restated here for anyone not reading the codebase:
+
+- **Authentication, accounts, multi-user support.** This assumes a single local user throughout — there's no user table, no session, no per-user data isolation.
+- **Spaced-repetition scheduling** (SM-2 and similar). Flashcard review is a browser (reveal, previous/next), not a scheduler; there's no review-state table.
+- **A custom video player.** Chat and card/question timestamps seek a plain YouTube iframe embed.
+- **Deployment infrastructure, CI/CD, monitoring.** `docker compose up` is the entire deployment story.
+- **Sharing, collaboration, or export.** Nothing leaves the local database.
+- **A second datastore.** No Redis, no Elasticsearch, no separate vector database — see pgvector above.
+
+Two more, found along the way rather than planned from the start:
+
+- **A visual design system and a two-column video workspace** have been designed but are deliberately not built yet — they landed after the functional fixes in this phase, not folded into them, so restyling didn't mean redoing the same components twice. Tracked as [#24](https://github.com/jdavidIP/grasp/issues/24).
+- **Chat history citations are session-only.** `GET /videos/{id}/chat` returns messages without their source chunks, so a reloaded conversation shows the answers but not the clickable timestamps that produced them (`ChatPanel.tsx` works around this by matching answers back to sources sent this session). The schema already has `chat_messages.cited_chunk_ids` for the real fix; it just hasn't been done.
 
 ## Docs
 
