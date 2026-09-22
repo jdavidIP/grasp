@@ -48,14 +48,28 @@ interface YouTubePlayerProps {
 }
 
 export function YouTubePlayer({ videoId, seekSeconds }: YouTubePlayerProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<YouTubePlayerInstance | null>(null)
 
   useEffect(() => {
     let cancelled = false
+    // The YouTube IFrame API replaces its target element with an <iframe> — a DOM
+    // mutation React never sees. Handing it containerRef.current directly (the node
+    // React itself renders) corrupts React's reconciliation the next time this
+    // component unmounts: React tries to remove a node that's no longer there,
+    // throwing "Failed to execute 'insertBefore'" and taking the whole app down with
+    // it (no error boundary catches it). Issue #25, hit via Reprocess.
+    //
+    // Fix: give the API a target div created outside React's tree entirely (never
+    // JSX, never reconciled). React only ever owns the wrapper, whose children it
+    // never inspects, so removing it on unmount is always safe regardless of what
+    // the YouTube API did to its insides.
+    const target = document.createElement('div')
+    wrapperRef.current?.appendChild(target)
+
     loadYouTubeApi().then(() => {
-      if (cancelled || !containerRef.current || !window.YT) return
-      playerRef.current = new window.YT.Player(containerRef.current, {
+      if (cancelled || !window.YT) return
+      playerRef.current = new window.YT.Player(target, {
         videoId,
         playerVars: { autoplay: 1 },
       })
@@ -73,5 +87,5 @@ export function YouTubePlayer({ videoId, seekSeconds }: YouTubePlayerProps) {
     playerRef.current?.playVideo()
   }, [seekSeconds])
 
-  return <div ref={containerRef} />
+  return <div ref={wrapperRef} />
 }
