@@ -17,25 +17,32 @@ function AttemptDetail({
   attemptId: string
   onSeek: (seconds: number) => void
 }) {
-  const { data: quiz } = useQuizQuery(quizId)
-  const { data: attempt, isLoading } = useAttemptQuery(quizId, attemptId)
+  const { data: quiz, isLoading: quizLoading, error: quizError } = useQuizQuery(quizId)
+  const { data: attempt, isLoading: attemptLoading, error: attemptError } = useAttemptQuery(
+    quizId,
+    attemptId,
+  )
 
-  if (isLoading || !quiz) return <p>Loading attempt...</p>
-  if (!attempt) return null
+  if (quizLoading || attemptLoading) return <p>Loading attempt...</p>
+  if (quizError) return <p role="alert">{quizError.message}</p>
+  if (attemptError) return <p role="alert">{attemptError.message}</p>
+  if (!quiz || !attempt) return null
   return <QuizResults quiz={quiz} result={attempt} onSeek={onSeek} />
 }
 
 // Parent must render this with `key={quizId}` so switching quizzes remounts it with
 // no attempt selected.
 export function QuizAttemptHistory({ quizId, onSeek, onClose }: QuizAttemptHistoryProps) {
-  const { data: quiz } = useQuizQuery(quizId)
-  const { data: attempts, isLoading } = useAttemptsQuery(quizId)
+  const { data: quiz, error: quizError } = useQuizQuery(quizId)
+  const { data: attempts, isLoading, error: attemptsError } = useAttemptsQuery(quizId)
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null)
 
   return (
     <section>
       <h3>{quiz ? `${quiz.title} — attempts` : 'Attempts'}</h3>
+      {quizError && <p role="alert">{quizError.message}</p>}
       {isLoading && <p>Loading attempts...</p>}
+      {attemptsError && <p role="alert">{attemptsError.message}</p>}
       {attempts && attempts.length === 0 && <p>No attempts yet.</p>}
       {attempts && attempts.length > 0 && (
         <ul>
