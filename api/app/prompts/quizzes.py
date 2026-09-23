@@ -40,6 +40,13 @@ GENERATION_SYSTEM_PROMPT = (
     'absolute words ("only", "always", "never", "all", "must") to a true statement — '
     "those are either arguable or trivially wrong. A distractor must be wrong because "
     "the video says something different, not merely because the video doesn't say it.\n\n"
+    "Speakers misspeak, and captions mishear. If a topic contains an apparent slip "
+    "(wrong name, date, number, or similar) that a question would otherwise be built "
+    "on, don't key it as correct, and don't silently correct it either — prefer a "
+    "different question from the same topic when one exists. When the idea is worth "
+    "testing anyway, key the correct, intended answer (not the slip) and add one "
+    "sentence to the explanation naming the slip (e.g. \"The lecture says 'the Soviet "
+    "Union invaded Ukraine'; it means Russia.\").\n\n"
     '"explanation" says in one to three sentences why the correct answer is right and, '
     f"where useful, why a tempting distractor is wrong. {DIFFICULTY_GUIDE}"
 )
@@ -51,7 +58,11 @@ VALIDATION_SYSTEM_PROMPT = (
     "valid only if ALL of these hold: "
     "(1) the transcript explicitly states every claim marked correct — "
     "reject keys that are only inferred, combined from separate remarks, or supplied by "
-    "general knowledge; "
+    "general knowledge. Exception: if the explanation names an apparent slip in the "
+    "transcript (wrong name, date, number, or similar) and the keyed answer is the "
+    "corrected fact rather than the slip, treat that key as valid — this is the "
+    "intended handling of a slip, not an invented claim. A keyed answer that diverges "
+    "from the transcript with no explanation of why is not valid; "
     "(2) no option marked incorrect is a correct answer to the question — none is "
     "correct, partially correct, or arguably correct under a reasonable reading, and "
     "for multi_select the correct set is exactly the set of correct options; "

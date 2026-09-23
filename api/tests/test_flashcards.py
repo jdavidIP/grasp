@@ -43,6 +43,22 @@ def mock_generate_flashcards(monkeypatch):
     )
 
 
+async def test_flashcard_deck_response_includes_note(monkeypatch):
+    cards = _fake_cards(1)
+    cards[0]["note"] = "The speaker says 'angle brackets'; lists use square brackets."
+    monkeypatch.setattr(flashcards_router, "generate_flashcards", AsyncMock(return_value=cards))
+
+    video_id = await _create_ready_video()
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        response = await client.post(
+            f"/api/videos/{video_id}/flashcard-decks",
+            json={"count": 10, "scope": "whole_video"},
+        )
+
+    assert response.json()["cards"][0]["note"] == cards[0]["note"]
+
+
 async def test_flashcard_deck_lifecycle():
     video_id = await _create_ready_video()
     transport = ASGITransport(app=app)

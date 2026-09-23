@@ -38,6 +38,48 @@ async def test_generate_candidates_filters_structurally_invalid_cards(monkeypatc
     assert cards[1]["difficulty"] == "easy"  # falls back to the requested difficulty
 
 
+async def test_generate_candidates_parses_note(monkeypatch):
+    monkeypatch.setattr(
+        flashcards.llm,
+        "generate_json",
+        AsyncMock(
+            return_value={
+                "cards": [
+                    {
+                        "front": "Q1",
+                        "back": "A1",
+                        "topic_index": 0,
+                        "difficulty": "easy",
+                        "note": "  The speaker says X; it's actually Y.  ",
+                    },
+                    {"front": "Q2", "back": "A2", "topic_index": 0, "difficulty": "easy"},
+                    {
+                        "front": "Q3",
+                        "back": "A3",
+                        "topic_index": 0,
+                        "difficulty": "easy",
+                        "note": "   ",
+                    },
+                    {
+                        "front": "Q4",
+                        "back": "A4",
+                        "topic_index": 0,
+                        "difficulty": "easy",
+                        "note": 123,
+                    },
+                ]
+            }
+        ),
+    )
+
+    cards = await flashcards._generate_candidates(4, "easy", "mixed", [("Topic", "text")])
+
+    assert cards[0]["note"] == "The speaker says X; it's actually Y."  # stripped
+    assert cards[1]["note"] is None  # absent
+    assert cards[2]["note"] is None  # whitespace-only
+    assert cards[3]["note"] is None  # wrong type
+
+
 async def test_generate_candidates_malformed_response_returns_empty(monkeypatch):
     monkeypatch.setattr(flashcards.llm, "generate_json", AsyncMock(return_value={}))
 
@@ -103,6 +145,68 @@ async def test_generate_flashcards_no_matching_segments_returns_empty(monkeypatc
 
         assert cards == []
         mock_generate.assert_not_called()
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_generate_flashcards_carries_note_to_the_card_and_grounding_prompt(monkeypatch):
+    monkeypatch.setattr(
+        flashcards.llm,
+        "generate_json",
+        AsyncMock(
+            side_effect=[
+                {
+                    "cards": [
+                        {
+                            "front": "How do you create a list in Python?",
+                            "back": "Use square brackets.",
+                            "topic_index": 0,
+                            "difficulty": "easy",
+                            "note": "The speaker says 'angle brackets'; lists use square brackets.",
+                        }
+                    ]
+                },
+                {"grounded_card_indices": [0]},
+            ]
+        ),
+    )
+    monkeypatch.setattr(flashcards.llm, "embed_texts", AsyncMock(return_value=[_embedding(0)]))
+
+    async with async_session() as session:
+        video = Video(
+            youtube_id=f"test-{uuid.uuid4().hex[:8]}",
+            title="t",
+            status="ready",
+            transcript=[{"start": 0.0, "end": 5.0, "text": "lists use angle brackets"}],
+        )
+        session.add(video)
+        await session.flush()
+
+        segment = TranscriptSegment(
+            video_id=video.id,
+            order_index=0,
+            label="Lists",
+            summary="Creating lists.",
+            start_time=0.0,
+            end_time=5.0,
+        )
+        session.add(segment)
+        await session.commit()
+
+        cards = await flashcards.generate_flashcards(
+            session,
+            video.id,
+            count=5,
+            scope="topics",
+            segment_ids=[segment.id],
+            difficulty="mixed",
+            style="mixed",
+        )
+
+        assert cards[0]["note"] == "The speaker says 'angle brackets'; lists use square brackets."
+        grounding_prompt = flashcards.llm.generate_json.call_args_list[1].args[1]
+        assert "Note: The speaker says 'angle brackets'" in grounding_prompt
 
         await session.delete(video)
         await session.commit()

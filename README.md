@@ -64,9 +64,9 @@ gpt-4o judges every generated flashcard and quiz question against the raw transc
 
 | | Phase 7 baseline (1 run) | now (2 runs) |
 |---|---|---|
-| quiz questions: answer key correct | 0.80 | 0.93, 0.93 |
+| quiz questions: answer key correct | 0.80 | 0.97, 1.00 |
 | quiz questions shipped, of 30 requested | 30 | 30, 30 |
-| flashcards: faithful | 0.81 | 0.83, 0.90 |
+| flashcards: faithful | 0.81 | 0.87, 0.93 |
 | flashcards shipped, of 30 requested | 27 | 30, 30 |
 
 Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 on quiz key correctness. So every change below was judged on at least two runs, and the per-run results are all committed under [`api/eval/results/`](api/eval/results/). The judge's per-item reasoning is in each results file. What it shows:
@@ -75,6 +75,7 @@ Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 o
 - **Fix ([#16](https://github.com/jdavidIP/grasp/issues/16)): validate each item against the full transcript of the segment it cites,** one call per cited segment, in parallel. By my token estimate it costs about the same, because only cited segments are sent (I haven't measured it: [#21](https://github.com/jdavidIP/grasp/issues/21)). Wrongly rejected cards fell from 11 and 12 per run to between 0 and 2 across the four runs since, and quiz answer keys went from about 0.81 (the mean of three runs after the segmentation fix: 0.86, 0.71, 0.87) to 0.93. The 0.80 baseline above also includes the segmentation fix's gain. The validator now discriminates: rejected quiz questions score 0.54 and 0.62 faithful against 0.93 for the ones shipped. Two prompt changes went with it (keyed claims must be stated, not inferred; true/false statements must restate or be contradicted by the video), but by themselves they didn't move the overall number outside noise.
 - **A stricter validator ships shorter quizzes, so it tops up.** A 10-question podcast quiz came back with 7, 9, 10 and 5 questions across four runs. If validation leaves a quiz short, it now generates once more for just the shortfall, validates it the same way, and stops (`TOP_UP_ROUNDS = 1`). Both runs then shipped the full 30. On longer videos that roughly doubles the generation calls, all on gpt-4o-mini.
 - **What's left:** about 2 in 30 shipped quiz questions still have a debatable key, mostly multi-select questions where a distractor is arguably true. Shipped flashcard faithfulness is 0.83-0.93 across four runs, within noise of before: the flashcard fix restored full decks and stopped false rejections, but it didn't measurably make cards more faithful. Grading is deterministic, so a bad key marks a correct answer wrong.
+- **Fix ([#18](https://github.com/jdavidIP/grasp/issues/18)): don't state a speaker slip as fact, and don't silently correct it either.** Speakers misspeak and captions mishear (the tutorial's "angle brackets" for Python lists), and generation previously repeated whatever was said as literal truth. It's now told to avoid a slip-dependent item when it can, and otherwise state the corrected fact while naming the slip — a `note` column for flashcards, folded into the existing `explanation` for quizzes; the validators and the eval judge were all updated with the matching exception, or they'd reject a correctly-noted item as invented. Two eval runs found **zero of the three known slips stated as fact across 148 sampled items**. Both runs happened to sample zero items touching those exact facts at all — whole-video scope spreads 10 kept items across every topic, so one specific fact isn't guaranteed a hit — so the automated eval confirms the safety property but not reliably the note-writing itself; a deliberate topic-scoped test against the real slip confirmed that part directly, producing the exact note the prompt asks for.
 
 ### Known limitations
 
@@ -82,7 +83,7 @@ Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 o
 - **Small eval set.** 26 retrieval questions and about 30 judged items per group give directional numbers, not precise ones. At about 500 tokens per chunk, the tutorial has only 6 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
 - **Broad questions are untested.** Every golden question is specific. "Summarize this video"-style questions take a separate chat path that the eval doesn't measure yet.
 - **Chunk size is untuned.** Both lecture questions missed at baseline had their answer diluted inside a ~500-token chunk mostly about something else ([#17](https://github.com/jdavidIP/grasp/issues/17)).
-- **Speaker slips reach learners.** When a speaker misspeaks (the tutorial says lists use "angle brackets"), generated cards repeat it as fact ([#18](https://github.com/jdavidIP/grasp/issues/18)).
+- **The note isn't reliably written even when the correction is.** Generation is told to state the corrected fact for a speaker slip *and* name it in a note. In manual testing both halves fired together under topic scope (full segment context), but whole-video scope's thinner context (the same 2-excerpts-per-topic limit noted above) sometimes stated the correction with no note. The eval confirms no slip is stated as fact; it doesn't yet confirm the note appears whenever it should ([#18](https://github.com/jdavidIP/grasp/issues/18)).
 - **The judge is an LLM.** It follows a strict rubric and writes its reasoning before each verdict, but it still makes mistakes. For example, it treated a caption mishearing ("accept" for `except`) as a speaker slip.
 - **Test isolation** ([#14](https://github.com/jdavidIP/grasp/issues/14)). The test suite currently writes to the dev database.
 

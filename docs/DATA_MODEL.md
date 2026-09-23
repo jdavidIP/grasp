@@ -107,6 +107,9 @@ Storing `config` as jsonb means you can show the user how a deck was generated a
 | source_start_time | numeric | for the jump-to-timestamp link |
 | difficulty | text | `easy`, `medium`, `hard` |
 | order_index | int not null | |
+| note | text | set when front/back state the corrected fact for a speaker slip the transcript contains (see below) |
+
+**Speaker slips.** The transcript is the source of truth, but speakers misspeak and captions mishear. If front/back would otherwise repeat an apparent slip (wrong name, date, number) as fact, generation either avoids that card or states the corrected, intended fact and names the slip in `note` — never a silent correction. Quiz questions have no `note` column; the same information goes into their existing `explanation`, which already stores and reveals post-submit. See [#18](https://github.com/jdavidIP/grasp/issues/18).
 
 ### quizzes
 
