@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import ForeignKey, Numeric, Text
+from sqlalchemy import ForeignKey, Index, Numeric, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -9,6 +9,9 @@ from app.db import Base
 
 class TranscriptSegment(Base):
     __tablename__ = "transcript_segments"
+    __table_args__ = (
+        Index("ix_transcript_segments_video_id_order_index", "video_id", "order_index"),
+    )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     video_id: Mapped[uuid.UUID] = mapped_column(
