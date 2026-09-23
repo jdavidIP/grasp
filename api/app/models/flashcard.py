@@ -12,7 +12,10 @@ class Flashcard(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     deck_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("flashcard_decks.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=True),
+        ForeignKey("flashcard_decks.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     front: Mapped[str] = mapped_column(Text, nullable=False)
     back: Mapped[str] = mapped_column(Text, nullable=False)

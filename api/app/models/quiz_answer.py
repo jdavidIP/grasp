@@ -12,7 +12,10 @@ class QuizAnswer(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     attempt_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("quiz_attempts.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=True),
+        ForeignKey("quiz_attempts.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     question_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("quiz_questions.id", ondelete="CASCADE"), nullable=False
