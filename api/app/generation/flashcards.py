@@ -47,12 +47,14 @@ async def _generate_candidates(
         card_difficulty = card.get("difficulty")
         if card_difficulty not in VALID_DIFFICULTIES:
             card_difficulty = difficulty if difficulty in VALID_DIFFICULTIES else "medium"
+        note = card.get("note")
         cards.append(
             {
                 "front": front.strip(),
                 "back": back.strip(),
                 "topic_index": topic_index,
                 "difficulty": card_difficulty,
+                "note": note.strip() if isinstance(note, str) and note.strip() else None,
             }
         )
     return cards
@@ -99,8 +101,9 @@ async def generate_flashcards(
     trace: dict | None = None,
 ) -> list[dict]:
     """Returns up to `count` validated cards, each with `front`, `back`,
-    `segment_id`, `source_start_time`, `difficulty`, `order_index`. May return
-    fewer than `count` if generation and validation don't yield enough —
+    `segment_id`, `source_start_time`, `difficulty`, `order_index`, `note` (set only
+    when front/back state the corrected fact for an apparent speaker slip — #18). May
+    return fewer than `count` if generation and validation don't yield enough —
     ponytail: no regeneration retry loop yet, add one if yield is a problem.
     If `trace` is given, it is filled with the pipeline's intermediate state for the
     offline eval: `segments`, `candidates` (parsed model output before validation),
@@ -131,6 +134,7 @@ async def generate_flashcards(
                 "source_start_time": segment.start_time,
                 "difficulty": card["difficulty"],
                 "order_index": order_index,
+                "note": card["note"],
             }
         )
     return cards

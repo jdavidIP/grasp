@@ -1,0 +1,1891 @@
+{
+  "run_at": "2026-09-23T00:15:12+00:00",
+  "label": "speaker-slips-run2",
+  "judge_model": "gpt-4o",
+  "generation_model": "gpt-4o-mini",
+  "config": {
+    "flashcards": {
+      "count": 10,
+      "scope": "whole_video",
+      "difficulty": "medium",
+      "style": "mixed"
+    },
+    "quizzes": {
+      "count": 10,
+      "scope": "whole_video",
+      "question_types": [
+        "multiple_choice",
+        "multi_select",
+        "true_false"
+      ],
+      "options_per_question": 4,
+      "difficulty": "medium"
+    }
+  },
+  "videos": [
+    "BDqvzFY72mg",
+    "fWjsdhR3z3c",
+    "qiP1E6iAVS8"
+  ],
+  "summary": {
+    "flashcards": {
+      "raw": {
+        "n": 36,
+        "unjudged": 0,
+        "supported": 0.9444444444444444,
+        "answerable": 0.9722222222222222,
+        "faithful": 0.9444444444444444,
+        "speaker_slips": 0
+      },
+      "rejected": {
+        "n": 0,
+        "unjudged": 0,
+        "supported": null,
+        "answerable": null,
+        "faithful": null,
+        "speaker_slips": 0
+      },
+      "kept": {
+        "n": 30,
+        "unjudged": 0,
+        "supported": 0.9333333333333333,
+        "answerable": 0.9666666666666667,
+        "faithful": 0.9333333333333333,
+        "speaker_slips": 0
+      }
+    },
+    "quizzes": {
+      "raw": {
+        "n": 38,
+        "unjudged": 0,
+        "supported": 0.8947368421052632,
+        "answerable": 0.9210526315789473,
+        "key_correct": 0.8947368421052632,
+        "faithful": 0.8947368421052632,
+        "speaker_slips": 0
+      },
+      "rejected": {
+        "n": 6,
+        "unjudged": 0,
+        "supported": 0.3333333333333333,
+        "answerable": 0.5,
+        "key_correct": 0.3333333333333333,
+        "faithful": 0.3333333333333333,
+        "speaker_slips": 0
+      },
+      "kept": {
+        "n": 30,
+        "unjudged": 0,
+        "supported": 1.0,
+        "answerable": 1.0,
+        "key_correct": 1.0,
+        "faithful": 1.0,
+        "speaker_slips": 0
+      }
+    }
+  },
+  "items": [
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": true,
+      "kept": true,
+      "front": "What era does the DeVane Lectures focus on?",
+      "back": "The DeVane Lectures focus on the period since 1989, which has been tumultuous and marked by significant changes in power and politics.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card accurately states that the DeVane Lectures focus on the period since 1989, described as tumultuous and marked by significant changes in power and politics."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Democratic Movements in 1989",
+      "validated": true,
+      "kept": true,
+      "front": "What significant political movements occurred in Eastern Europe in 1989?",
+      "back": "In 1989, there were massive resistance movements in Eastern Europe that led to the shedding of Soviet control and the rise of enthusiasm for democracy.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card correctly states that massive resistance movements in Eastern Europe in 1989 led to the shedding of Soviet control and a rise in enthusiasm for democracy, as mentioned in the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Democratic Movements in 1989",
+      "validated": true,
+      "kept": true,
+      "front": "What contrasting political outcome occurred in China in 1989 compared to Eastern Europe?",
+      "back": "While Eastern Europe experienced democratic movements in 1989, China faced a harsh crackdown on protests during the Tiananmen Square demonstrations.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card accurately reflects the contrast drawn in the transcript between the democratic movements in Eastern Europe and the harsh crackdown on protests in Tiananmen Square in China in 1989."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Shift in Political Confidence",
+      "validated": true,
+      "kept": true,
+      "front": "What does the rise of Alternative für Deutschland (AFD) in Germany symbolize in the context of shifting political confidence?",
+      "back": "The rise of the AFD represents a significant shift from the initial optimism about democratic capitalism to concerns over far-right, anti-immigrant sentiments in Germany.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard correctly captures the shift from democratic optimism to far-right political concerns as exemplified by the rise of the AFD. This is supported by the transcript, which mentions initial optimism and the nature of the AFD's political stance."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "German Political Landscape 2017",
+      "validated": true,
+      "kept": true,
+      "front": "What internal struggles did the SPD face leading to its decision in 2017 regarding coalition government?",
+      "back": "The SPD was unhappy with their long-standing coalition with CDU and decided not to participate again, opting for opposition to rebuild instead.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes the SPD as being unhappy with the grand coalition with the CDU and deciding to go into opposition to rebuild, matching the card's claims."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "German Political Landscape Changes",
+      "validated": true,
+      "kept": true,
+      "front": "What does the rise of the AFD indicate about the broader political landscape in Germany?",
+      "back": "The AFD's rise indicates that establishment parties are weakening while fringe parties are gaining strength, reflecting broader shifts in political dynamics.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard is supported as the transcript discusses the AFD rising in popularity and establishment parties losing support, illustrating a shift in the political landscape. The back is a correct answer to the front question based on the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Rise of Far-Right Parties",
+      "validated": true,
+      "kept": true,
+      "front": "How does the outcome of the Austrian elections in 2016 contrast with the rising influence of far-right parties in Europe?",
+      "back": "Despite the Green candidate defeating the far-right in the runoff, the far-right still gained significant ground in the legislature, reflecting a trend of establishment parties losing influence.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card accurately reflects the transcript's account of the Austrian elections in 2016, where the Green candidate defeated the far-right in the runoff, yet the far-right gained ground in the legislature, which reflects a broader European trend."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Course Overview and Approach",
+      "validated": true,
+      "kept": true,
+      "front": "What central questions guide the course discussed in the lectures?",
+      "back": "The central questions are how we got from historical contexts to the present, the challenges and prospects going forward, and how to improve conditions in various countries.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card correctly identifies the central questions mentioned in the transcript, including how we got to the present, the challenges and prospects going forward, and improving conditions in many countries."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Impact of 1989 on Political Theories",
+      "validated": true,
+      "kept": true,
+      "front": "How did the events of 1989 impact the study of political theories and data?",
+      "back": "The events of 1989 provided new data that allowed social scientists to test and rethink existing political theories relating to democracy, economics, and other aspects of governance.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that 1989 introduced new data for testing and rethinking theories, mentioning democracy, economics, and governance. The flashcard is closely aligned with this explanation."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Course Overview and Themes",
+      "validated": true,
+      "kept": true,
+      "front": "What broader implications does the course consider regarding the Global War on Terror?",
+      "back": "The course will explore whether alternative paths could have been taken after 9/11 that might have led to different global outcomes, especially in relation to security and intervention.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript does mention considering whether there was another politically viable path after 9/11 that could have led the world in a different direction, so the card is supported. The back matches the question on the front, making it answerable."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Course Structure and Readings",
+      "validated": true,
+      "kept": false,
+      "front": "What should students know regarding access to course readings?",
+      "back": "Yale students can access more than 10% of course books on Canvas, while sets of the same books are available in the New Haven Public Library for community members.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript talks about Yale students being able to access more than 10% of books on Canvas, and that complete sets are available in a New Haven library. The card accurately reflects this, mentioning access for community members at the New Haven Public Library."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "flashcards",
+      "segment": "Classroom Distractions and Resources",
+      "validated": true,
+      "kept": false,
+      "front": "What are the classroom policies regarding technology usage?",
+      "back": "The policy prohibits laptops and phones during class to minimize distractions, with all class materials available online for reference.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript states the policy prohibits laptops and phones to minimize distractions. It also mentions that class materials, specifically slides, will be available online, aligning with the card's content."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": false,
+      "kept": false,
+      "question_type": "multiple_choice",
+      "prompt": "What major political event is the DeVane Lectures focused on from the last 30 years?",
+      "options": [
+        {
+          "text": "The rise of authoritarian regimes in Eastern Europe",
+          "is_correct": false
+        },
+        {
+          "text": "The collapse of communism in Eastern Europe",
+          "is_correct": true
+        },
+        {
+          "text": "The establishment of the European Union",
+          "is_correct": false
+        },
+        {
+          "text": "The reunification of Germany",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The DeVane Lectures focus on power and politics, particularly the tumultuous changes since the collapse of communism in Eastern Europe after 1989. The rise of authoritarian regimes and the establishment of the EU are not the main focus.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The keyed correct option, 'The collapse of communism in Eastern Europe,' is not directly supported by the transcript. While there is a mention of the period since 1989 as a time of great change, and the Berlin Wall segment implies changes in Eastern Europe, the collapse of communism specifically is not explicitly mentioned as the focus."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Introduction to DeVane Lectures",
+      "validated": false,
+      "kept": false,
+      "question_type": "multiple_choice",
+      "prompt": "What was the primary focus of the DeVane Lectures since their inception in 1989?",
+      "options": [
+        {
+          "text": "The stability of Eastern European politics",
+          "is_correct": false
+        },
+        {
+          "text": "Power and politics in today's world",
+          "is_correct": true
+        },
+        {
+          "text": "The effects of World War II on societal governance",
+          "is_correct": false
+        },
+        {
+          "text": "The rise of democracy in non-Western countries",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The DeVane Lectures focus on power and politics in today's world since 1989, as stated in the introduction. The other options are incorrect because they do not represent the main focus of the lectures.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct option, 'Power and politics in today's world,' aligns with the transcript, which mentions the lectures will deal with power and politics in today's world and the tumultuous period since 1989. The distractors do not misrepresent the transcript's focus."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Democratic Movements in 1989",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What significant change occurred in Eastern Europe in 1989?",
+      "options": [
+        {
+          "text": "Increased Soviet control",
+          "is_correct": false
+        },
+        {
+          "text": "The emergence of democratic movements",
+          "is_correct": true
+        },
+        {
+          "text": "The dissolution of NATO",
+          "is_correct": false
+        },
+        {
+          "text": "The strength of totalitarian regimes",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The democratic movements across Eastern Europe in 1989 marked a significant shift, as these countries were shedding totalitarian control and the Soviet Union's grip weakened.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct option is supported by the transcript, which describes the emergence of massive resistance movements and the shedding of totalitarian control in Eastern Europe in 1989. The distractors are not supported: Increased Soviet control and the strength of totalitarian regimes are false, and the dissolution of NATO is irrelevant to the transcript. The explanation aligns with the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Shift in Political Confidence",
+      "validated": false,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "Which of the following were observed trends in the political landscape in Germany three decades after 1989? Select all that apply.",
+      "options": [
+        {
+          "text": "The rise of the Alternative for Deutschland party",
+          "is_correct": true
+        },
+        {
+          "text": "Increased voter turnout in elections",
+          "is_correct": false
+        },
+        {
+          "text": "A grand coalition forming between the SPD and CDU",
+          "is_correct": true
+        },
+        {
+          "text": "Significant political stability with no changes",
+          "is_correct": false
+        }
+      ],
+      "explanation": "In the three decades since 1989, Germany witnessed the rise of the far-right Alternative for Deutschland party and the establishment of a grand coalition between SPD and CDU, meaning there has not been significant stability.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript only mentions the rise of the Alternative for Deutschland party but does not mention increased voter turnout or a grand coalition between SPD and CDU. There is no mention of political stability or the lack of changes within the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "German Political Landscape Changes",
+      "validated": false,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "What were the factors contributing to the SPD's decision to form a grand coalition again in Germany? Select all that apply.",
+      "options": [
+        {
+          "text": "Fear of electoral losses to the AFD",
+          "is_correct": true
+        },
+        {
+          "text": "Strength of the SPD membership backing the decision",
+          "is_correct": false
+        },
+        {
+          "text": "Internal pressure from Angela Merkel's CDU",
+          "is_correct": true
+        },
+        {
+          "text": "Desire for increased public support among citizens",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The SPD's decision was driven by fears of losing even more electoral support to the AFD and internal pressure from Angela Merkel's CDU, despite substantial opposition from their membership.",
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript supports that fear of electoral losses to the AFD and internal pressure from Merkel's coalition inability led to SPD's decision. It mentions opposition from SPD membership, not their backing, and does not mention the desire for increased public support as a factor."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Rise of Extremism in Politics",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The rise of extremism in politics parallels trends seen in 1930s Germany, with the empowerment of extremist parties indicated by recent election results.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker discusses the anxiety around the parallels between current political trends in Germany and the rise of the Nazi party in the 1930s, highlighting fears about democratic stability.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The speaker indeed draws a parallel between recent political trends and those of 1930s Germany, mentioning the rise of extremist parties and the instability they bring. This supports the true option. The explanation accurately reflects the content of the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Rise of Far-Right Parties",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What key trend has been noted regarding far-right parties throughout Europe since 2016?",
+      "options": [
+        {
+          "text": "Far-right parties are losing influence in parliament",
+          "is_correct": false
+        },
+        {
+          "text": "Traditional parties are gaining ground",
+          "is_correct": false
+        },
+        {
+          "text": "Far-right parties are increasing their presence",
+          "is_correct": true
+        },
+        {
+          "text": "The far-right parties are merging with centrist parties",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Since 2016, there has been a noted trend of rising support for far-right parties across various countries in Europe, while traditional parties have been losing influence.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript supports the notion that far-right parties are increasing their presence. The distractors are all clearly contradicted by the transcript: traditional parties are described as losing ground, not gaining; there's no mention of mergers with centrist parties; and far-right parties are gaining influence, not losing it."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Rise of Far-Right Parties",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The rise of far-right parties in Europe since 2016 has been accompanied by a decline in the support for traditional establishment parties.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "This statement is true as the video states that traditional establishment parties have been losing ground while far-right parties have gained support across various European elections.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that traditional establishment parties have lost ground while far-right parties have gained support, supporting the keyed correct answer that this statement is true."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Approach",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which concepts are central to the approach outlined for the course? Select all that apply.",
+      "options": [
+        {
+          "text": "Historical progression of political systems",
+          "is_correct": true
+        },
+        {
+          "text": "Focus solely on empirical data analysis",
+          "is_correct": false
+        },
+        {
+          "text": "Interdisciplinary connections between political theory and history",
+          "is_correct": true
+        },
+        {
+          "text": "Ignoring past political experiences",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The course approach emphasizes historical progression and interdisciplinary connections, engaging with both political theory and history, while specifically not ignoring past experiences.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct options are in line with the transcript: 'Historical progression of political systems' is supported by 'How did we get from there to here?' and the use of history in the approach, and 'Interdisciplinary connections between political theory and history' is supported by the use of political science, political theory, and history. The incorrect options contradict the transcript's approach as stated."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Impact of 1989 on Political Theories",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The events of 1989 did not significantly alter the course of political theories and their application in social sciences.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The events of 1989 provided new data for social scientists to test and rethink existing political theories, significantly influencing their application.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly states that the events of 1989 were a big shock to the system and created new data for testing political theories, directly contradicting the statement that they did not significantly alter the course of political theories. The key and explanation are correct."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Impact of 1989 on Political Theories",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What major political theory was challenged by the dramatic shifts following the events of 1989?",
+      "options": [
+        {
+          "text": "Marxism and its implications",
+          "is_correct": false
+        },
+        {
+          "text": "Modernization theory",
+          "is_correct": true
+        },
+        {
+          "text": "Realism in international relations",
+          "is_correct": false
+        },
+        {
+          "text": "Constructivism in political science",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Modernization theory was challenged due to the new data provided by the political landscape shifts after 1989, as stated in the content. The other theories mentioned were not the primary focus of the discussion.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses how modernization theory was challenged by the new data from post-1989 political changes, focusing on the cases of democracy and economic systems. No mention is made of Marxism, realism, or constructivism being challenged, supporting the correctness of the key."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Themes",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What main global events will the course focus on examining?",
+      "options": [
+        {
+          "text": "The effectiveness of authoritarian regimes",
+          "is_correct": false
+        },
+        {
+          "text": "The decline of the Roman Empire",
+          "is_correct": false
+        },
+        {
+          "text": "Post-1989 political shifts and their implications",
+          "is_correct": true
+        },
+        {
+          "text": "The establishment of the United Nations",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The course will delve into the political shifts and challenges stemming from the post-1989 period, analyzing their implications and global occurrences.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct option 'Post-1989 political shifts and their implications' aligns with the focus of the course as described in the transcript, which talks about the collapse of communism, the rise of unipolarity, and post-communist developments. The distractors are either not mentioned or clearly outside the course's focus."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Overview and Themes",
+      "validated": true,
+      "kept": false,
+      "question_type": "true_false",
+      "prompt": "The course will cover only the political landscape of the United States post-1989.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "This statement is false; the course will spend a lot of time on the U.S. but will not be exclusive to it, as it covers global political themes and events.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct option 'False' accurately reflects the course's coverage of global events and not just the U.S., including topics like the rise of neoliberalism and international institutions, and global events post-1989. The explanation supports this by emphasizing the international scope of the course."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Logistics and Office Hours",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which resources are made available for course readings? Select all that apply.",
+      "options": [
+        {
+          "text": "Online access through Yale's Canvas",
+          "is_correct": true
+        },
+        {
+          "text": "Free access at the Yale bookstore",
+          "is_correct": false
+        },
+        {
+          "text": "Copies available at the New Haven Public Library",
+          "is_correct": true
+        },
+        {
+          "text": "Discounted rates for community members",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Readings are available online via Yale's Canvas and also at the New Haven Public Library, ensuring access for both students and community members.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that readings are available online through Yale's Canvas and also at the New Haven Public Library. The other options, free access at the Yale bookstore and discounted rates for community members, are not mentioned or implied in the transcript."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "Course Structure and Readings",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The course will require students to write extensive research papers based on external sources beyond the syllabus.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The course does not require research papers based on external sources; students can write high-quality papers using the syllabus material alone.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript explicitly states that this is not a research course and students are not expected to go beyond the syllabus. Therefore, the correct answer is 'False', matching the answer key."
+      }
+    },
+    {
+      "youtube_id": "BDqvzFY72mg",
+      "kind": "quizzes",
+      "segment": "German Political Landscape 2017",
+      "validated": false,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "Which factors contributed to the rise of the Alternative for Deutschland (AfD) party in Germany? Select all that apply.",
+      "options": [
+        {
+          "text": "Discontent with the grand coalition between SPD and CDU",
+          "is_correct": true
+        },
+        {
+          "text": "Support from traditional leftist parties in Germany",
+          "is_correct": false
+        },
+        {
+          "text": "Increased popularity of far-right sentiments",
+          "is_correct": true
+        },
+        {
+          "text": "Angela Merkel's success in forming a coalition government",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Discontent with the grand coalition and the increased popularity of far-right sentiments were factors that contributed to the rise of the AfD. The other options are not aligned with the facts presented.",
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "key_correct": false,
+        "speaker_slip": false,
+        "reason": "The transcript mentions discontent with the grand coalition, making that factor correct. It does not mention the AfD's support from traditional leftist parties or their increased popularity; popularity could be inferred but isn't explicit, making this reasoning partially reliant on outside knowledge. Angela Merkel's struggles, not successes, in forming a coalition are noted."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Observations on Film and Reality",
+      "validated": true,
+      "kept": true,
+      "front": "What did the speaker suggest about the portrayal of leaves in film?",
+      "back": "The speaker critiques the unrealistic portrayal of leaves in film scenes compared to real-life patterns of nature.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker points out that leaves on film sets are often evenly spread, unlike in nature where they collect in certain areas due to wind patterns."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Observations on Film and Reality",
+      "validated": true,
+      "kept": true,
+      "front": "What did the speaker mention about UFO disclosures and skepticism?",
+      "back": "The speaker is skeptical about the current narrative of UFO sightings, suggesting that while they are willing to explore the claims, they require solid evidence to take them seriously.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker acknowledges UFO disclosures and expresses skepticism, highlighting the need for investigation without immediately accepting them as extraterrestrial visits."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Education and Engagement",
+      "validated": true,
+      "kept": true,
+      "front": "Why is humor considered important in education according to the speaker?",
+      "back": "Humor enhances learning by reducing tension in students and making the educational experience more engaging.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker explicitly talks about humor reducing tension and enhancing learning, mentioning that 'when people smile they learn better.'"
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Education and Engagement",
+      "validated": true,
+      "kept": true,
+      "front": "What are obstacles educators face in engaging students?",
+      "back": "Educators must capture the attention of disenchanted students and overcome negative momentum in their attitudes towards learning.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions educators needing to engage students who are disenchanted with learning, and momentum of negativity, supporting the obstacles mentioned."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Effective Teaching Strategies",
+      "validated": true,
+      "kept": true,
+      "front": "What significant empirical phenomenon involves a magpie and water?",
+      "back": "The magpie demonstrates problem-solving behavior by using a stone to raise the water level in a bottle to reach the water.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard accurately reflects the specific example given in the transcript about the magpie using stones to raise the water level in a bottle to drink."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Effective Teaching Strategies",
+      "validated": true,
+      "kept": true,
+      "front": "How does the speaker view the intelligence of animals compared to humans?",
+      "back": "The speaker suggests that animals often display intelligence that challenges the notion of humans being a separate and distinct category in the animal kingdom.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The flashcard captures the speaker's view that animal intelligence challenges the idea of humans being distinct in the animal kingdom, as discussed in the transcript."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Abductions and Evidence",
+      "validated": true,
+      "kept": true,
+      "front": "What did the speaker say about the evidence for alien abductions?",
+      "back": "The speaker noted that despite numerous reports of alien abduction, there is a lack of solid evidence, like video footage, to support such claims.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker discussed the absence of solid evidence for alien abductions, such as video footage, despite numerous reports, aligning with the card's content."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Alien Abductions and Evidence",
+      "validated": true,
+      "kept": true,
+      "front": "What critical distinction did the speaker emphasize regarding reports of unidentified flying objects?",
+      "back": "The speaker highlighted the importance of distinguishing between actual sightings and the equipment or sensors used to detect crafts, noting that many claims need thorough investigation.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker emphasized the importance of understanding that reported sightings are often based on sensor data, and scrutinizing sensor reliability is crucial, aligning with the card."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "Search for Planet X",
+      "validated": true,
+      "kept": true,
+      "front": "What historical search was conducted due to Neptune's erratic orbit?",
+      "back": "The search for a hypothetical 'Planet X' was conducted to explain Neptune's unexpected orbit, which was later found to be based on flawed observational data.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that the search for 'Planet X' was indeed initiated due to perceived irregularities in Neptune's orbit, which were ultimately attributed to flawed data. Therefore, the card accurately reflects the transcript."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "The Nature of Truth and Technology",
+      "validated": true,
+      "kept": true,
+      "front": "What does the speaker suggest about humanity's concept of truth?",
+      "back": "The speaker explains that truth can be subjective and complex, encompassing personal beliefs, objective scientific facts, and varying interpretations.",
+      "note": null,
+      "judgment": {
+        "supported": false,
+        "answerable": false,
+        "speaker_slip": false,
+        "reason": "The speaker discusses how truth isn't binary and is often nuanced, using the height example. This implies truth can be complex. However, the speaker does not mention subjective truth or personal beliefs, which makes the flashcard an embellishment."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "The Nature of Truth and Technology",
+      "validated": true,
+      "kept": false,
+      "front": "How did the speaker relate technology to truth and deception?",
+      "back": "The speaker discussed that while technology may aid in discerning truth, it cannot fully eliminate the complexities of deception inherent in human communication.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The speaker talks about technology potentially indicating truth or deception (like a lie detector), but emphasizes that truth isn't simple and technology can't eliminate deception due to inherent human complexities."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "flashcards",
+      "segment": "The Fate of the Universe",
+      "validated": true,
+      "kept": false,
+      "front": "In the context of the universe's fate, what is the 'big rip'?",
+      "back": "The 'big rip' is a hypothetical scenario where the accelerated expansion of the universe tears apart galaxies, planets, and eventually the atoms themselves.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The card correctly summarizes the 'big rip' as a scenario where accelerated expansion results in tearing apart galaxies, planets, and eventually atoms. This sequence and its association with the 'big rip' are mentioned in the transcript."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Search for Planet X",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What did Clyde Tombaugh initially set out to find with his systematic imaging of the sky?",
+      "options": [
+        {
+          "text": "Planet X",
+          "is_correct": true
+        },
+        {
+          "text": "Uranus",
+          "is_correct": false
+        },
+        {
+          "text": "Neptune",
+          "is_correct": false
+        },
+        {
+          "text": "Pluto's orbit",
+          "is_correct": false
+        }
+      ],
+      "explanation": "Clyde Tombaugh was tasked with systematically imaging the sky to find Planet X, which was believed to influence Neptune's orbit. The search ultimately led to the discovery of Pluto instead.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "Clyde Tombaugh was indeed tasked with finding Planet X, as supported by the transcript, thus the correct answer is supported. The distractors of Uranus, Neptune, and Pluto's orbit are not supported by the transcript."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Search for Planet X",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Select all the reasons the speaker believes the concept of Planet X was eventually dismissed. Select all that apply.",
+      "options": [
+        {
+          "text": "Discovery of Pluto did not match expected mass",
+          "is_correct": true
+        },
+        {
+          "text": "Neptune's orbit was accurately explained by a mechanical error",
+          "is_correct": true
+        },
+        {
+          "text": "New satellites were discovered",
+          "is_correct": false
+        },
+        {
+          "text": "Data analysis was conducted incorrectly",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker discusses how the discovery of Pluto's decreasing mass and corrected error in Neptune's observations led to the dismissal of Planet X, not any new satellite discoveries or incorrect data analysis.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct options for dismissing Planet X include the discovery that Pluto did not have the expected mass and the mechanical adjustment error explaining Neptune's orbit. The options 'New satellites were discovered' and 'Data analysis was conducted incorrectly' are not supported; analysis was corrected, not conducted incorrectly."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Education and Engagement",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Select all the factors that contribute to the challenges in engaging students in education. Select all that apply.",
+      "options": [
+        {
+          "text": "Lack of interest from students",
+          "is_correct": true
+        },
+        {
+          "text": "Oversized class sizes",
+          "is_correct": true
+        },
+        {
+          "text": "Presence of technology in classrooms",
+          "is_correct": false
+        },
+        {
+          "text": "Teachers' motivation levels",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The video highlights that the lack of student interest, oversized class sizes, and teachers' lack of motivation contribute to the challenges in engaging students, but technology was not noted as a contributing factor.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript supports that student interest, class size, and teacher motivation impact engagement, but does not mention technology. The labeled correct options are correct, and 'Presence of technology in classrooms' is a valid false distractor."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Education and Engagement",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "How did the speaker describe the relationship between engaging education and humor?",
+      "options": [
+        {
+          "text": "Humor complicates learning for students",
+          "is_correct": false
+        },
+        {
+          "text": "Humor can make learning fun and enhance understanding",
+          "is_correct": true
+        },
+        {
+          "text": "Humor decreases students’ attention in class",
+          "is_correct": false
+        },
+        {
+          "text": "Humor is irrelevant to education",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker suggests that incorporating humor into educational practices can make learning more enjoyable and effectively engage students, thus enhancing understanding.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The speaker mentions humor as a way to make learning enjoyable and enhance understanding. The keyed option is correct, and the distractors are not supported by the transcript. The explanation is accurate."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Observations on Film and Reality",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The military's budget is less than the amount Los Angeles spends annually on homelessness.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The speaker mentions that Los Angeles spends around 1 billion dollars annually for homelessness while the military budget is about 700 billion dollars, which means the military's budget is significantly greater.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly states the military budget is around 700 billion and the LA homelessness budget is around 1 billion, supporting the false option. The explanation accurately reflects this comparison."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Alien Abductions and Evidence",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The speaker believes that all UFO sightings can be easily explained by advanced military technology.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The speaker expresses skepticism towards UFO sightings, suggesting they may be drones or misidentified objects, but does not state that they can all be easily explained by military technology.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The explanation correctly interprets the speaker's skepticism about UFO sightings, as he mentions aliens and probes but not specifically that all sightings are military, hence the correct answer is False."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Effective Teaching Strategies",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What is the significance of the magpie's actions described in the video?",
+      "options": [
+        {
+          "text": "It demonstrates the bird's ability to use tools to solve problems",
+          "is_correct": true
+        },
+        {
+          "text": "It shows that birds have poor problem-solving skills",
+          "is_correct": false
+        },
+        {
+          "text": "It indicates that birds cannot learn from failures",
+          "is_correct": false
+        },
+        {
+          "text": "It suggests that the bird's intelligence is overrated",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The magpie's ability to use a rock to raise the water level in a bottle showcases its impressive problem-solving skills and tool use, illustrating that animals can be smarter than previously thought.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript describes a magpie using rocks to raise the water level in a bottle, showcasing its problem-solving skills and use of tools. The correct option accurately captures this, while the other options are not supported by the transcript."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "The Fate of the Universe",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Select all the examples of potential consequences discussed regarding the universe’s future. Select all that apply.",
+      "options": [
+        {
+          "text": "The big rip occurring in 20 to 22 billion years",
+          "is_correct": true
+        },
+        {
+          "text": "The universe collapsing back into a singularity",
+          "is_correct": false
+        },
+        {
+          "text": "All matter and galaxies being torn apart",
+          "is_correct": true
+        },
+        {
+          "text": "The creation of a second universe coexisting with ours",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker discusses the possibility of a 'big rip' leading to the tearing apart of galaxies and matter due to cosmic expansion, but does not mention a singularity collapse or the creation of a second universe.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript supports the 'big rip' and all matter and galaxies being torn apart. It does not discuss a collapse back into a singularity or creation of a second universe, which aligns with the keyed answers."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Creative Process Exploration",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "According to the segment on creative processes, most great ideas emerge in structured environments.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The speaker suggests that creativity often emerges in solitude and from informal settings rather than structured, regimented environments, which are less conducive to deep thinking.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript confirms that the speaker suggests creativity often requires solitude and informal settings, not structured environments; the keyed option is correct."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Aliens and Human Behavior",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What does the speaker suggest about human behaviors when considering encounters with alien life?",
+      "options": [
+        {
+          "text": "Humans project their own fears onto imagined aliens",
+          "is_correct": true
+        },
+        {
+          "text": "Humans are generally indifferent to extraterrestrial beings",
+          "is_correct": false
+        },
+        {
+          "text": "All interactions with aliens are peaceful",
+          "is_correct": false
+        },
+        {
+          "text": "Aliens consider humans as superior beings",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker believes that humans often reflect their own negative traits and fears onto aliens when creating stories and narratives about them, suggesting a projection of human behavior.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The correct option is well-supported by the speaker's comments about humans fearing aliens due to their own behavior. The incorrect options are clearly contradicted: indifference and peaceful interactions are not discussed, and aliens considering humans superior is refuted by the mention of aliens having greater technology."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Creative Idea Generation",
+      "validated": false,
+      "kept": false,
+      "question_type": "multi_select",
+      "prompt": "Select all the factors that contribute to the advancement of scientific knowledge according to the speaker. Select all that apply.",
+      "options": [
+        {
+          "text": "Collaboration across disciplines",
+          "is_correct": true
+        },
+        {
+          "text": "Isolation in research",
+          "is_correct": false
+        },
+        {
+          "text": "Public engagement with science",
+          "is_correct": true
+        },
+        {
+          "text": "Government funding alone",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The speaker emphasizes that collaboration across disciplines and public engagement are crucial for the advancement of scientific knowledge, rather than just relying on isolation or government funding.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript supports collaboration across disciplines and public engagement as important for scientific advancement. Isolation in research and government funding alone are not emphasized as contributing factors."
+      }
+    },
+    {
+      "youtube_id": "qiP1E6iAVS8",
+      "kind": "quizzes",
+      "segment": "Psychic Phenomena and Its Critique",
+      "validated": true,
+      "kept": false,
+      "question_type": "true_false",
+      "prompt": "The discussion on psychic phenomena suggests that there is significant scientific evidence supporting their existence.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The speaker critiques psychic phenomena, emphasizing the lack of evidence and the importance of skepticism in evaluating such claims, suggesting that current understanding does not support their existence.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript includes a critique of psychic phenomena, highlighting the lack of evidence supporting their existence and promoting skepticism. Thus, the correct answer is false, which matches the correct key."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Introduction to Functions",
+      "validated": true,
+      "kept": true,
+      "front": "What is the purpose of the 'def' keyword in Python?",
+      "back": "The 'def' keyword is used to create a function in Python.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions using the 'def' keyword to create a function, matching the flashcard's back statement."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Introduction to Functions",
+      "validated": true,
+      "kept": true,
+      "front": "What is the key reason for using functions in programming?",
+      "back": "Functions are used to reuse code efficiently without rewriting it multiple times.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that the main point of programming is to reuse code as much as possible, which is supported by the statement on the flashcard."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Using Pass and Try-Except in Python",
+      "validated": true,
+      "kept": true,
+      "front": "How do you indicate a function that does nothing in Python?",
+      "back": "You use the 'pass' keyword to indicate a function that does nothing.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that Python uses the 'pass' keyword to indicate that there is nothing in a function and allows the program to run without errors, confirming the statement on the card."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Using Pass and Try-Except in Python",
+      "validated": true,
+      "kept": true,
+      "front": "What does the 'try' block do in a 'try-except' structure?",
+      "back": "The 'try' block attempts to execute code, and if an exception occurs, control is passed to the 'except' block.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The explanation of the 'try-except' structure in the transcript matches the description on the card, making the statement supported and answerable."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "front": "Explain the basic structure of an 'if-else' statement in Python.",
+      "back": "An 'if-else' statement evaluates a condition and executes different code blocks based on whether the condition is true or false.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains the if-else statement structure but uses a specific example with a logical condition rather than a generic description. However, the card's back correctly summarizes the basic structure as stated in the video."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "front": "Describe how a 'for loop' works in Python.",
+      "back": "A 'for loop' iterates over a sequence, executing the block of code for each item in the sequence.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript in detail describes a for loop in use, iterating over a range and a list, aligning with the card's back about iterating over a sequence."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "front": "What is the output of using 'print(range(3))' in Python?",
+      "back": "'print(range(3))' outputs a range object representing values from 0 to 3.",
+      "note": null,
+      "judgment": {
+        "supported": false,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript notes that 'print(range(3))' outputs a range object but specifies it includes values from 0, up to 3 but not including 3. The card is slightly imprecise saying '0 to 3' as if 3 is included."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "front": "What happens when a condition in a while loop becomes false?",
+      "back": "When a condition in a while loop becomes false, the loop terminates and the program moves to the next statement.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that when the condition in a while loop becomes false, the loop exits, aligning well with the card's back."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": false,
+      "front": "What is the result of using the 'break' statement within a loop?",
+      "back": "The 'break' statement exits the loop immediately, skipping any remaining iterations.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that 'break' exits the loop immediately, consistent with the card's back, though it should note that it ends the current iteration."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "In Python, how is a boolean value defined?",
+      "back": "A boolean value in Python is defined as either 'True' or 'False'.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript covers booleans, stating they are either 'true' or 'false', aligning with the back of the card."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "front": "How do you combine a string and an integer for printing in Python?",
+      "back": "You need to convert the integer to a string using 'str()' before combining it with another string.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript explicitly states that integers must be converted to a string using str() before combining with another string, supporting the card's back."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "flashcards",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": false,
+      "front": "Why should one use the underscore naming convention in Python?",
+      "back": "The underscore naming convention helps improve readability for variable names that consist of multiple words.",
+      "note": null,
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "speaker_slip": false,
+        "reason": "The transcript mentions using underscores in variable names for readability when naming conventions split across multiple words."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Introduction to Functions",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What keyword is used to define a function in Python?",
+      "options": [
+        {
+          "text": "def",
+          "is_correct": true
+        },
+        {
+          "text": "define",
+          "is_correct": false
+        },
+        {
+          "text": "function",
+          "is_correct": false
+        },
+        {
+          "text": "func",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The keyword used to define a function in Python is 'def'. The distractors are either incorrect keywords or do not exist in Python syntax.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript specifies that to create a function in Python, you use the 'def' keyword. None of the distractors 'define', 'function', or 'func' are correct in Python syntax, making the key correct."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Conditional statements cannot evaluate more than two conditions at once.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "Using elif allows for evaluating multiple conditions in a single sequence of statements.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript discusses using elif to evaluate multiple conditions and mentions conditional statements evaluating multiple conditions, supporting the question's explanation."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "The while loop in Python will continue until its condition is false.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The video states that a while loop will execute until the condition becomes false, at which point it will terminate.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly states that the while loop will continue until its condition is false, directly supporting the question's explanation."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "A for loop in Python can iterate over a predefined range of numbers.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": true
+        },
+        {
+          "text": "False",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The video mentions that a for loop can iterate over values found in a range object, confirming the statement's accuracy.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript explains that a for loop can iterate over a range object, which supports the question's claim that it can iterate over a predefined range of numbers."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Conditional Statements and Loops",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What will be printed if 'is happy' is set to true in the conditional statement?",
+      "options": [
+        {
+          "text": "You are sad",
+          "is_correct": false
+        },
+        {
+          "text": "You are happy",
+          "is_correct": true
+        },
+        {
+          "text": "You are neutral",
+          "is_correct": false
+        },
+        {
+          "text": "You are upset",
+          "is_correct": false
+        }
+      ],
+      "explanation": "'You are happy' will be printed if 'is happy' is true, as stated in the video. The other options do not correspond to the stated outcome.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript states that if 'is happy' is set to true, 'You are happy' will be printed, supporting the correct answer. Other options do not reflect any outcome in the transcript."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following are data types mentioned in the video? Select all that apply.",
+      "options": [
+        {
+          "text": "List",
+          "is_correct": true
+        },
+        {
+          "text": "String",
+          "is_correct": true
+        },
+        {
+          "text": "Object",
+          "is_correct": false
+        },
+        {
+          "text": "Float",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The video explicitly mentions 'List' and 'String' as data types, while 'Object' and 'Float' are not covered in the discussed context.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The video explicitly mentions 'List' and 'String' as data types, while 'Object' and 'Float' are not discussed. The explanation is accurate per the transcript."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multiple_choice",
+      "prompt": "What symbol is used for multiplication in Python?",
+      "options": [
+        {
+          "text": "+",
+          "is_correct": false
+        },
+        {
+          "text": "*",
+          "is_correct": true
+        },
+        {
+          "text": "/",
+          "is_correct": false
+        },
+        {
+          "text": "^",
+          "is_correct": false
+        }
+      ],
+      "explanation": "In Python, the asterisk (*) is the operator for multiplication. The other options represent different mathematical operations.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The video states that the asterisk '*' is used for multiplication in Python. The key correctly marks '*' as the answer."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Getting Started with Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "true_false",
+      "prompt": "Data types in Python include objects and arrays.",
+      "options": [
+        {
+          "text": "True",
+          "is_correct": false
+        },
+        {
+          "text": "False",
+          "is_correct": true
+        }
+      ],
+      "explanation": "The video does not mention 'objects' and 'arrays' as data types; it specifically covers integers, strings, booleans, and lists.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The video mentions integers, strings, booleans, and lists, but does not mention 'objects' and 'arrays'. The statement is correctly marked as false."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Using Pass and Try-Except in Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following statements are true regarding the use of the 'pass' keyword in Python? Select all that apply.",
+      "options": [
+        {
+          "text": "'pass' allows empty functions to run without errors",
+          "is_correct": true
+        },
+        {
+          "text": "'pass' can be used as a placeholder for future code",
+          "is_correct": true
+        },
+        {
+          "text": "'pass' requires an explicit return statement",
+          "is_correct": false
+        },
+        {
+          "text": "'pass' can be used to create infinite loops",
+          "is_correct": false
+        }
+      ],
+      "explanation": "'pass' allows empty functions to run without errors and acts as a placeholder. The other statements are incorrect interpretations of its function.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "'pass' allows empty functions to run without errors and can be used as a placeholder for future code, both as stated in the transcript. The statements about requiring an explicit return and creating infinite loops are incorrect interpretations of 'pass'."
+      }
+    },
+    {
+      "youtube_id": "fWjsdhR3z3c",
+      "kind": "quizzes",
+      "segment": "Using Pass and Try-Except in Python",
+      "validated": true,
+      "kept": true,
+      "question_type": "multi_select",
+      "prompt": "Which of the following components are part of exception handling in Python? Select all that apply.",
+      "options": [
+        {
+          "text": "try",
+          "is_correct": true
+        },
+        {
+          "text": "except",
+          "is_correct": true
+        },
+        {
+          "text": "break",
+          "is_correct": false
+        },
+        {
+          "text": "continue",
+          "is_correct": false
+        }
+      ],
+      "explanation": "The 'try' and 'except' keywords are specifically mentioned in relation to handling exceptions. 'break' and 'continue' handle flow control, not exceptions.",
+      "judgment": {
+        "supported": true,
+        "answerable": true,
+        "key_correct": true,
+        "speaker_slip": false,
+        "reason": "The transcript clearly states 'try' and 'except' in the context of exception handling. 'break' and 'continue' are unrelated to exception handling, as they control loop flow."
+      }
+    }
+  ]
+}

@@ -22,3 +22,7 @@ class Flashcard(Base):
     source_start_time: Mapped[float | None] = mapped_column(Numeric)
     difficulty: Mapped[str | None] = mapped_column(Text)
     order_index: Mapped[int] = mapped_column(nullable=False)
+    # Set when the card's front/back states the corrected fact instead of a speaker
+    # slip the transcript contains (wrong name/date/number/etc.) — names the slip, so
+    # the divergence from what was actually said is visible instead of silent (#18).
+    note: Mapped[str | None] = mapped_column(Text)

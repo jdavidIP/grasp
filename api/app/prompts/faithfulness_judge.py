@@ -1,9 +1,15 @@
 _SOURCE_OF_TRUTH = (
-    "The transcript is the source of truth for what the video says. If an item "
-    "faithfully repeats something the speaker said that is itself factually wrong (a "
-    "slip of the tongue: wrong name, country, date, number), judge it against the "
-    "transcript — it counts as supported — and set speaker_slip to true. Set "
-    "speaker_slip to false otherwise."
+    "The transcript is the source of truth for what the video says, but speakers "
+    "misspeak. If the transcript contains an apparent slip (wrong name, country, "
+    "date, number, or similar) that an item's content touches, set speaker_slip to "
+    "true and judge the item by which of two things it did: faithfully repeated the "
+    "slip as the speaker said it (supported — that's a faithful transcription), or "
+    "stated the corrected fact and named the discrepancy in a note (flashcards: a "
+    "separate 'note' field; quizzes: folded into the explanation) — also supported, "
+    "that is the intended handling of a slip. An item that states the corrected fact "
+    "with no note explaining why it differs from the transcript is a silent "
+    "correction, not a handled slip: mark it unsupported. Set speaker_slip to false "
+    "when there is no apparent slip in play."
 )
 
 FLASHCARD_SYSTEM_PROMPT = (
@@ -50,7 +56,9 @@ QUIZ_SYSTEM_PROMPT = (
 
 def build_flashcard_user_prompt(transcript: str, cards: list[dict]) -> str:
     listed = "\n\n".join(
-        f"[{i}] Front: {c['front']}\nBack: {c['back']}" for i, c in enumerate(cards)
+        f"[{i}] Front: {c['front']}\nBack: {c['back']}"
+        + (f"\nNote: {c['note']}" if c.get("note") else "")
+        for i, c in enumerate(cards)
     )
     return f"Transcript:\n{transcript}\n\nFlashcards:\n\n{listed}"
 

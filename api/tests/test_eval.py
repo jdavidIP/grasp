@@ -11,6 +11,7 @@ from app.eval.faithfulness import (
 )
 from app.eval.retrieval import first_hit_rank, span_coverage, summarize
 from app.generation.common import segment_text
+from app.prompts.faithfulness_judge import build_flashcard_user_prompt
 
 
 def test_first_hit_rank_is_one_based_and_ignores_touching_edges():
@@ -102,3 +103,13 @@ def test_segment_text_takes_cues_overlapping_the_segment():
     cues = [{"start": s, "end": s + 5, "text": str(s)} for s in (0, 5, 10, 15)]
     segment = SimpleNamespace(start_time=6, end_time=12)
     assert segment_text(cues, segment) == "5 10"
+
+
+def test_build_flashcard_user_prompt_shows_the_judge_a_note_when_present():
+    cards = [
+        {"front": "F1", "back": "B1", "note": "The speaker says X; it's actually Y."},
+        {"front": "F2", "back": "B2"},
+    ]
+    prompt = build_flashcard_user_prompt("transcript text", cards)
+    assert "Note: The speaker says X; it's actually Y." in prompt
+    assert prompt.count("Note:") == 1

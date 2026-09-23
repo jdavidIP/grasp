@@ -30,6 +30,7 @@ class FlashcardOut(BaseModel):
     source_start_time: float | None
     difficulty: str | None
     order_index: int
+    note: str | None
 
 
 class FlashcardDeckOut(BaseModel):

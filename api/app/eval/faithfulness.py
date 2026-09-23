@@ -115,7 +115,7 @@ async def _generate(kind: str, video_id: uuid.UUID) -> dict:
 
 def _item_view(kind: str, item: dict) -> dict:
     if kind == "flashcards":
-        return {"front": item["front"], "back": item["back"]}
+        return {"front": item["front"], "back": item["back"], "note": item.get("note")}
     return {
         "question_type": item["question_type"],
         "prompt": item["prompt"],
