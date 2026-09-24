@@ -73,7 +73,7 @@ Segmentation gives topical boundaries; chunking gives retrievable units inside t
 
 Storing `segment_id` on the chunk is what lets you filter retrieval to selected topics with a plain `WHERE` clause alongside the vector search.
 
-**Chunk size was tuned down from an initial ~500-token target** ([#17](https://github.com/jdavidIP/grasp/issues/17)). At 500 tokens, two lecture questions' answers sat inside a chunk that was mostly about something else, so the chunk's embedding pointed away from the answer. Halving the target to 250 tokens, reprocessed and measured twice against the same golden set: production (hybrid + rerank) hit@1 went from a 0.81–0.85 range to 0.88–0.92, and MRR from 0.88–0.90 to 0.92–0.94, both non-overlapping improvements. One of the two known misses — an exact-name match ("Marshall Plan") — is now retrieved even by pure vector search, at rank 4. The other is not: its answer sits inside a segment whose *entire* transcript is only 167 tokens, well under even the 250-token target, so chunking (which never splits below what a segment already contains) has nothing left to shrink — the dilution is a segmentation-boundary problem, not a chunk-size one. The cost side: roughly 1.8x as many chunks to embed (the 10-minute tutorial went from 6 chunks to 11) and less transcript per chunk kept for chat generation (5 reranked chunks now carry ~1,250 tokens of context instead of ~2,500) — not yet measured against faithfulness ([#21](https://github.com/jdavidIP/grasp/issues/21)). Full numbers: [`retrieval-2026-09-23-chunk500-run1.json`](../api/eval/results/retrieval-2026-09-23-chunk500-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk500-run2.json) vs [`-chunk250-run1`](../api/eval/results/retrieval-2026-09-23-chunk250-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk250-run2.json).
+**Chunk size was tuned down from an initial ~500-token target** ([#17](https://github.com/jdavidIP/grasp/issues/17)). At 500 tokens, two lecture questions' answers sat inside a chunk that was mostly about something else, so the chunk's embedding pointed away from the answer. Halving the target to 250 tokens, reprocessed and measured twice against the same golden set: production (hybrid + rerank) hit@1 went from a 0.81–0.85 range to 0.88–0.92, and MRR from 0.88–0.90 to 0.92–0.94, both non-overlapping improvements. One of the two known misses — an exact-name match ("Marshall Plan") — is now retrieved even by pure vector search, at rank 4. The other is not: its answer sits inside a segment whose *entire* transcript is only 167 tokens, well under even the 250-token target, so chunking (which never splits below what a segment already contains) has nothing left to shrink — the dilution is a segmentation-boundary problem, not a chunk-size one. The cost side: roughly 1.8x as many chunks to embed (the 10-minute tutorial went from 6 chunks to 11) and less transcript per chunk kept for chat generation (5 reranked chunks now carry ~1,250 tokens of context instead of ~2,500). At 250 tokens the chat eval scores answers 1.00 supported and 1.00 answering the question (§6, Chat answers), though there's no 500-token chat run to compare against. Full numbers: [`retrieval-2026-09-23-chunk500-run1.json`](../api/eval/results/retrieval-2026-09-23-chunk500-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk500-run2.json) vs [`-chunk250-run1`](../api/eval/results/retrieval-2026-09-23-chunk250-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk250-run2.json).
 
 ---
 
@@ -103,6 +103,8 @@ Handle this with a lightweight strategy check at the top of `POST /videos/{id}/c
 3. `broad` → reuse the same map-reduce-over-segments approach the flashcard/quiz pipelines already use: pull all segment summaries for the video, generate the answer from those instead of individual chunks.
 
 Both paths return the same response shape (`answer`, `sources`, `grounded`); for the `broad` path, `sources` lists the segments used rather than individual chunks. Worth testing explicitly once chat is built — try "what's this video about?" and confirm it doesn't just answer from the first few chunks it happens to retrieve.
+
+**Measured** (§6, Chat answers): the heuristic is too eager to call a question specific. Any content word counts as "a concrete noun", so "What will I learn from this tutorial?" never reaches the LLM fallback and gets a few-chunk answer. 3 of the golden set's 6 broad questions go this way. The obvious fix is to let only the keyword match skip the LLM call. It's deferred until there's real usage phrasing to tune against.
 
 ---
 
@@ -151,7 +153,9 @@ Define it concretely rather than asking the model for "hard":
 
 Do not skip this. It is the clearest differentiator against the many similar projects.
 
-Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` container. Each writes a dated JSON file to `api/eval/results/` (`<eval>-YYYY-MM-DD[-label].json`) that is committed, so the improvement curve lives in git history. Current numbers are in the README.
+The evals are offline CLI tools in `api/app/eval/`, run inside the `api` container. Each writes a dated JSON file to `api/eval/results/` (`<eval>-YYYY-MM-DD[-label].json`) that is committed, so the improvement curve lives in git history. Current numbers are in the README. Each eval refuses to start unless every golden-set video exists and is `ready`: a video in the middle of a reprocess has no segments or chunks yet, and would be scored as bad answers instead of reported as unprocessed.
+
+The chat and faithfulness evals also report **tokens per feature**. `llm.track_usage()` is a context manager that totals prompt and completion tokens per model for every call made inside it. Every OpenAI call goes through the one wrapper, so the eval wraps each feature's calls and nothing in the pipelines had to change. The results file's `usage` key holds the totals, with the judge counted separately from the feature it judges.
 
 ### Golden set
 
@@ -161,6 +165,7 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 - **Drafted by LLM, reviewed by a human.** `python -m app.eval.draft_golden <youtube_ids>` samples evenly spaced 40-second transcript windows, and gpt-4o writes one paraphrased question per window. Paraphrasing matters: questions that copy the transcript's wording would make keyword search look better than it is. The prompt gets the video's topic list and must skip incidental content: logistics, classroom remarks, "what this course will cover", small talk. Every entry is then reviewed by hand. Questions are never edited just because retrieval missed them, since that would bias the set toward the system.
 - **Speaker slips.** The transcript is the source of truth, but speakers misspeak (the lecture says "the Soviet Union invaded Ukraine"). The drafter flags apparent slips in a `note` and words the question so it doesn't depend on the slip.
 - **Out-of-scope questions** have to be adjacent to the video's subject to be a real test. Each one is grep-checked against the transcript. Two drafted podcast questions turned out to be covered and were replaced.
+- **Broad questions** (`"kind": "broad"`, `span: null`) ask about the whole video, which chat answers from segment summaries rather than retrieved chunks. The retrieval eval skips them; the chat eval uses them. They are hand-written, two per video: one worded with a phrase the chat router matches by keyword ("overview", "summarize"), and one worded naturally ("What will I learn from this tutorial?"). The keyword heuristic routes that second kind to the specific path, so they measure the router as well as the answer.
 
 ### Retrieval
 
@@ -174,7 +179,7 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 **Limitations:**
 - With 250-token chunks, a 10-minute video has 11 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
 - The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With 26 questions, one question is worth ~0.04 at @1.
-- Every golden question is *specific*. Broad questions ("what is this video about?") take a different chat path and are not measured yet.
+- Broad questions ("what is this video about?") have no span, so retrieval doesn't score them. The chat eval covers them instead.
 - One of the two baseline misses (answers diluted inside a chunk mostly about something else) is fixed by the 250-token chunk size tuned in §3 ([#17](https://github.com/jdavidIP/grasp/issues/17)); the other survives because it lives in a segment whose entire transcript is already under 250 tokens, which no chunk-size change can address.
 
 ### Generation faithfulness
@@ -186,6 +191,15 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 - **Reason before verdict:** the judge writes its reasoning before the booleans. With the verdict first, the flags contradicted their own reasons.
 - **Stages:** rates are reported for `raw` (all candidates), `rejected` (what the pipeline's own LLM validation dropped), and `kept` (what a user sees). This measures what validation actually buys.
 - **Noise, and the multiple-runs rule:** there are ~30 items per group, and generation is stochastic (fresh items every run), so one item moves a rate by ~0.03. *Identical* code scored 0.71 and 0.87 on quiz key correctness in two runs, so treat single-run differences under ~0.15 as noise. **Run every variant at least twice before drawing a conclusion.** A single run once made the flashcard validator look fixed when it wasn't (see the README).
+
+### Chat answers
+
+`python -m app.eval.chat [--label X]` sends every golden question through the production `answer_question`, with no conversation history. gpt-4o then judges each answer against **the sources that call returned**: the reranked chunks on the specific path, the topic summaries on the broad path.
+
+- **Checks:** for specific and broad questions, `supported` (every factual claim is in the sources) and `answers_question` (it answers what was asked rather than declining or dodging). For out-of-scope questions, `declines` (it plainly says the video doesn't cover this) and `supported` (it doesn't answer anyway from general knowledge). `speaker_slip` is flagged, not failed, as in the faithfulness eval. The results also record the answer model's own `grounded` flag, and which path each question was routed to (`routed_broad`).
+- **Why judge against the returned sources, not the whole transcript:** this isolates the answer step. Whether the right sources came back is the retrieval eval's job, so a retrieval miss doesn't show up here as a hallucination.
+- **The blind spot that follows:** the judge can't see what the sources left out. A broad question routed to the specific path gets a 5-chunk answer that the judge scores as complete. `routed_broad` is the metric for that failure, not `answers_question`.
+- **Slip detection is unreliable here.** Chat repeated a known slip as fact in both committed runs, and the judge flagged it in neither. Treat `speaker_slips` as a floor, not a count.
 
 ### Segmentation
 

@@ -15,15 +15,12 @@ import json
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import select
-
 from app.db import async_session
-from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR
+from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, load_eval_videos
 from app.generation import llm
 from app.generation.common import segment_text
 from app.generation.flashcards import generate_flashcards
 from app.generation.quizzes import generate_quiz
-from app.models.video import Video
 from app.prompts.faithfulness_judge import (
     FLASHCARD_SYSTEM_PROMPT,
     QUIZ_SYSTEM_PROMPT,
@@ -126,14 +123,15 @@ def _item_view(kind: str, item: dict) -> dict:
 
 async def run(label: str | None) -> None:
     youtube_ids = sorted({e["youtube_id"] for e in json.loads(GOLDEN_SET_PATH.read_text("utf-8"))})
-    async with async_session() as session:
-        result = await session.execute(select(Video).where(Video.youtube_id.in_(youtube_ids)))
-        videos = list(result.scalars())
+    by_id = await load_eval_videos(set(youtube_ids))
+    videos = [by_id[y] for y in youtube_ids]
 
     records = []
+    usage: dict[str, llm.Usage] = {kind: {} for kind in CHECKS} | {"judge": {}}
     for video in videos:
         for kind in CHECKS:
-            trace = await _generate(kind, video.id)
+            with llm.track_usage(usage[kind]):
+                trace = await _generate(kind, video.id)
             candidates, segments = trace.get("candidates", []), trace.get("segments", [])
             validated_ids = {id(v) for v in trace.get("validated", [])}
             kept_ids = {id(k) for k in trace.get("kept", [])}
@@ -144,7 +142,8 @@ async def run(label: str | None) -> None:
             for topic_index, items in by_topic.items():
                 segment = segments[topic_index]
                 transcript = segment_text(video.transcript or [], segment)
-                judgments = await _judge(kind, transcript, items)
+                with llm.track_usage(usage["judge"]):
+                    judgments = await _judge(kind, transcript, items)
                 for item, judgment in zip(items, judgments, strict=True):
                     records.append(
                         {
@@ -171,6 +170,7 @@ async def run(label: str | None) -> None:
         "config": {"flashcards": FLASHCARD_CONFIG, "quizzes": QUIZ_CONFIG},
         "videos": youtube_ids,
         "summary": summarize(records),
+        "usage": usage,
         "items": records,
     }
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -178,7 +178,19 @@ async def run(label: str | None) -> None:
     path = RESULTS_DIR / f"faithfulness-{now.date().isoformat()}{suffix}.json"
     path.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     _print_table(output["summary"])
+    print_usage(usage)
     print(path)
+
+
+def print_usage(usage: dict[str, llm.Usage]) -> None:
+    print("\n| feature | model | calls | prompt tokens | completion tokens |")
+    print("|---|---|---|---|---|")
+    for feature, by_model in usage.items():
+        for model, u in by_model.items():
+            print(
+                f"| {feature} | {model} | {u['calls']} | "
+                f"{u['prompt_tokens']:,} | {u['completion_tokens']:,} |"
+            )
 
 
 def _print_table(summary: dict) -> None:
