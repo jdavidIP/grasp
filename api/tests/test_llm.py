@@ -1,3 +1,4 @@
+import asyncio
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
@@ -80,7 +81,7 @@ def _completion(content: str | None, finish_reason: str = "stop") -> SimpleNames
         choices=[
             SimpleNamespace(message=SimpleNamespace(content=content), finish_reason=finish_reason)
         ],
-        usage=SimpleNamespace(total_tokens=10),
+        usage=SimpleNamespace(total_tokens=10, prompt_tokens=7, completion_tokens=3),
     )
 
 
@@ -90,6 +91,33 @@ async def test_generate_json_untouched_on_success(monkeypatch):
     monkeypatch.setattr(llm, "_get_client", lambda: client)
 
     assert await llm.generate_json("system", "user") == {"ok": True}
+
+
+async def test_track_usage_totals_per_model_including_concurrent_tasks(monkeypatch):
+    client = MagicMock()
+    client.chat.completions.create = AsyncMock(return_value=_completion('{"ok": true}'))
+    client.embeddings.create = AsyncMock(
+        return_value=SimpleNamespace(
+            data=[SimpleNamespace(index=0, embedding=[0.1])],
+            usage=SimpleNamespace(prompt_tokens=5),
+        )
+    )
+    monkeypatch.setattr(llm, "_get_client", lambda: client)
+
+    await llm.generate_json("system", "user")  # outside any block: not recorded
+    with llm.track_usage() as usage:
+        await asyncio.gather(
+            llm.generate_json("system", "user"),
+            llm.generate_json("system", "user", model=llm.EVAL_MODEL),
+            llm.generate_json("system", "user", model=llm.EVAL_MODEL),
+        )
+        await llm.embed_texts(["hello"])
+
+    assert usage == {
+        llm.GENERATION_MODEL: {"calls": 1, "prompt_tokens": 7, "completion_tokens": 3},
+        llm.EVAL_MODEL: {"calls": 2, "prompt_tokens": 14, "completion_tokens": 6},
+        llm.EMBEDDING_MODEL: {"calls": 1, "prompt_tokens": 5, "completion_tokens": 0},
+    }
 
 
 async def test_generate_json_raises_when_content_is_none(monkeypatch):

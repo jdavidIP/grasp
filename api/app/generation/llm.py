@@ -3,6 +3,9 @@
 import json
 import logging
 import time
+from collections.abc import Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 
 import openai
@@ -19,11 +22,38 @@ EVAL_MODEL = "gpt-4o"
 
 _client: AsyncOpenAI | None = None
 
+Usage = dict[str, dict[str, int]]
+_usage: ContextVar[Usage | None] = ContextVar("llm_usage", default=None)
+
 
 class LLMError(Exception):
     """An OpenAI call failed. The message is written for a user, not a stack trace:
     ingestion stores it verbatim as `videos.error_message`, and the app-level handler
     in main.py returns it verbatim as a 503 `detail`."""
+
+
+@contextmanager
+def track_usage() -> Iterator[Usage]:
+    """Totals tokens per model, as {model: {calls, prompt_tokens, completion_tokens}},
+    for every call made inside the block, including tasks spawned from it (they
+    inherit the same dict). Blocks don't nest: an inner block's calls count only
+    toward the inner totals."""
+    totals: Usage = {}
+    token = _usage.set(totals)
+    try:
+        yield totals
+    finally:
+        _usage.reset(token)
+
+
+def _record_usage(model: str, prompt_tokens: int, completion_tokens: int) -> None:
+    totals = _usage.get()
+    if totals is None:
+        return
+    entry = totals.setdefault(model, {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0})
+    entry["calls"] += 1
+    entry["prompt_tokens"] += prompt_tokens
+    entry["completion_tokens"] += completion_tokens
 
 
 def _get_client() -> AsyncOpenAI:
@@ -88,6 +118,8 @@ async def embed_texts(texts: list[str]) -> list[list[float]]:
         raise LLMError(_user_message(e)) from e
     elapsed = time.monotonic() - started
     logger.info("embedded %d texts in %.1fs", len(texts), elapsed)
+    if response.usage:
+        _record_usage(EMBEDDING_MODEL, response.usage.prompt_tokens, 0)
     return [item.embedding for item in sorted(response.data, key=lambda item: item.index)]
 
 
@@ -117,6 +149,8 @@ async def generate_json(
         usage.total_tokens if usage else "unknown",
         elapsed,
     )
+    if usage:
+        _record_usage(model, usage.prompt_tokens, usage.completion_tokens)
     choice = response.choices[0]
     if choice.message.content is None:
         raise LLMError("OpenAI returned an empty response. Try again.")
