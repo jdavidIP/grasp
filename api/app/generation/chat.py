@@ -80,8 +80,8 @@ def _has_concrete_noun(question: str) -> bool:
     # neural networks" meaning the video's whole treatment of it). No usage data
     # exists yet to tune the keyword/stopword lists against real phrasing. If broad
     # questions are getting misrouted in practice, widen the LLM fallback so only
-    # the keyword shortcut skips it. Phase 7's golden set holds only specific
-    # questions, so this is still unmeasured — add broad ones to it before tuning.
+    # the keyword shortcut skips it. `python -m app.eval.chat` measures this: see
+    # `routed_broad` for the golden set's broad questions.
     words = _WORD_RE.findall(question.lower())
     return any(len(word) > 3 and word not in STOPWORDS for word in words)
 

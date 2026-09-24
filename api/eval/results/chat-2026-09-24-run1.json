@@ -1,0 +1,1763 @@
+{
+  "run_at": "2026-09-24T02:59:53+00:00",
+  "label": "run1",
+  "judge_model": "gpt-4o",
+  "generation_model": "gpt-4o-mini",
+  "summary": {
+    "specific": {
+      "n": 26,
+      "unjudged": 0,
+      "supported": 1.0,
+      "answers_question": 1.0,
+      "faithful": 1.0,
+      "speaker_slips": 0,
+      "grounded": 1.0,
+      "routed_broad": 0.0
+    },
+    "broad": {
+      "n": 6,
+      "unjudged": 0,
+      "supported": 1.0,
+      "answers_question": 1.0,
+      "faithful": 1.0,
+      "speaker_slips": 0,
+      "grounded": 1.0,
+      "routed_broad": 0.5
+    },
+    "out_of_scope": {
+      "n": 6,
+      "unjudged": 0,
+      "declines": 1.0,
+      "supported": 1.0,
+      "faithful": 1.0,
+      "speaker_slips": 0,
+      "grounded": 0.0,
+      "routed_broad": 0.0
+    }
+  },
+  "usage": {
+    "chat_specific": {
+      "text-embedding-3-small": {
+        "calls": 26,
+        "prompt_tokens": 436,
+        "completion_tokens": 0
+      },
+      "gpt-4o-mini": {
+        "calls": 52,
+        "prompt_tokens": 86725,
+        "completion_tokens": 3232
+      }
+    },
+    "chat_broad": {
+      "gpt-4o-mini": {
+        "calls": 9,
+        "prompt_tokens": 12332,
+        "completion_tokens": 719
+      },
+      "text-embedding-3-small": {
+        "calls": 3,
+        "prompt_tokens": 23,
+        "completion_tokens": 0
+      }
+    },
+    "chat_out_of_scope": {
+      "text-embedding-3-small": {
+        "calls": 6,
+        "prompt_tokens": 90,
+        "completion_tokens": 0
+      },
+      "gpt-4o-mini": {
+        "calls": 12,
+        "prompt_tokens": 20266,
+        "completion_tokens": 434
+      }
+    },
+    "judge": {
+      "gpt-4o": {
+        "calls": 38,
+        "prompt_tokens": 61167,
+        "completion_tokens": 2873
+      }
+    }
+  },
+  "items": [
+    {
+      "id": "BDqvzFY72mg-13",
+      "kind": "specific",
+      "question": "How did the Marshall Plan contribute to political stability in post-World War II Europe?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The transcript excerpts indicate that the Marshall Plan contributed to political stability in post-World War II Europe by providing aid that helped rebuild countries recovering from the war. This rebuilding fostered a period of relative stability and prosperity, allowing people to grow up in an environment characterized by political stability. The stability was partially due to demographic reasons, stemming from the prosperity that followed from the aid provided by the Marshall Plan.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 111.707
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly identifies that the Marshall Plan provided aid for rebuilding efforts in post-World War II Europe, which contributed to political stability and prosperity in the region. This is supported by the source which states that post-war Europe was rebuilt with Marshall Plan aid and notes the era's political stability and prosperity."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-14",
+      "kind": "specific",
+      "question": "What was the significance of the symbolic dismantling of the Berlin Wall during the celebrations in Berlin?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The significance of the symbolic dismantling of the Berlin Wall during the celebrations in Berlin was profound for Germans, as it represented an emotional response to years of hardship and division. The easing of restrictions allowed East Germans to freely visit West Berlin, which highlighted a move towards reunification and the end of the artificial division of Berlin. It marked a historic moment in the context of a broader trend of democratization across Eastern Europe, indicating a shift away from totalitarian control towards freedom and unity.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 264.05,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 185.24,
+          "end_time": 276.42
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Shift in Political Climate",
+          "start_time": 560.75,
+          "end_time": 673.63
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, stating the emotional significance of the Berlin Wall's dismantling for Germans, the easing of travel restrictions, and the symbolic move towards reunification. It also contextualizes this event within the larger democratization trend in Eastern Europe, as described in the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-15",
+      "kind": "specific",
+      "question": "What was the outcome of democratization movements in Eastern Europe and other regions following the decline of Soviet dominance?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The outcome of democratization movements in Eastern Europe and other regions following the decline of Soviet dominance was largely positive, with many countries transitioning to democracy. This era saw the democratization of former Soviet bloc countries in Eastern Europe, as well as regions like South Africa, which moved towards multi-racial democracy. There was significant enthusiasm for democratic change, highlighted by events such as the Good Friday Accords in Northern Ireland and initial negotiations for peace in the Israel-Palestine conflict during the early 1990s, although some situations faced setbacks later on.",
+      "sources": [
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources by stating that the democratization movements led to the democratization of former Soviet bloc countries in Eastern Europe and inspired democratic changes in other regions, like South Africa. It also mentions significant events like the Good Friday Accords and the initial Israel-Palestine negotiations, which the sources confirm were part of this period of positive change, even if there were later setbacks. The answer does not introduce unsupported claims or embellishments."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-16",
+      "kind": "specific",
+      "question": "After the Cold War, what did people expect would happen to global poverty and the world economy?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "After the Cold War, there was a massive confidence that unregulated or mildly regulated free-market capitalism could deliver the best results for every country around the world. This period was marked by the implementation of neoliberal policies and the Washington Consensus, which emphasized trade deregulation, privatization, and reduced internal regulations as a means to address global poverty and improve the world economy.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2163.89,
+          "end_time": 2260.61
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly reflects the sources, which state that after the Cold War, there was significant confidence in free-market capitalism. This confidence led to the global implementation of neoliberal policies and the Washington Consensus, aimed at reducing trade barriers, privatization, and minimizing internal regulations to improve economies and address poverty."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-17",
+      "kind": "specific",
+      "question": "How did the traditional political parties fare in the Bavarian regional elections?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The traditional political parties fared poorly in the Bavarian regional elections, as they lost about 10% of their vote to the far-right Alternative for Germany (AFD) party. The Social Democratic Party (SPD) also experienced dissatisfaction as they were losing support to the Greens.",
+      "sources": [
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 871.63,
+          "end_time": 946.2030000000001
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 937.97,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 788.48,
+          "end_time": 888.1
+        },
+        {
+          "segment_label": "German Political Landscape 2017",
+          "start_time": 673.63,
+          "end_time": 767.01
+        },
+        {
+          "segment_label": "Rise of Extremism in Elections",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that traditional political parties performed poorly in the Bavarian elections, losing about 10% of their vote to the AFD. It also accurately notes that the SPD was losing support to the Greens."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The political landscape in some European countries has changed with the rise of far-right parties gaining ground, while establishment parties have seen a decline in support. For instance, in Austria, the far-right party became a close third in legislative elections, and in Germany, the Alternative for Germany party gained seats in all state parliaments and the Bundestag. Similar trends were observed in Belgium and Italy, where far-right parties increased their vote shares and gained seats, indicating that the political balance has shifted towards these parties across Europe.",
+      "sources": [
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 1075.86,
+          "end_time": 1167.143
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 1156.18,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 871.63,
+          "end_time": 946.2030000000001
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 788.48,
+          "end_time": 888.1
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 937.97,
+          "end_time": 974.952
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the sources, which describe the rise of far-right parties in various European countries leading to a decline in establishment parties' support. The details about Austria, Germany, Belgium, and Italy align with the information provided in the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-20",
+      "kind": "specific",
+      "question": "What is the difference between normative political theory and empirical work in political science?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Normative political theory deals with what should happen and how the world should be organized, while empirical work in political science focuses on how the world is actually organized. The speaker, who identifies as a political theorist, emphasizes that political theory often develops theories without considering real-world implementation, whereas empirical work grounds itself in actual historical and social data to inform political understanding.",
+      "sources": [
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1570.13,
+          "end_time": 1671.64
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1659.01,
+          "end_time": 1760.8100000000002
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer is accurately supported by the texts provided. Normative political theory is described as focusing on what should happen, while empirical work focuses on how the world is organized, as mentioned in source [0]. The sources also note that political theory often doesn't consider real-world implementation, while empirical work uses data to inform understanding, aligning with the answer."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-21",
+      "kind": "specific",
+      "question": "What connection is drawn between Ukraine's interest in joining NATO and the invasion of Ukraine?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The connection drawn between Ukraine's interest in joining NATO and the invasion of Ukraine is that part of the reason the Soviet Union invaded Ukraine was linked to this interest in NATO membership. The excerpts imply that the geopolitical dynamics surrounding NATO expansion and Ukraine's aspirations played a significant role in the events leading to the invasion.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1806.12,
+          "end_time": 1901.28
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1746.75,
+          "end_time": 1810.61
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2243.47,
+          "end_time": 2355.853
+        },
+        {
+          "segment_label": "Copyright Rules for Course Materials",
+          "start_time": 3056.89,
+          "end_time": 3155.42
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 788.48,
+          "end_time": 888.1
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly identifies that one of the reasons discussed for the Soviet Union's invasion of Ukraine was related to Ukraine's interest in joining NATO. The sources indicate this connection by mentioning Ukraine and Georgia's talks about joining NATO as a factor in the invasion."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-22",
+      "kind": "specific",
+      "question": "What role did the Washington Consensus play in the economic policies of developing countries after the post-communist era?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The Washington Consensus played a significant role in shaping the economic policies of developing countries after the post-communist era by promoting neoliberalism, which included trade deregulation, reduction of internal regulations, and massive privatization of state assets. Adopted by institutions like the World Bank and IMF, it was implemented as a condition for loans to these countries, reflecting a global confidence in free-market capitalism following the collapse of communism.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2523.14,
+          "end_time": 2622.7200000000003
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately captures the elements of the Washington Consensus as presented in the sources and its role in shaping economic policies in developing countries post-communism. The connection between neoliberalism, the Washington Consensus, and the role of global financial institutions is clearly reflected in the answer, aligning with the details given in the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-23",
+      "kind": "out_of_scope",
+      "question": "How does the lecture address the role of social media in shaping modern political movements?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not specifically address the role of social media in shaping modern political movements. The focus is primarily on political theories, historical changes since 1989, and democratic systems.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 111.707
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1305.82,
+          "end_time": 1400.4099999999999
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2523.14,
+          "end_time": 2622.7200000000003
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1570.13,
+          "end_time": 1671.64
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The assistant correctly states that the video does not cover the role of social media in shaping modern political movements. The sources focus on political theories and historical changes since 1989, without mention of social media."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-24",
+      "kind": "out_of_scope",
+      "question": "What insights does the lecture provide on the impact of climate change on global political stability?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts mention the resurgence of state capitalism, the rise of global powers like China and Russia, and the new politics of insecurity post-financial crisis, but they do not specifically address the impact of climate change on global political stability.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2343.44,
+          "end_time": 2441.21
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2523.14,
+          "end_time": 2622.7200000000003
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the sources do not address the impact of climate change on global political stability and briefly mentions relevant topics covered in the video, such as state capitalism and global power dynamics."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-25",
+      "kind": "specific",
+      "question": "How do you create a variable and what should you keep in mind regarding Python's case sensitivity and naming conventions?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To create a variable in Python, you simply decide on a name (like 'item') and assign it a value. It's important to remember that Python is case sensitive, meaning 'item' and 'Item' are treated as different variables. Additionally, when naming variables that consist of more than one word, you should use underscores to separate them, such as 'item_name'.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly explains how to create a variable in Python by deciding on a name and assigning it a value. It accurately states that Python is case sensitive, and underscores should be used to separate words in variable names, aligning with the information provided in the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-27",
+      "kind": "specific",
+      "question": "How do you create a list in Python that contains different types of values?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To create a list in Python, you just need to create a pair of angle brackets and insert the values you want inside. These values can be a mixture of different types, such as numbers and booleans, among others.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately paraphrases the information from the sources, specifically about creating a list in Python with a mixture of different data types. The sources mention creating a list by inserting values inside angle brackets, and that these values can be a mix between numbers, booleans, etc."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-28",
+      "kind": "specific",
+      "question": "How can you convert a string to an integer in Python before performing arithmetic operations on it?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To convert a string to an integer in Python, you can use the `int()` function. For example, if you have a string number, you can type `int(string_number)` to convert it before performing arithmetic operations like addition. If the conversion fails (for example, trying to convert a non-numeric string), you can use a try and except block to catch the exception and handle the error gracefully.",
+      "sources": [
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer explains the use of the `int()` function to convert a string to an integer, which is supported by source [1]. It also accurately describes using a try-except block to handle exceptions if the conversion fails, as covered in sources [0] and [2]."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-29",
+      "kind": "specific",
+      "question": "How does one use conditional statements to provide different outputs based on a person's age and happiness in Python?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To use conditional statements based on a person's age and happiness in Python, you can use if-else statements. For example, check if the age is more than 21 and print 'you are old'; if the age is equal to 18, print 'you are getting old'; otherwise, print 'you are still young'. For the happiness condition, if the person is happy, print 'you are happy'; otherwise, print 'you are not happy'. This way, different outputs are produced based on the person's age and happiness status.",
+      "sources": [
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 238.319,
+          "end_time": 318.08
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the use of conditional statements to provide different outputs based on age and happiness in Python as described in source [0]. It explains using if-else statements for age and happiness conditions to produce varying outputs, which is supported by the source."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-30",
+      "kind": "specific",
+      "question": "How can you modify a loop in Python to start its index at 1 instead of 0?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To modify a loop in Python to start its index at 1 instead of 0, you can manually add 1 to the loop variable. For example, if using a for loop with 'for i in range(3)', you would print 'hello' followed by 'i + 1' to get 'hello 1', 'hello 2', and 'hello 3'.",
+      "sources": [
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 305.36,
+          "end_time": 377.59999999999997
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 238.319,
+          "end_time": 318.08
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the method described in the sources for modifying a loop to start its index from 1 by adding 1 to the loop variable inside the loop. It utilizes the example given in the source to illustrate this concept."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-31",
+      "kind": "specific",
+      "question": "What is the purpose of using 'break' in a Python loop?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The purpose of using 'break' in a Python loop is to exit the loop when a certain condition is met. In the video, it is explained that if a user inputs the string 'zero', the loop cancels and exits because of the break statement, preventing it from running infinitely.",
+      "sources": [
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 238.319,
+          "end_time": 318.08
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly explains that 'break' is used to exit a loop when a specific condition is met, as shown in the source where a loop exits when 'zero' is inputted. This use case aligns with the video example provided."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-32",
+      "kind": "specific",
+      "question": "Why are functions used in programming?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Functions are used in programming to reuse code in many different instances. They allow you to maximize how often you can use the same line of code without having to rewrite it. For example, a function that says hello can be used multiple times with different names, thereby eliminating the need to write the same print statement multiple times.",
+      "sources": [
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the source, which explains that functions are used to reuse code across different instances without having to rewrite it multiple times, such as using a function to print greetings to different names."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-33",
+      "kind": "specific",
+      "question": "How can you prevent a function in Python from causing an error when it doesn't contain any logic yet?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "You can prevent a function in Python from causing an error when it doesn't contain any logic by using the keyword 'pass'. This keyword indicates that there is intentionally nothing in the function, allowing the program to run without errors.",
+      "sources": [
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly summarizes that using the 'pass' keyword in a Python function prevents an error when the function lacks logic, as stated in source [0]."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-34",
+      "kind": "specific",
+      "question": "How does a try-except block handle exceptions in Python?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "A try-except block in Python attempts to execute the code within the try block, and if an exception occurs, it transfers control to the except block, where you can handle the error. For example, if a user tries to convert a non-numeric input (like 'mario') into an integer and add it to another number, the program will not throw an exception but instead print a message indicating that the input is not a valid number.",
+      "sources": [
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly explains that a try-except block in Python attempts to execute code within the try block and handles exceptions in the except block, with an example of handling invalid numeric input. This is supported by the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-35",
+      "kind": "out_of_scope",
+      "question": "How do you integrate Python with web development frameworks like Django or Flask?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The video does not cover how to integrate Python with web development frameworks like Django or Flask.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The sources provided do not mention Django, Flask, or any web development frameworks, so the assistant correctly declined to answer."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-36",
+      "kind": "out_of_scope",
+      "question": "What are some best practices for handling file I/O operations in Python applications?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The video does not specifically cover best practices for handling file I/O operations in Python applications.",
+      "sources": [
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 305.36,
+          "end_time": 377.59999999999997
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly notes that the video does not cover file I/O operations, as none of the provided sources mention this topic."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-01",
+      "kind": "specific",
+      "question": "How has the Pentagon recently changed its stance on unidentified aerial phenomena captured by military personnel?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The Pentagon has recently acknowledged that videos captured by military personnel are real and that they feature unidentified aerial phenomena (UAP) hovering over defense systems. They admit to not knowing what these UAP are or how they operate, with some incidents captured on film showing objects that transition between air and water.",
+      "sources": [
+        {
+          "segment_label": "Engaging Audience as Educator",
+          "start_time": 800.88,
+          "end_time": 865.6800000000001
+        },
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 3022.079,
+          "end_time": 3097.119
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1328.96,
+          "end_time": 1408.9599999999998
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1206.72,
+          "end_time": 1276.559
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which state that the Pentagon has confirmed the authenticity of videos showing unidentified aerial phenomena captured by military personnel. These sources mention that the Pentagon does not know what these phenomena are or how they operate, and they include descriptions of objects that transition between air and water."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-02",
+      "kind": "specific",
+      "question": "What does Neil deGrasse Tyson believe unidentified aerial phenomena (UAPs) might actually be?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Neil deGrasse Tyson believes that unidentified aerial phenomena (UAPs) might actually be probes rather than actual aliens. He suggests that if biological entities are flying through the universe, there's no need to do so when we have sophisticated technology like probes that can explore other planets without sending living beings.",
+      "sources": [
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1328.96,
+          "end_time": 1408.9599999999998
+        },
+        {
+          "segment_label": "Government Secrecy and Advanced Technology",
+          "start_time": 3157.359,
+          "end_time": 3238.48
+        },
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 3022.079,
+          "end_time": 3097.119
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1206.72,
+          "end_time": 1276.559
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects Neil deGrasse Tyson's belief that UAPs might be probes rather than aliens, as suggested in the sources. He draws a comparison with our own use of technology like Mars rovers, which supports the idea of probes being used for exploration."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-04",
+      "kind": "specific",
+      "question": "What does our fear of aliens reveal about ourselves?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Our fear of aliens reveals our fear of ourselves and our own potential for harm. The portrayal of aliens as evil in storytelling serves as a mirror reflecting our conduct as humans. The fear stems from a recognition that, if given the capability, we could act in destructive ways towards others, similar to how civilizations with higher technology have historically treated those with lesser technology.",
+      "sources": [
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 2944.48,
+          "end_time": 3033.839
+        },
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 2872.319,
+          "end_time": 2957.04
+        },
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 4749.52,
+          "end_time": 4822.88
+        },
+        {
+          "segment_label": "Skepticism about Alien Life",
+          "start_time": 2430.96,
+          "end_time": 2523.04
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which discuss the idea that portrayals of aliens in popular culture often depict them as evil, serving as reflections of human behavior. This suggests that our fear of aliens is rooted in our fear of how we treat others, particularly in situations involving discrepancies in technological power."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-06",
+      "kind": "specific",
+      "question": "How did past predictions about future technology often differ from the reality we experience today?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Past predictions often envisioned a future dominated by physical technology and automation, like homes filled with buttons and large, powerful computers. However, the reality we experience today is marked by the cheapness of information and the prevalence of powerful personal devices that do not match those early visions. People failed to anticipate that information technology would transform our daily lives far more than energy technology, which led to missed predictions about transportation and energy accessibility.",
+      "sources": [
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 5146.08,
+          "end_time": 5224.96
+        },
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 5011.44,
+          "end_time": 5082.4
+        },
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 5071.04,
+          "end_time": 5161.04
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 10156.399,
+          "end_time": 10234.88
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 10223.12,
+          "end_time": 10297.6
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which highlight that past predictions focused on physical technology like large computers and energy-based innovations, but failed to foresee the cheapness of information and the rise of personal devices. The sources also mention misconceptions about energy and transportation, aligning with the answer's points."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-07",
+      "kind": "specific",
+      "question": "What was the state of the universe in its early stages that affected the behavior of light?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "In its early stages, the universe was very hot, causing all atoms to be ionized and creating a plasma state. In this plasma, light heavily interacted with free electrons, scattering and bouncing around, which prevented it from traveling in a straight line. Only after the universe expanded and cooled did the electrons combine with atoms, allowing light to move freely across the universe without being scattered by the free electrons.",
+      "sources": [
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6708.48,
+          "end_time": 6801.599
+        },
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6784.88,
+          "end_time": 6888.159
+        },
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6638.56,
+          "end_time": 6722.0
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7425.92,
+          "end_time": 7499.679
+        },
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6578.4,
+          "end_time": 6649.36
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately describes the early state of the universe as hot, with ionized atoms creating plasma where light interacted heavily with free electrons, scattering it. It also correctly notes that as the universe expanded and cooled, electrons combined with atoms, allowing light to travel freely. This is supported by the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-08",
+      "kind": "specific",
+      "question": "What is the traditional concept of a multiverse that people commonly envision?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The traditional concept of a multiverse that people commonly envision includes the idea that our universe is just one bubble among many others, with potentially an infinite number of these bubbles existing within the total universe. This perspective suggests that different bubbles may have different laws of physics, and there could be infinite variations of events and particles across these universes. Some of these universes might even share the same laws of physics as ours, possibly leading to scenarios where identical or similar versions of individuals exist in different bubbles.",
+      "sources": [
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7344.719,
+          "end_time": 7440.2390000000005
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7638.4,
+          "end_time": 7711.599
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7561.199,
+          "end_time": 7649.679
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7425.92,
+          "end_time": 7499.679
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7488.32,
+          "end_time": 7577.92
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which describe the traditional multiverse concept as involving our universe being one bubble among potentially infinite others. It also mentions the possibility of varying laws of physics across these universes and the idea of identical or similar versions of individuals existing in different universes, all of which are supported by the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-09",
+      "kind": "specific",
+      "question": "What was James Randi's approach to investigating psychic claims?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "James Randi approached investigating psychic claims by critically evaluating the claims and evidence presented. He often challenged individuals who were heralded as psychics, suggesting that he would bypass those whom others deemed fraudulent. Randi's method involved putting psychics in controlled situations to test their abilities and to highlight the lack of repeatable results. He emphasized the importance of having clear, verifiable evidence and pointed out the shortcomings of supposed psychic capabilities, as demonstrated in a case where a psychic failed to provide significant information about a well-known figure, Ted Bundy.",
+      "sources": [
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9594.319,
+          "end_time": 9664.08
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9395.76,
+          "end_time": 9477.12
+        },
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 4569.84,
+          "end_time": 4642.0
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9515.6,
+          "end_time": 9604.319
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9465.76,
+          "end_time": 9529.119999999999
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects James Randi's approach as described in the sources. Randi critically evaluated psychic claims by challenging prominent psychics and placing them in controlled situations to test their abilities. The sources discuss Randi's efforts to expose frauds and the lack of repeatable evidence supporting psychic claims, notably through an example involving Ted Bundy."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-10",
+      "kind": "specific",
+      "question": "Why does the idea of psychic abilities captivate people and remain widespread throughout history?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The idea of psychic abilities captivates people and remains widespread throughout history because there has always been a deep respect for those who seemingly have the power to predict the future, such as shamans and prophets. This fascination continues as people invest meaning in dreams and other predictions, even though scientifically, there's an understanding that concepts like astrology and psychic powers lack empirical support. The allure comes from a desire to have someone provide insights about the future, which resonates with many people regardless of scientific skepticism.",
+      "sources": [
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 10156.399,
+          "end_time": 10234.88
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 10223.12,
+          "end_time": 10297.6
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 10081.92,
+          "end_time": 10172.0
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9515.6,
+          "end_time": 9604.319
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9395.76,
+          "end_time": 9477.12
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately captures the key points from the sources: the historical respect for those with prophetic claims, even as science provides alternatives, and the ongoing fascination with predictions despite a lack of empirical support. It mentions the allure of wanting insights into the future, aligning well with the sources' points on cultural phenomena and personal beliefs about dreams and predictions."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-oos-1",
+      "kind": "out_of_scope",
+      "question": "What does Neil deGrasse Tyson expect the James Webb Space Telescope to reveal?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts provided do not specifically mention what Neil deGrasse Tyson expects the James Webb Space Telescope to reveal.",
+      "sources": [
+        {
+          "segment_label": "Pluto and the Kuiper Belt",
+          "start_time": 2062.079,
+          "end_time": 2138.0789999999997
+        },
+        {
+          "segment_label": "Neptune and Planet X Search",
+          "start_time": 1824.32,
+          "end_time": 1917.76
+        },
+        {
+          "segment_label": "Government Secrecy and Advanced Technology",
+          "start_time": 3228.16,
+          "end_time": 3312.88
+        },
+        {
+          "segment_label": "Education and Public Engagement",
+          "start_time": 285.68,
+          "end_time": 366.56
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1463.36,
+          "end_time": 1539.6
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the sources do not cover expectations Neil deGrasse Tyson has for the James Webb Space Telescope, as none of the provided excerpts mention this topic."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-oos-2",
+      "kind": "out_of_scope",
+      "question": "How do neutrino detectors help astronomers study distant cosmic events?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not specifically discuss how neutrino detectors help astronomers study distant cosmic events.",
+      "sources": [
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6784.88,
+          "end_time": 6888.159
+        },
+        {
+          "segment_label": "Neptune and Planet X Search",
+          "start_time": 1824.32,
+          "end_time": 1917.76
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1463.36,
+          "end_time": 1539.6
+        },
+        {
+          "segment_label": "Neptune and Planet X Search",
+          "start_time": 1747.039,
+          "end_time": 1843.039
+        },
+        {
+          "segment_label": "Neptune and Planet X Search",
+          "start_time": 1575.919,
+          "end_time": 1645.52
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the video does not cover the topic of neutrino detectors and their use in studying cosmic events. The sources provided focus on topics like the universe's age and Planet X, rather than neutrino astronomy."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-1",
+      "kind": "broad",
+      "question": "What is this video about?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "This video discusses the DeVane Lectures on power and politics, particularly focusing on the transformative events since 1989, including the end of the Cold War, the rise of far-right movements in Europe, and the impact on political landscapes, especially in Germany. It also outlines an upcoming course that explores these historical developments and future political prospects.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "End of Cold War Changes",
+          "start_time": 336.34,
+          "end_time": 555.013
+        },
+        {
+          "segment_label": "Shift in Political Climate",
+          "start_time": 560.75,
+          "end_time": 673.63
+        },
+        {
+          "segment_label": "German Political Landscape 2017",
+          "start_time": 673.63,
+          "end_time": 786.743
+        },
+        {
+          "segment_label": "German Political Landscape Shift",
+          "start_time": 788.48,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "Rise of Extremism in Elections",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 1075.86,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1305.82,
+          "end_time": 1806.1200000000001
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1806.12,
+          "end_time": 2624.433
+        },
+        {
+          "segment_label": "Course Logistics and Office Hours",
+          "start_time": 2626.89,
+          "end_time": 2813.41
+        },
+        {
+          "segment_label": "Exam Schedule and Policies",
+          "start_time": 2814.44,
+          "end_time": 2883.49
+        },
+        {
+          "segment_label": "Classroom Policy and Resources",
+          "start_time": 2883.49,
+          "end_time": 2987.34
+        },
+        {
+          "segment_label": "Copyright Rules for Course Materials",
+          "start_time": 2987.34,
+          "end_time": 3258.253
+        },
+        {
+          "segment_label": "Interactive Course Structure",
+          "start_time": 3261.09,
+          "end_time": 3367.023
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer captures the main topics of the video sources: the DeVane Lectures on power and politics since 1989, including events like the end of the Cold War and the rise of far-right movements in Europe, with a focus on Germany. It also mentions an upcoming course discussing these developments and future prospects, which is supported by the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The main themes of the lecture include exploring how history and political science relate, the challenges and prospects for countries since the collapse of communism, examining economic and political reforms and their consequences, and discussing effective ways to achieve good public policy amidst political realities. The course aims to marry political considerations with public policy analysis in the context of a tumultuous 30 years since 1989.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 1888.71,
+          "end_time": 1985.15
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 111.707
+        },
+        {
+          "segment_label": "Course Overview and Topics",
+          "start_time": 2523.14,
+          "end_time": 2622.7200000000003
+        },
+        {
+          "segment_label": "Political Science Post-1989",
+          "start_time": 1659.01,
+          "end_time": 1760.8100000000002
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer captures the themes mentioned in the sources, including history and political science relation, challenges since the collapse of communism, economic and political reforms, and effective public policy. It also correctly mentions the focus on the 30-year period since 1989 as a tumultuous time. These themes are supported by excerpts from sources [0], [1], [2], and [3]."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The video provides an overview of fundamental concepts in Python programming, starting with variable assignment and basic data types in the 'Getting Started with Python Basics' segment. It then covers conditional statements and loops, including if-else statements and examples of for and while loops in the 'Conditional Statements and Loops' section. The 'Introduction to Functions' segment explains the creation and usage of functions for code reuse, followed by the 'Using Pass and Try-Except in Python' segment, which discusses the 'pass' keyword and exception handling to manage user input errors.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 241.76
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 238.319,
+          "end_time": 436.24
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 503.599
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 501.84,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer gives a concise and accurate overview of the video's contents, touching on each of the segments described in the sources. It mentions variable assignment, conditional statements, loops, functions, and exception handling, all of which align with the topics outlined in the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "From this tutorial, you will learn how to get started with Python, including assigning values to variables, understanding data types (like integers, strings, booleans, and lists), and creating functions for code reuse.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python Basics",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Using Pass and Try-Except in Python",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Conditional Statements and Loops",
+          "start_time": 305.36,
+          "end_time": 377.59999999999997
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes what you will learn from the tutorial, including getting started with Python by assigning values to variables, understanding basic data types, and creating functions. These topics are supported by the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-1",
+      "kind": "broad",
+      "question": "Summarize this conversation.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The conversation encompasses various topics, beginning with a critique of movie set design related to zombie films and the portrayal of leaf distribution. It then transitions into discussions about education and the engagement of students by science educators, followed by the importance of audience connection in teaching methods. Alien abduction reports and skepticism regarding their validity are also examined, alongside a historical discussion on Neptune and the search for Planet X. The conversation moves into skepticism about alien life and the portrayal of extraterrestrials in popular culture. It highlights government secrecy regarding technology and the intricacies of truth in the context of technology. The dialog also explores the future of self-driving cars, the influence of billionaires on innovation, and philosophical discussions about the universe's expansion and cosmology. Concepts like simulation theory, creative processes in science, and the use of comedy in science education are discussed, culminating with a critique of psychic phenomena.",
+      "sources": [
+        {
+          "segment_label": "Movie Set Design Critique",
+          "start_time": 5.84,
+          "end_time": 289.28
+        },
+        {
+          "segment_label": "Education and Public Engagement",
+          "start_time": 285.68,
+          "end_time": 671.2
+        },
+        {
+          "segment_label": "Engaging Audience as Educator",
+          "start_time": 669.36,
+          "end_time": 1134.96
+        },
+        {
+          "segment_label": "Alien Abductions and Evidence",
+          "start_time": 1131.919,
+          "end_time": 1579.12
+        },
+        {
+          "segment_label": "Neptune and Planet X Search",
+          "start_time": 1575.919,
+          "end_time": 1926.72
+        },
+        {
+          "segment_label": "Pluto and the Kuiper Belt",
+          "start_time": 1924.08,
+          "end_time": 2368.16
+        },
+        {
+          "segment_label": "Skepticism about Alien Life",
+          "start_time": 2364.8,
+          "end_time": 2811.52
+        },
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 2809.119,
+          "end_time": 3095.2000000000003
+        },
+        {
+          "segment_label": "Government Secrecy and Advanced Technology",
+          "start_time": 3090.559,
+          "end_time": 3891.119
+        },
+        {
+          "segment_label": "Truth and Deception in Technology",
+          "start_time": 3892.0,
+          "end_time": 4380.2390000000005
+        },
+        {
+          "segment_label": "Measurement and Deception",
+          "start_time": 4378.159,
+          "end_time": 5233.4400000000005
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5230.08,
+          "end_time": 5925.04
+        },
+        {
+          "segment_label": "Billionaires and Innovation",
+          "start_time": 5925.92,
+          "end_time": 6361.44
+        },
+        {
+          "segment_label": "Universe and Cosmology Discussion",
+          "start_time": 6358.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "The Universe's Expansion and Fate",
+          "start_time": 6966.0,
+          "end_time": 7277.76
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7275.28,
+          "end_time": 7738.4800000000005
+        },
+        {
+          "segment_label": "Creative Process and Inspiration",
+          "start_time": 7735.36,
+          "end_time": 7936.719
+        },
+        {
+          "segment_label": "Creativity and Idea Development",
+          "start_time": 7934.48,
+          "end_time": 8360.399
+        },
+        {
+          "segment_label": "Comedy in Science Education",
+          "start_time": 8358.319,
+          "end_time": 9267.6
+        },
+        {
+          "segment_label": "Debunking Psychic Phenomena",
+          "start_time": 9264.88,
+          "end_time": 10965.369
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately synthesizes the diverse topics covered in the sources, including movie set design critiques, educational engagement challenges, audience connection strategies, alien abduction skepticism, Neptune and Planet X history, alien life skepticism, government secrecy, truth in technology, self-driving cars, billionaires' influence, universe expansion, simulation theory, creative processes, and comedy in science education. It also includes a mention of psychic phenomena critique, which is relevant to the content."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-2",
+      "kind": "broad",
+      "question": "What did they talk about?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "They talked about various topics including traffic, philosophical thoughts, UFO disclosures, and how to engage audiences with deep subjects in a fun and humorous way. They also discussed the intersection of pop culture and science, mentioning specific examples like the movie E.T. and how certain technologies may have been inspired by or connected to captured UFO technology.",
+      "sources": [
+        {
+          "segment_label": "Movie Set Design Critique",
+          "start_time": 140.879,
+          "end_time": 209.92
+        },
+        {
+          "segment_label": "Engaging Audience as Educator",
+          "start_time": 738.56,
+          "end_time": 810.0790000000001
+        },
+        {
+          "segment_label": "Government Secrecy and Advanced Technology",
+          "start_time": 3479.2,
+          "end_time": 3567.37
+        },
+        {
+          "segment_label": "Aliens in Popular Culture",
+          "start_time": 2809.119,
+          "end_time": 2885.119
+        },
+        {
+          "segment_label": "Comedy in Science Education",
+          "start_time": 8419.6,
+          "end_time": 8498.56
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the broad range of topics discussed as derived from the sources: philosophical thoughts, UFO disclosures, traffic, engaging audiences, and the intersection of science and pop culture. Specific examples such as the movie E.T. discussing its creative concept and mentions of UFO technology related to transformer narratives are supported by the sources."
+      }
+    }
+  ]
+}
