@@ -1,3 +1,6 @@
+import asyncio
+
+from app.ingestion import slips
 from app.ingestion.slips import agreed_slips, parse_slips, slips_in
 
 TRANSCRIPT = "Georgia and Ukraine were talking about joining NATO, that part of the reason the Soviet Union invaded Ukraine."
@@ -56,3 +59,24 @@ def test_slips_in_keeps_slips_quoted_in_the_texts_once():
     texts = ["no slip here", "part of the reason, the Soviet Union invaded Ukraine."]
 
     assert slips_in(slips, texts) == slips[:2]
+
+
+async def test_detect_slips_never_runs_two_slip_checks_at_once(monkeypatch):
+    # Concurrent ingestions share gpt-4o's tokens-per-minute cap, so their slip
+    # checks must take turns.
+    monkeypatch.setattr(slips, "_slip_check_lock", asyncio.Lock())
+    running, peak = 0, 0
+
+    async def fake_generate(*args, **kwargs):
+        nonlocal running, peak
+        running += 1
+        peak = max(peak, running)
+        await asyncio.sleep(0.01)
+        running -= 1
+        return {"slips": []}
+
+    monkeypatch.setattr(slips.llm, "generate_json", fake_generate)
+
+    await asyncio.gather(*(slips.detect_slips("text") for _ in range(3)))
+
+    assert peak == 1

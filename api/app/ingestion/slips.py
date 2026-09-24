@@ -1,9 +1,14 @@
+import asyncio
 import re
 
 from app.generation import llm
 from app.prompts.slip_check import SYSTEM_PROMPT, build_user_prompt
 
 _NON_WORD_RE = re.compile(r"[^a-z0-9]+")
+# ponytail: one lock per process — concurrent ingestions take turns on gpt-4o instead
+# of blowing its tokens-per-minute cap together. Several API workers would need a
+# shared rate limiter instead.
+_slip_check_lock = asyncio.Lock()
 
 
 def _normalize(text: str) -> str:
@@ -73,12 +78,14 @@ def agreed_slips(first: list[dict], second: list[dict]) -> list[dict]:
 
 async def detect_slips(transcript: str) -> list[dict]:
     """Speaker slips in one segment's transcript, as [{said, meant, reason}]. Two
-    independent gpt-4o passes, keeping only what both agree on. Sequential, not
-    gathered: gpt-4o calls in parallel blow the org's tokens-per-minute cap."""
+    independent gpt-4o passes, keeping only what both agree on. One call at a time,
+    across every ingestion in the process: parallel gpt-4o calls blow the org's
+    tokens-per-minute cap."""
     passes = []
     for _ in range(2):
-        result = await llm.generate_json(
-            SYSTEM_PROMPT, build_user_prompt(transcript), model=llm.SLIP_CHECK_MODEL
-        )
+        async with _slip_check_lock:
+            result = await llm.generate_json(
+                SYSTEM_PROMPT, build_user_prompt(transcript), model=llm.SLIP_CHECK_MODEL
+            )
         passes.append(parse_slips(result, transcript))
     return agreed_slips(*passes)
