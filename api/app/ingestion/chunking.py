@@ -2,7 +2,7 @@ import tiktoken
 
 from app.generation import llm
 
-CHUNK_TARGET_TOKENS = 500
+CHUNK_TARGET_TOKENS = 250
 CHUNK_OVERLAP_RATIO = 0.15
 
 try:
