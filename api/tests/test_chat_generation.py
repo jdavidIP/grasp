@@ -10,10 +10,10 @@ from app.models.segment import TranscriptSegment
 from app.models.video import Video
 
 
-def _chunk(text: str, label: str) -> TranscriptChunk:
+def _chunk(text: str, label: str, slips: list[dict] | None = None) -> TranscriptChunk:
     chunk = TranscriptChunk(id=uuid.uuid4(), text=text, start_time=0.0, end_time=1.0)
     chunk.segment = TranscriptSegment(
-        label=label, summary="S", start_time=0, end_time=1, order_index=0
+        label=label, summary="S", start_time=0, end_time=1, order_index=0, slips=slips or []
     )
     return chunk
 
@@ -89,6 +89,54 @@ async def test_answer_specific_happy_path(monkeypatch):
     assert len(result["sources"]) == 2
     assert result["sources"][0]["chunk_id"] == chunks[0].id
     assert result["sources"][0]["segment_label"] == "Attention"
+
+
+async def test_answer_specific_tells_the_model_the_slips_in_its_excerpts(monkeypatch):
+    slips = [
+        {"said": "the Soviet Union invaded Ukraine", "meant": "Russia invaded Ukraine"},
+        {"said": "at America", "meant": "Latin America"},  # same segment, not in the excerpt
+    ]
+    chunks = [_chunk("part of the reason the Soviet Union invaded Ukraine.", "Overview", slips)]
+    monkeypatch.setattr(chat.llm, "embed_texts", AsyncMock(return_value=[[0.1] * 1536]))
+    monkeypatch.setattr(chat, "hybrid_search", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(chat, "rerank", AsyncMock(return_value=chunks))
+    mock_generate = AsyncMock(return_value={"answer": "a", "grounded": True})
+    monkeypatch.setattr(chat.llm, "generate_json", mock_generate)
+
+    await chat._answer_specific(None, uuid.uuid4(), "why was Ukraine invaded?", [])
+
+    user_prompt = mock_generate.await_args.args[1]
+    assert (
+        'Slip 0: the transcript says "the Soviet Union invaded Ukraine"; '
+        'the speaker means "Russia invaded Ukraine".'
+    ) in user_prompt
+    assert "Latin America" not in user_prompt
+
+
+def test_with_slip_notes_appends_a_note_per_slip_the_model_used():
+    slips = [{"said": "angle brackets", "meant": "square brackets"}, {"said": "a", "meant": "b"}]
+    note = '(The video says "angle brackets" here; the speaker means "square brackets".)'
+
+    assert chat._with_slip_notes("Use square brackets.", slips, [0, 0]) == (
+        f"Use square brackets. {note}"
+    )
+    # Out-of-range, non-int, and bool indexes from the model are ignored.
+    assert chat._with_slip_notes("A.", slips, [5, "0", True]) == "A."
+    assert chat._with_slip_notes("A.", slips, []) == "A."
+    assert chat._with_slip_notes("A.", slips, None) == "A."
+
+
+async def test_answer_specific_adds_no_slip_block_when_there_are_none(monkeypatch):
+    chunks = [_chunk("attention is a mechanism", "Attention")]
+    monkeypatch.setattr(chat.llm, "embed_texts", AsyncMock(return_value=[[0.1] * 1536]))
+    monkeypatch.setattr(chat, "hybrid_search", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(chat, "rerank", AsyncMock(return_value=chunks))
+    mock_generate = AsyncMock(return_value={"answer": "a", "grounded": True})
+    monkeypatch.setattr(chat.llm, "generate_json", mock_generate)
+
+    await chat._answer_specific(None, uuid.uuid4(), "what is attention?", [])
+
+    assert "Known speaker slips" not in mock_generate.await_args.args[1]
 
 
 async def test_answer_broad_path_uses_segment_summaries(monkeypatch):

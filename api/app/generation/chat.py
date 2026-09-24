@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.generation import llm
+from app.ingestion.slips import slips_in
 from app.models.segment import TranscriptSegment
 from app.prompts.chat_answer import (
     BROAD_SYSTEM_PROMPT,
@@ -121,9 +122,11 @@ async def _answer_specific(
         }
 
     top_chunks = await rerank(question, candidates)
+    texts = [c.text for c in top_chunks]
+    slips = slips_in([s for c in top_chunks for s in c.segment.slips], texts)
     result = await llm.generate_json(
         SPECIFIC_SYSTEM_PROMPT,
-        build_specific_user_prompt(question, [c.text for c in top_chunks], history),
+        build_specific_user_prompt(question, texts, history, slips),
     )
 
     sources = [
@@ -137,10 +140,24 @@ async def _answer_specific(
         for chunk in top_chunks
     ]
     return {
-        "answer": result.get("answer", ""),
+        "answer": _with_slip_notes(result.get("answer", ""), slips, result.get("slips_used")),
         "sources": sources,
         "grounded": bool(result.get("grounded", False)),
     }
+
+
+def _with_slip_notes(answer: str, slips: list[dict], used: object) -> str:
+    """Appends a note for each known slip the model says its answer relies on, so the
+    viewer isn't confused when the video says something else. The model only picks
+    the slips: asked to write the note itself, it silently corrected instead (#34)."""
+    if not isinstance(used, list):
+        return answer
+    indexes = [i for i in used if type(i) is int and 0 <= i < len(slips)]
+    notes = [
+        f'(The video says "{slips[i]["said"]}" here; the speaker means "{slips[i]["meant"]}".)'
+        for i in dict.fromkeys(indexes)
+    ]
+    return " ".join([answer, *notes]) if notes else answer
 
 
 async def _answer_broad(
@@ -159,9 +176,12 @@ async def _answer_broad(
             "grounded": False,
         }
 
+    slips = slips_in(
+        [s for segment in segments for s in segment.slips], [s.summary for s in segments]
+    )
     answer_result = await llm.generate_json(
         BROAD_SYSTEM_PROMPT,
-        build_broad_user_prompt(question, [(s.label, s.summary) for s in segments], history),
+        build_broad_user_prompt(question, [(s.label, s.summary) for s in segments], history, slips),
     )
 
     sources = [
@@ -175,7 +195,9 @@ async def _answer_broad(
         for segment in segments
     ]
     return {
-        "answer": answer_result.get("answer", ""),
+        "answer": _with_slip_notes(
+            answer_result.get("answer", ""), slips, answer_result.get("slips_used")
+        ),
         "sources": sources,
         "grounded": bool(answer_result.get("grounded", False)),
     }

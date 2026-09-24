@@ -35,6 +35,20 @@ def parse_slips(result: dict, transcript: str) -> list[dict]:
     return slips
 
 
+def slips_in(slips: list[dict], texts: list[str]) -> list[dict]:
+    """The slips whose quoted words occur in at least one of `texts`, each once — so a
+    prompt only mentions slips in the passages it actually shows the model."""
+    normalized = [f" {_normalize(t)} " for t in texts]
+    found: list[dict] = []
+    seen: set[str] = set()
+    for slip in slips:
+        key = _normalize(slip["said"])
+        if key not in seen and any(f" {key} " in t for t in normalized):
+            seen.add(key)
+            found.append(slip)
+    return found
+
+
 def _same_slip(a: dict, b: dict) -> bool:
     """Same words flagged, same correction, allowing one quote to contain the other."""
     pairs = (

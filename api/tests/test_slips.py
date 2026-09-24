@@ -1,4 +1,4 @@
-from app.ingestion.slips import agreed_slips, parse_slips
+from app.ingestion.slips import agreed_slips, parse_slips, slips_in
 
 TRANSCRIPT = "Georgia and Ukraine were talking about joining NATO, that part of the reason the Soviet Union invaded Ukraine."
 
@@ -44,3 +44,15 @@ def test_agreed_slips_keeps_only_what_both_passes_found_with_the_same_correction
     ]
 
     assert agreed_slips(first, second) == [_slip("accept block", "except block")]
+
+
+def test_slips_in_keeps_slips_quoted_in_the_texts_once():
+    slips = [
+        _slip("Soviet Union invaded", "Russia invaded"),
+        _slip("the Soviet Union invaded", "Russia invaded"),  # different quote: kept
+        _slip("Soviet Union invaded", "Russia invaded"),  # repeat from another segment
+        _slip("at America", "Latin America"),
+    ]
+    texts = ["no slip here", "part of the reason, the Soviet Union invaded Ukraine."]
+
+    assert slips_in(slips, texts) == slips[:2]
