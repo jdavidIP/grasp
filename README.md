@@ -48,15 +48,17 @@ A retrieved chunk counts as a hit if it overlaps the golden time span. Productio
 
 | strategy | hit@1 | hit@3 | hit@5 | MRR |
 |---|---|---|---|---|
-| vector only | 0.81 | 0.88 | 0.92 | 0.86 |
-| hybrid (vector + keyword, RRF) | 0.81 | 0.88 | 0.92 | 0.86 |
-| **hybrid + LLM rerank** (production) | **0.81** | **0.96** | **0.96** | **0.88** |
+| vector only | 0.81 | 0.92 | 0.96 | 0.87 |
+| hybrid (vector + keyword, RRF) | 0.85, 0.88 | 0.92, 0.96 | 0.96 | 0.89, 0.92 |
+| **hybrid + LLM rerank** (production) | **0.88, 0.92** | **0.96** | **0.96** | **0.92, 0.94** |
 
 **Out-of-scope questions correctly declined: 6/6.**
 
 The eval paid for itself on its first run. Keyword search used `plainto_tsquery`, which requires *every* term in the question to appear in a chunk. It matched nothing on 24 of the 26 questions, so "hybrid" search had silently been pure vector search. Switching to any-term matching raised hybrid + rerank hit@1 from **0.81 to 0.88** and MRR from **0.86 to 0.92**. A lecture question about the Marshall Plan, which no strategy had retrieved at any rank, went to rank 1: an exact name the embedding had flattened, which is the case hybrid search exists for. ([before](api/eval/results/retrieval-2026-09-19.json) / [after](api/eval/results/retrieval-2026-09-19-keyword-or.json))
 
 The segmentation fix ([#15](https://github.com/jdavidIP/grasp/issues/15)) then cost some of that at rank 1. Chunks never cross topic boundaries, so better topics moved every chunk boundary, and production hit@1 went from 0.88 to 0.81 (identical across two runs) while hit@3 held at 0.96. I accepted the trade: every answer still reaches the chat model among the 5 reranked chunks, and the generation metrics below improved. ([results](api/eval/results/retrieval-2026-09-19-segmentation.json))
+
+**Chunk size ([#17](https://github.com/jdavidIP/grasp/issues/17)): 500 tokens diluted short answers, 250 mostly fixed it.** Both lecture questions no strategy retrieved at baseline had their answer sitting inside a ~500-token chunk that was mostly about something else. Halving `CHUNK_TARGET_TOKENS` to 250, reprocessing, and running the eval twice at each size: production hit@1 moved from a 0.81–0.85 range to 0.88–0.92, and MRR from 0.88–0.90 to 0.92–0.94 — ranges that don't overlap, so this isn't noise. The Marshall Plan question is now retrieved even by pure vector search (rank 4), a stronger fix than hybrid search's exact-name match. The other question still misses at every strategy: its answer sits inside a segment whose entire transcript is 167 tokens, already below the 250-token target, so there's no chunk left to split — that miss is a segmentation-boundary problem, not a chunk-size one. The cost: about 1.8x as many chunks to embed (the tutorial went from 6 to 11), and less transcript per chunk surviving into chat generation (5 reranked chunks now carry roughly half as much context), which hasn't been weighed against answer faithfulness yet ([#21](https://github.com/jdavidIP/grasp/issues/21)). ([500-token: run1](api/eval/results/retrieval-2026-09-23-chunk500-run1.json), [run2](api/eval/results/retrieval-2026-09-23-chunk500-run2.json) / [250-token: run1](api/eval/results/retrieval-2026-09-23-chunk250-run1.json), [run2](api/eval/results/retrieval-2026-09-23-chunk250-run2.json))
 
 ### Generation faithfulness
 
@@ -80,9 +82,9 @@ Single runs on about 30 items are noisy: *identical* code scored 0.71 and 0.87 o
 ### Known limitations
 
 - **Segmentation is reviewed by hand, not scored.** Reviewing the eval videos is how the auto-caption bug was found (the 3-hour podcast had become 4 topics; it's now 20). Whole-video generation still gives every topic the same 2 excerpts, so the podcast's longest topic (28 minutes) is only ~15% represented. This is a known limit, deferred until an eval shows it hurts ([#15](https://github.com/jdavidIP/grasp/issues/15)).
-- **Small eval set.** 26 retrieval questions and about 30 judged items per group give directional numbers, not precise ones. At about 500 tokens per chunk, the tutorial has only 6 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
+- **Small eval set.** 26 retrieval questions and about 30 judged items per group give directional numbers, not precise ones. At 250 tokens per chunk, the tutorial has only 11 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
 - **Broad questions are untested.** Every golden question is specific. "Summarize this video"-style questions take a separate chat path that the eval doesn't measure yet.
-- **Chunk size is untuned.** Both lecture questions missed at baseline had their answer diluted inside a ~500-token chunk mostly about something else ([#17](https://github.com/jdavidIP/grasp/issues/17)).
+- **One retrieval miss survives chunk tuning.** A lecture question's answer sits inside a segment whose whole transcript is under the 250-token chunk target, so no chunk size fixes it — it needs a segmentation boundary, not a smaller chunk ([#17](https://github.com/jdavidIP/grasp/issues/17)).
 - **The note isn't reliably written even when the correction is.** Generation is told to state the corrected fact for a speaker slip *and* name it in a note. In manual testing both halves fired together under topic scope (full segment context), but whole-video scope's thinner context (the same 2-excerpts-per-topic limit noted above) sometimes stated the correction with no note. The eval confirms no slip is stated as fact; it doesn't yet confirm the note appears whenever it should ([#18](https://github.com/jdavidIP/grasp/issues/18)).
 - **The judge is an LLM.** It follows a strict rubric and writes its reasoning before each verdict, but it still makes mistakes. For example, it treated a caption mishearing ("accept" for `except`) as a speaker slip.
 - **Test isolation** ([#14](https://github.com/jdavidIP/grasp/issues/14)). The test suite currently writes to the dev database.

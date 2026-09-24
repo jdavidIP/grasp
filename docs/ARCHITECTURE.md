@@ -67,11 +67,13 @@ The labels become the checkboxes in the flashcard and quiz config forms. The sum
 Segmentation gives topical boundaries; chunking gives retrievable units inside them.
 
 - Chunk **within** segment boundaries — never let a chunk straddle two topics.
-- Target ~400–600 tokens with ~15% overlap.
+- Target **~250 tokens** with ~15% overlap.
 - Each chunk stores: `video_id`, `segment_id`, `start_time`, `end_time`, `text`, `embedding`.
 - Embed with `text-embedding-3-small` (1536 dims). Batch the calls.
 
 Storing `segment_id` on the chunk is what lets you filter retrieval to selected topics with a plain `WHERE` clause alongside the vector search.
+
+**Chunk size was tuned down from an initial ~500-token target** ([#17](https://github.com/jdavidIP/grasp/issues/17)). At 500 tokens, two lecture questions' answers sat inside a chunk that was mostly about something else, so the chunk's embedding pointed away from the answer. Halving the target to 250 tokens, reprocessed and measured twice against the same golden set: production (hybrid + rerank) hit@1 went from a 0.81–0.85 range to 0.88–0.92, and MRR from 0.88–0.90 to 0.92–0.94, both non-overlapping improvements. One of the two known misses — an exact-name match ("Marshall Plan") — is now retrieved even by pure vector search, at rank 4. The other is not: its answer sits inside a segment whose *entire* transcript is only 167 tokens, well under even the 250-token target, so chunking (which never splits below what a segment already contains) has nothing left to shrink — the dilution is a segmentation-boundary problem, not a chunk-size one. The cost side: roughly 1.8x as many chunks to embed (the 10-minute tutorial went from 6 chunks to 11) and less transcript per chunk kept for chat generation (5 reranked chunks now carry ~1,250 tokens of context instead of ~2,500) — not yet measured against faithfulness ([#21](https://github.com/jdavidIP/grasp/issues/21)). Full numbers: [`retrieval-2026-09-23-chunk500-run1.json`](../api/eval/results/retrieval-2026-09-23-chunk500-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk500-run2.json) vs [`-chunk250-run1`](../api/eval/results/retrieval-2026-09-23-chunk250-run1.json) / [`-run2`](../api/eval/results/retrieval-2026-09-23-chunk250-run2.json).
 
 ---
 
@@ -170,10 +172,10 @@ Both evals are offline CLI tools in `api/app/eval/`, run inside the `api` contai
 - **Out-of-scope decline rate:** each span-less question runs through the full chat path. A decline is `grounded: false`.
 
 **Limitations:**
-- With ~500-token chunks, a 10-minute video has 6 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
+- With 250-token chunks, a 10-minute video has 11 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
 - The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With 26 questions, one question is worth ~0.04 at @1.
 - Every golden question is *specific*. Broad questions ("what is this video about?") take a different chat path and are not measured yet.
-- Both lecture misses in the baseline were answers diluted inside a chunk mostly about something else. That is the case for testing smaller chunks ([#17](https://github.com/jdavidIP/grasp/issues/17)).
+- One of the two baseline misses (answers diluted inside a chunk mostly about something else) is fixed by the 250-token chunk size tuned in §3 ([#17](https://github.com/jdavidIP/grasp/issues/17)); the other survives because it lives in a segment whose entire transcript is already under 250 tokens, which no chunk-size change can address.
 
 ### Generation faithfulness
 
