@@ -4,9 +4,12 @@ from unittest.mock import AsyncMock
 
 import pytest
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy import func, select
 
+from app.db import async_session
 from app.ingestion import videos as ingestion
 from app.main import app
+from app.models.chunk import TranscriptChunk
 
 BASE_URL = "http://test"
 
@@ -221,6 +224,42 @@ async def test_reprocess_llm_error_stores_its_message(monkeypatch):
     detail = get_response.json()
     assert detail["status"] == "failed"
     assert detail["error_message"] == "Hit an OpenAI rate limit or quota."
+    # The failed reprocess must not have wiped what the first ingestion stored.
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+    assert await _chunk_count(video["id"]) == 1
+
+
+async def test_reprocess_failing_mid_write_rolls_back(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+
+        # A chunk pointing at a segment that doesn't exist fails after the old
+        # segments were deleted and the new ones flushed.
+        bad_chunk = {**_fake_chunks()[0], "segment_order_index": 99}
+        monkeypatch.setattr(
+            ingestion.chunking, "chunk_transcript", AsyncMock(return_value=[bad_chunk])
+        )
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "failed"
+    assert detail["error_message"] == "Reprocessing failed unexpectedly."
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+    assert await _chunk_count(video["id"]) == 1
+
+
+async def _chunk_count(video_id: str) -> int:
+    async with async_session() as session:
+        return await session.scalar(
+            select(func.count())
+            .select_from(TranscriptChunk)
+            .where(TranscriptChunk.video_id == uuid.UUID(video_id))
+        )
 
 
 async def test_video_no_transcript_fails(monkeypatch):

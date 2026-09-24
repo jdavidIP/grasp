@@ -103,10 +103,17 @@ async def _fetch_transcript(youtube_id: str) -> tuple[list[dict], str]:
     return cues, "whisper"
 
 
-async def _store_segments_and_chunks(session: AsyncSession, video: Video, cues: list[dict]) -> None:
+async def _analyze_transcript(cues: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Every LLM call ingestion makes (segmenting, slips, embeddings), with no DB writes,
+    so a failure here leaves the stored video untouched."""
     segment_dicts = await segmentation.segment_transcript(cues)
     chunk_dicts = await chunking.chunk_transcript(cues, segment_dicts)
+    return segment_dicts, chunk_dicts
 
+
+async def _store_segments_and_chunks(
+    session: AsyncSession, video: Video, segment_dicts: list[dict], chunk_dicts: list[dict]
+) -> None:
     segment_rows = [
         TranscriptSegment(
             order_index=s["order_index"],
@@ -174,7 +181,8 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             video.transcript = cues
             video.transcript_source = source
 
-            await _store_segments_and_chunks(session, video, cues)
+            segment_dicts, chunk_dicts = await _analyze_transcript(cues)
+            await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
 
             video.status = "ready"
         except (IngestionError, llm.LLMError) as e:
@@ -195,16 +203,21 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             return
 
         try:
+            # Analyze before deleting: if an LLM call fails, the old segments, chunks,
+            # and the flashcard/quiz links to them must survive for a retry.
+            segment_dicts, chunk_dicts = await _analyze_transcript(video.transcript)
             await session.execute(
                 delete(TranscriptSegment).where(TranscriptSegment.video_id == video.id)
             )
-            await _store_segments_and_chunks(session, video, video.transcript)
+            await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
             video.status = "ready"
         except llm.LLMError as e:
             video.status = "failed"
             video.error_message = str(e)
         except Exception:
             logger.exception("reprocessing failed unexpectedly for video %s", video_id)
+            await session.rollback()  # undo a half-done delete/rewrite
+            video = await session.get(Video, video_id)
             video.status = "failed"
             video.error_message = "Reprocessing failed unexpectedly."
 

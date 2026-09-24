@@ -22,7 +22,7 @@ Full detail including `segments` (id, label, summary, start_time, end_time) once
 Cascades to segments, chunks, chat, decks, quizzes, attempts. Returns `204`.
 
 ### `POST /videos/{id}/reprocess`
-Re-runs segmentation and embedding on the stored transcript without re-fetching. Useful while tuning segmentation parameters. Leaves decks and quizzes intact but nulls their `segment_id` references.
+Re-runs segmentation and embedding on the stored transcript without re-fetching. Useful while tuning segmentation parameters. Leaves decks and quizzes intact but nulls their `segment_id` references. If it fails, the video is marked `failed` with an `error_message`, but its previous segments and chunks are kept (every LLM call runs before anything is deleted), so a retry starts from intact data.
 
 ---
 
