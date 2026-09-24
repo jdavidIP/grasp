@@ -153,7 +153,7 @@ Define it concretely rather than asking the model for "hard":
 
 Do not skip this. It is the clearest differentiator against the many similar projects.
 
-The evals are offline CLI tools in `api/app/eval/`, run inside the `api` container. Each writes a dated JSON file to `api/eval/results/` (`<eval>-YYYY-MM-DD[-label].json`) that is committed, so the improvement curve lives in git history. Current numbers are in the README.
+The evals are offline CLI tools in `api/app/eval/`, run inside the `api` container. Each writes a dated JSON file to `api/eval/results/` (`<eval>-YYYY-MM-DD[-label].json`) that is committed, so the improvement curve lives in git history. Current numbers are in the README. Each eval refuses to start unless every golden-set video exists and is `ready`: a video in the middle of a reprocess has no segments or chunks yet, and would be scored as bad answers instead of reported as unprocessed.
 
 The chat and faithfulness evals also report **tokens per feature**. `llm.track_usage()` is a context manager that totals prompt and completion tokens per model for every call made inside it. Every OpenAI call goes through the one wrapper, so the eval wraps each feature's calls and nothing in the pipelines had to change. The results file's `usage` key holds the totals, with the judge counted separately from the feature it judges.
 

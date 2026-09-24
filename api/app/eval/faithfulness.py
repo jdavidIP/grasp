@@ -15,15 +15,12 @@ import json
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import select
-
 from app.db import async_session
-from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR
+from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, load_eval_videos
 from app.generation import llm
 from app.generation.common import segment_text
 from app.generation.flashcards import generate_flashcards
 from app.generation.quizzes import generate_quiz
-from app.models.video import Video
 from app.prompts.faithfulness_judge import (
     FLASHCARD_SYSTEM_PROMPT,
     QUIZ_SYSTEM_PROMPT,
@@ -126,9 +123,8 @@ def _item_view(kind: str, item: dict) -> dict:
 
 async def run(label: str | None) -> None:
     youtube_ids = sorted({e["youtube_id"] for e in json.loads(GOLDEN_SET_PATH.read_text("utf-8"))})
-    async with async_session() as session:
-        result = await session.execute(select(Video).where(Video.youtube_id.in_(youtube_ids)))
-        videos = list(result.scalars())
+    by_id = await load_eval_videos(set(youtube_ids))
+    videos = [by_id[y] for y in youtube_ids]
 
     records = []
     usage: dict[str, llm.Usage] = {kind: {} for kind in CHECKS} | {"judge": {}}

@@ -35,6 +35,27 @@ STRATEGIES = ("vector", "hybrid", "hybrid_rerank")
 Span = tuple[float, float]
 
 
+def unready_videos(youtube_ids: set[str], statuses: dict[str, str]) -> list[str]:
+    """One line per golden-set video that is missing or not ready. A video mid-reprocess
+    has no segments or chunks yet, so scoring it would record bad answers, not a gap."""
+    return [
+        f"{y}: not in the DB" if y not in statuses else f"{y}: status {statuses[y]}"
+        for y in sorted(youtube_ids)
+        if statuses.get(y) != "ready"
+    ]
+
+
+async def load_eval_videos(youtube_ids: set[str]) -> dict[str, Video]:
+    """Golden-set videos by youtube_id. Exits unless every one exists and is ready."""
+    async with async_session() as session:
+        result = await session.execute(select(Video).where(Video.youtube_id.in_(youtube_ids)))
+        videos = {v.youtube_id: v for v in result.scalars()}
+    problems = unready_videos(youtube_ids, {y: v.status for y, v in videos.items()})
+    if problems:
+        raise SystemExit("golden-set videos aren't ready:\n  " + "\n  ".join(problems))
+    return videos
+
+
 def first_hit_rank(retrieved: list[Span], span: Span) -> int | None:
     """1-based rank of the first retrieved range overlapping the span, else None."""
     for rank, (start, end) in enumerate(retrieved, start=1):
@@ -101,16 +122,8 @@ async def _decline(video_id: uuid.UUID, question: str) -> dict:
 
 async def run(label: str | None) -> Path:
     golden = json.loads(GOLDEN_SET_PATH.read_text(encoding="utf-8"))
-    async with async_session() as session:
-        rows = await session.execute(
-            select(Video.youtube_id, Video.id).where(
-                Video.youtube_id.in_({e["youtube_id"] for e in golden})
-            )
-        )
-        video_ids = dict(rows.all())
-    missing = {e["youtube_id"] for e in golden} - video_ids.keys()
-    if missing:
-        raise SystemExit(f"golden set references videos not in the DB: {sorted(missing)}")
+    videos = await load_eval_videos({e["youtube_id"] for e in golden})
+    video_ids = {y: v.id for y, v in videos.items()}
 
     in_scope = [e for e in golden if e.get("span")]
     out_of_scope = [e for e in golden if not e.get("span") and e.get("kind") != "broad"]

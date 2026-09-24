@@ -11,7 +11,7 @@ from app.eval.faithfulness import (
 from app.eval.faithfulness import (
     summarize as summarize_faithfulness,
 )
-from app.eval.retrieval import first_hit_rank, span_coverage, summarize
+from app.eval.retrieval import first_hit_rank, span_coverage, summarize, unready_videos
 from app.generation.common import segment_text
 from app.prompts.faithfulness_judge import build_flashcard_user_prompt
 
@@ -154,3 +154,13 @@ def test_chat_summary_rates_checks_grounding_and_routing():
     assert specific["grounded"] == pytest.approx(2 / 3)
     assert summary["broad"]["routed_broad"] == 0.5
     assert "out_of_scope" not in summary
+
+
+def test_unready_videos_reports_missing_and_unfinished():
+    statuses = {"a": "ready", "b": "processing", "c": "failed"}
+    assert unready_videos({"a", "b", "c", "d"}, statuses) == [
+        "b: status processing",
+        "c: status failed",
+        "d: not in the DB",
+    ]
+    assert unready_videos({"a"}, statuses) == []

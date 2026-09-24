@@ -13,14 +13,11 @@ import asyncio
 import json
 from datetime import UTC, datetime
 
-from sqlalchemy import select
-
 from app.db import async_session
 from app.eval.faithfulness import print_usage
-from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR
+from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, load_eval_videos
 from app.generation import llm
 from app.generation.chat import answer_question
-from app.models.video import Video
 from app.prompts.chat_judge import (
     ANSWER_SYSTEM_PROMPT,
     DECLINE_SYSTEM_PROMPT,
@@ -82,16 +79,8 @@ async def _judge(kind: str, question: str, answer: dict) -> dict | None:
 
 async def run(label: str | None) -> None:
     golden = json.loads(GOLDEN_SET_PATH.read_text(encoding="utf-8"))
-    async with async_session() as session:
-        rows = await session.execute(
-            select(Video.youtube_id, Video.id).where(
-                Video.youtube_id.in_({e["youtube_id"] for e in golden})
-            )
-        )
-        video_ids = dict(rows.all())
-    missing = {e["youtube_id"] for e in golden} - video_ids.keys()
-    if missing:
-        raise SystemExit(f"golden set references videos not in the DB: {sorted(missing)}")
+    videos = await load_eval_videos({e["youtube_id"] for e in golden})
+    video_ids = {y: v.id for y, v in videos.items()}
 
     records = []
     usage: dict[str, llm.Usage] = {f"chat_{kind}": {} for kind in CHECKS} | {"judge": {}}
@@ -111,8 +100,7 @@ async def run(label: str | None) -> None:
                 "id": entry["id"],
                 "kind": kind,
                 "question": entry["question"],
-                # Only the broad path returns segment summaries, which have no chunk id.
-                "path": "broad" if sources and sources[0]["chunk_id"] is None else "specific",
+                "path": answer["path"],
                 "grounded": answer["grounded"],
                 "answer": answer["answer"],
                 "sources": [

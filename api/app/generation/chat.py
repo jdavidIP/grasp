@@ -101,10 +101,11 @@ async def classify_question(question: str) -> bool:
 async def answer_question(
     session: AsyncSession, video_id: uuid.UUID, question: str, history: list[dict]
 ) -> dict:
-    """Returns {"answer": str, "sources": list[dict], "grounded": bool}."""
+    """Returns {"answer": str, "sources": list[dict], "grounded": bool, "path": str},
+    where path is "broad" or "specific". The API response drops `path`."""
     if await classify_question(question):
-        return await _answer_broad(session, video_id, question, history)
-    return await _answer_specific(session, video_id, question, history)
+        return await _answer_broad(session, video_id, question, history) | {"path": "broad"}
+    return await _answer_specific(session, video_id, question, history) | {"path": "specific"}
 
 
 async def _answer_specific(

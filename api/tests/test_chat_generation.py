@@ -1,6 +1,8 @@
 import uuid
 from unittest.mock import AsyncMock
 
+import pytest
+
 from app.db import async_session
 from app.generation import chat
 from app.models.chunk import TranscriptChunk
@@ -36,6 +38,21 @@ async def test_classify_question_ambiguous_falls_back_to_llm(monkeypatch):
     monkeypatch.setattr(chat.llm, "generate_json", AsyncMock(return_value={"broad": True}))
 
     assert await chat.classify_question("tell me more about that") is True
+
+
+@pytest.mark.parametrize("broad", [True, False])
+async def test_answer_question_reports_its_path_even_with_no_sources(monkeypatch, broad):
+    # Both paths can return no sources (an unprocessed video, no retrieval hits), so the
+    # path can't be inferred from the sources and has to be reported.
+    monkeypatch.setattr(chat, "classify_question", AsyncMock(return_value=broad))
+    monkeypatch.setattr(chat.llm, "embed_texts", AsyncMock(return_value=[[0.1] * 1536]))
+    monkeypatch.setattr(chat, "hybrid_search", AsyncMock(return_value=[]))
+
+    async with async_session() as session:
+        result = await chat.answer_question(session, uuid.uuid4(), "q", [])
+
+    assert result["sources"] == []
+    assert result["path"] == ("broad" if broad else "specific")
 
 
 async def test_answer_specific_no_candidates_returns_not_covered(monkeypatch):
