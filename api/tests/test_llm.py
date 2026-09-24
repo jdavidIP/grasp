@@ -119,6 +119,10 @@ async def test_track_usage_totals_per_model_including_concurrent_tasks(monkeypat
         llm.EMBEDDING_MODEL: {"calls": 1, "prompt_tokens": 5, "completion_tokens": 0},
     }
 
+    with llm.track_usage(usage):
+        await llm.generate_json("system", "user")
+    assert usage[llm.GENERATION_MODEL] == {"calls": 2, "prompt_tokens": 14, "completion_tokens": 6}
+
 
 async def test_generate_json_raises_when_content_is_none(monkeypatch):
     client = MagicMock()

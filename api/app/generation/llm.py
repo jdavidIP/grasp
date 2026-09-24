@@ -33,12 +33,13 @@ class LLMError(Exception):
 
 
 @contextmanager
-def track_usage() -> Iterator[Usage]:
+def track_usage(totals: Usage | None = None) -> Iterator[Usage]:
     """Totals tokens per model, as {model: {calls, prompt_tokens, completion_tokens}},
     for every call made inside the block, including tasks spawned from it (they
-    inherit the same dict). Blocks don't nest: an inner block's calls count only
-    toward the inner totals."""
-    totals: Usage = {}
+    inherit the same dict). Pass an earlier block's dict to keep adding to it. Blocks
+    don't nest: an inner block's calls count only toward the inner totals."""
+    if totals is None:
+        totals = {}
     token = _usage.set(totals)
     try:
         yield totals
