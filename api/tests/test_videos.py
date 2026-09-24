@@ -31,6 +31,7 @@ def _fake_segments():
             "summary": "The intro.",
             "start_time": 0.0,
             "end_time": 2.0,
+            "slips": [{"said": "helo", "meant": "hello", "reason": "r"}],
         }
     ]
 

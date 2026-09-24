@@ -114,6 +114,7 @@ async def _store_segments_and_chunks(session: AsyncSession, video: Video, cues: 
             summary=s["summary"],
             start_time=s["start_time"],
             end_time=s["end_time"],
+            slips=s["slips"],
         )
         for s in segment_dicts
     ]

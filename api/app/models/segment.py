@@ -1,7 +1,7 @@
 import uuid
 
-from sqlalchemy import ForeignKey, Index, Numeric, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import ForeignKey, Index, Numeric, Text, text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -22,3 +22,7 @@ class TranscriptSegment(Base):
     summary: Mapped[str] = mapped_column(Text, nullable=False)
     start_time: Mapped[float] = mapped_column(Numeric, nullable=False)
     end_time: Mapped[float] = mapped_column(Numeric, nullable=False)
+    # [{said, meant, reason}] from app/ingestion/slips.py; see docs/ARCHITECTURE.md §2.
+    slips: Mapped[list[dict]] = mapped_column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"), default=list
+    )

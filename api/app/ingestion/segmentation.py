@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 from app.config import settings
 from app.generation import llm
+from app.ingestion.slips import detect_slips
 from app.prompts.segment_label import SYSTEM_PROMPT, build_user_prompt
 
 SENTENCE_END_RE = re.compile(r"[.!?][\"')\]]?\s*$")
@@ -157,7 +158,7 @@ def _merge_short_segments(segments: list[SegmentDraft]) -> list[SegmentDraft]:
 
 async def segment_transcript(cues: list[dict]) -> list[dict]:
     """Turns raw transcript cues into labelled topic segments, ready for
-    TranscriptSegment rows: order_index, label, summary, start_time, end_time."""
+    TranscriptSegment rows: order_index, label, summary, start_time, end_time, slips."""
     units = _group_cues_into_units(cues)
     if not units:
         return []
@@ -169,6 +170,9 @@ async def segment_transcript(cues: list[dict]) -> list[dict]:
     labels = await asyncio.gather(
         *(llm.generate_json(SYSTEM_PROMPT, build_user_prompt(segment.text)) for segment in segments)
     )
+    # Sequential: slip detection runs on gpt-4o, whose tokens-per-minute cap parallel
+    # calls blow on a long video.
+    slips = [await detect_slips(segment.text) for segment in segments]
 
     return [
         {
@@ -177,6 +181,9 @@ async def segment_transcript(cues: list[dict]) -> list[dict]:
             "summary": label["summary"],
             "start_time": segment.start,
             "end_time": segment.end,
+            "slips": segment_slips,
         }
-        for i, (segment, label) in enumerate(zip(segments, labels, strict=True))
+        for i, (segment, label, segment_slips) in enumerate(
+            zip(segments, labels, slips, strict=True)
+        )
     ]

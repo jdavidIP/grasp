@@ -54,7 +54,9 @@ This is the step most implementations skip, and it is the one that carries the m
 4. Merge segments shorter than a minimum duration into their neighbour so you don't end up with dozens of micro-topics. The minimum is `max(60s, 1.5% of the video)`. A single fixed minimum can't serve both extremes: 60 seconds leaves a 3-hour podcast with ~30 fragmentary topics, while the ~2 minutes that suits the podcast would fold a 10-minute tutorial's genuine 1-minute "Functions" topic into its neighbour. The topic list is a menu for a person, so a rambling podcast should offer ~20 recognisable topics, not every sub-topic.
 5. Send each resulting segment's text to the LLM for a short topic label and a 1–2 sentence summary. Store both.
 
-**Output per segment:** `start_time`, `end_time`, `label`, `summary`, `order_index`.
+6. Check each segment's full text for speaker slips (below) and store them with it.
+
+**Output per segment:** `start_time`, `end_time`, `label`, `summary`, `order_index`, `slips`.
 
 The labels become the checkboxes in the flashcard and quiz config forms. The summaries are what the generation pipelines consume instead of raw transcript, which is what keeps whole-video generation inside the context window.
 
@@ -62,7 +64,7 @@ The labels become the checkboxes in the flashcard and quiz config forms. The sum
 
 ### Speaker slips
 
-Speakers misspeak and captions mishear: the lecture says "the Soviet Union invaded Ukraine" (Russia), and the tutorial's captions write "accept" for `except`. The content generated from the transcript should state the intended fact and name the slip, not repeat it ([#18](https://github.com/jdavidIP/grasp/issues/18), [#34](https://github.com/jdavidIP/grasp/issues/34)). That only works if something notices the slip. `detect_slips` (`app/ingestion/slips.py`) checks one segment's full transcript and returns `[{said, meant, reason}]`.
+Speakers misspeak and captions mishear: the lecture says "the Soviet Union invaded Ukraine" (Russia), and the tutorial's captions write "accept" for `except`. The content generated from the transcript should state the intended fact and name the slip, not repeat it ([#18](https://github.com/jdavidIP/grasp/issues/18), [#34](https://github.com/jdavidIP/grasp/issues/34)). That only works if something notices the slip. At ingestion and reprocess, `detect_slips` (`app/ingestion/slips.py`) checks each segment's full transcript and the result is stored as `transcript_segments.slips`, `[{said, meant, reason}]`. If a slip-check call fails, ingestion fails with the same user-facing message as any other LLM step, rather than storing an empty list that would look like "no slips".
 
 - **Detection is its own step, not something the answer model does in passing.** Telling the chat model to catch slips while it answers failed on every try (0/6, including the easy "angle brackets" one), because it treats the excerpts as the truth. On its own with a whole segment, gpt-4o-mini still missed every known slip and invented some, while gpt-4o found all three. So detection runs once per segment, on gpt-4o.
 - **Two passes, and only what both agree on is kept.** A single gpt-4o pass found every known slip, but about a third of its 45 "slips" were wrong or needless corrections, and some would teach something false ("Georgia and Ukraine" → "Georgia and Moldova"; Hubble's 1929 → 1924). Those rarely repeat identically, so a slip survives only if a second, independent pass flags the same words with the same correction. Across two samples this kept 16 and 11 slips, none a wrong correction, and caught 5 of the 6 known-slip opportunities (it missed "angle brackets" once). A missed slip costs less than a wrong one: chat just repeats the transcript, which is what it did before.

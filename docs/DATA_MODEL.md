@@ -41,8 +41,11 @@ Topic segments from the segmentation step. These populate the topic checkboxes i
 | summary | text not null | 1–2 sentences |
 | start_time | numeric not null | seconds |
 | end_time | numeric not null | seconds |
+| slips | jsonb not null default `[]` | speaker slips found at ingestion, `[{said, meant, reason}]` — see ARCHITECTURE §2 |
 
 Index: `(video_id, order_index)`.
+
+`slips` lives on the segment rather than in its own table because it's only ever read together with its segment (to tell generation what the speaker meant) and never queried on its own. A segment is rebuilt from scratch on reprocess, so the slips are too.
 
 ### transcript_chunks
 

@@ -129,6 +129,8 @@ async def test_segment_transcript_end_to_end(monkeypatch):
         "generate_json",
         AsyncMock(return_value={"label": "Topic", "summary": "Summary."}),
     )
+    found = [{"said": "Sentence 1", "meant": "Sentence one", "reason": "r"}]
+    monkeypatch.setattr(seg, "detect_slips", AsyncMock(side_effect=[found, []]))
 
     segments = await seg.segment_transcript(cues)
 
@@ -137,6 +139,7 @@ async def test_segment_transcript_end_to_end(monkeypatch):
     assert all(s["label"] == "Topic" for s in segments)
     assert segments[0]["start_time"] == 0.0
     assert segments[-1]["end_time"] == 6.0
+    assert [s["slips"] for s in segments] == [found, []]
 
 
 async def test_segment_transcript_empty_cues_returns_empty():
