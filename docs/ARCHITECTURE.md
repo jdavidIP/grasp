@@ -60,6 +60,15 @@ The labels become the checkboxes in the flashcard and quiz config forms. The sum
 
 **Tunables worth exposing in config:** breakpoint percentile, minimum segment duration (seconds and fraction of video), max segments per video. These are the knobs you will iterate on, so make them settings, not magic numbers.
 
+### Speaker slips
+
+Speakers misspeak and captions mishear: the lecture says "the Soviet Union invaded Ukraine" (Russia), and the tutorial's captions write "accept" for `except`. The content generated from the transcript should state the intended fact and name the slip, not repeat it ([#18](https://github.com/jdavidIP/grasp/issues/18), [#34](https://github.com/jdavidIP/grasp/issues/34)). That only works if something notices the slip. `detect_slips` (`app/ingestion/slips.py`) checks one segment's full transcript and returns `[{said, meant, reason}]`.
+
+- **Detection is its own step, not something the answer model does in passing.** Telling the chat model to catch slips while it answers failed on every try (0/6, including the easy "angle brackets" one), because it treats the excerpts as the truth. On its own with a whole segment, gpt-4o-mini still missed every known slip and invented some, while gpt-4o found all three. So detection runs once per segment, on gpt-4o.
+- **Two passes, and only what both agree on is kept.** A single gpt-4o pass found every known slip, but about a third of its 45 "slips" were wrong or needless corrections, and some would teach something false ("Georgia and Ukraine" → "Georgia and Moldova"; Hubble's 1929 → 1924). Those rarely repeat identically, so a slip survives only if a second, independent pass flags the same words with the same correction. Across two samples this kept 16 and 11 slips, none a wrong correction, and caught 5 of the 6 known-slip opportunities (it missed "angle brackets" once). A missed slip costs less than a wrong one: chat just repeats the transcript, which is what it did before.
+- **A quote must be real.** `parse_slips` drops any slip whose `said` doesn't occur in the segment (ignoring case and punctuation).
+- **Cost:** two gpt-4o calls per segment, one after another, because of the tokens-per-minute cap. For the three eval videos that was about 106k prompt tokens and just under 3 minutes.
+
 ---
 
 ## 3. Chunking and embedding
