@@ -113,7 +113,7 @@ async def run(label: str | None) -> Path:
         raise SystemExit(f"golden set references videos not in the DB: {sorted(missing)}")
 
     in_scope = [e for e in golden if e.get("span")]
-    out_of_scope = [e for e in golden if not e.get("span")]
+    out_of_scope = [e for e in golden if not e.get("span") and e.get("kind") != "broad"]
     embeddings = await llm.embed_texts([e["question"] for e in in_scope])
 
     per_question = []

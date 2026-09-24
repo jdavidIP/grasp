@@ -346,5 +346,47 @@
     "youtube_id": "qiP1E6iAVS8",
     "question": "How do neutrino detectors help astronomers study distant cosmic events?",
     "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-broad-1",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "What is this video about?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-broad-2",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "What are the main themes of this lecture?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "fWjsdhR3z3c-broad-1",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "Give me an overview of this video.",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "fWjsdhR3z3c-broad-2",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "What will I learn from this tutorial?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "qiP1E6iAVS8-broad-1",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "Summarize this conversation.",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "qiP1E6iAVS8-broad-2",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "What did they talk about?",
+    "kind": "broad",
+    "span": null
   }
 ]
