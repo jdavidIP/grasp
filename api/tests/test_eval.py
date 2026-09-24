@@ -2,6 +2,8 @@ from types import SimpleNamespace
 
 import pytest
 
+from app.eval.chat import parse_judgment, question_kind
+from app.eval.chat import summarize as summarize_chat
 from app.eval.draft_golden import sample_windows, spread_pick
 from app.eval.faithfulness import (
     _parse_judgments,
@@ -113,3 +115,42 @@ def test_build_flashcard_user_prompt_shows_the_judge_a_note_when_present():
     prompt = build_flashcard_user_prompt("transcript text", cards)
     assert "Note: The speaker says X; it's actually Y." in prompt
     assert prompt.count("Note:") == 1
+
+
+def test_question_kind_separates_broad_from_out_of_scope():
+    assert question_kind({"span": [1.0, 2.0]}) == "specific"
+    assert question_kind({"span": None}) == "out_of_scope"
+    assert question_kind({"span": None, "kind": "broad"}) == "broad"
+
+
+def test_chat_parse_judgment_requires_every_flag_for_the_kind():
+    ok = {"reason": "r", "declines": True, "supported": False, "speaker_slip": False}
+    assert parse_judgment(ok, "out_of_scope") == ok
+    # An out-of-scope judgment lacks answers_question, so it can't pass for a specific question.
+    assert parse_judgment(ok, "specific") is None
+    assert parse_judgment({**ok, "declines": "yes"}, "out_of_scope") is None
+
+
+def test_chat_summary_rates_checks_grounding_and_routing():
+    def record(kind, judgment, grounded=True, path="specific"):
+        return {"kind": kind, "judgment": judgment, "grounded": grounded, "path": path}
+
+    good = {"supported": True, "answers_question": True, "speaker_slip": False}
+    unsupported = {"supported": False, "answers_question": True, "speaker_slip": True}
+    records = [
+        record("specific", good),
+        record("specific", unsupported),
+        record("specific", None, grounded=False),
+        record("broad", good, path="broad"),
+        record("broad", good),
+    ]
+
+    summary = summarize_chat(records)
+
+    specific = summary["specific"]
+    assert (specific["n"], specific["unjudged"]) == (3, 1)
+    assert specific["supported"] == 0.5 and specific["faithful"] == 0.5
+    assert specific["speaker_slips"] == 1
+    assert specific["grounded"] == pytest.approx(2 / 3)
+    assert summary["broad"]["routed_broad"] == 0.5
+    assert "out_of_scope" not in summary
