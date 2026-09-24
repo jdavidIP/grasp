@@ -185,6 +185,7 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
 
             video.status = "ready"
+            video.error_message = None
         except (IngestionError, llm.LLMError) as e:
             video.status = "failed"
             video.error_message = str(e)
@@ -211,6 +212,7 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             )
             await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
             video.status = "ready"
+            video.error_message = None  # a previous failed attempt's message is stale now
         except llm.LLMError as e:
             video.status = "failed"
             video.error_message = str(e)

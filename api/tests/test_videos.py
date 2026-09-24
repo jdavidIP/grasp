@@ -229,6 +229,27 @@ async def test_reprocess_llm_error_stores_its_message(monkeypatch):
     assert await _chunk_count(video["id"]) == 1
 
 
+async def test_successful_reprocess_clears_the_previous_error(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+
+        with monkeypatch.context() as m:
+            m.setattr(
+                ingestion.segmentation,
+                "segment_transcript",
+                AsyncMock(side_effect=ingestion.llm.LLMError("Hit an OpenAI rate limit.")),
+            )
+            await client.post(f"/api/videos/{video['id']}/reprocess")
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+        detail = (await client.get(f"/api/videos/{video['id']}")).json()
+
+    assert detail["status"] == "ready"
+    assert detail["error_message"] is None
+
+
 async def test_reprocess_failing_mid_write_rolls_back(monkeypatch):
     url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
     transport = ASGITransport(app=app)
