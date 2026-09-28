@@ -117,13 +117,18 @@ def test_with_slip_notes_appends_a_note_per_slip_the_model_used():
     slips = [{"said": "angle brackets", "meant": "square brackets"}, {"said": "a", "meant": "b"}]
     note = '(The video says "angle brackets" here; the speaker means "square brackets".)'
 
-    assert chat._with_slip_notes("Use square brackets.", slips, [0, 0]) == (
-        f"Use square brackets. {note}"
-    )
+    def answer(used: object, grounded: bool = True) -> str:
+        return chat._with_slip_notes(
+            {"answer": "A.", "grounded": grounded, "slips_used": used}, slips
+        )
+
+    assert answer([0, 0]) == f"A. {note}"
     # Out-of-range, non-int, and bool indexes from the model are ignored.
-    assert chat._with_slip_notes("A.", slips, [5, "0", True]) == "A."
-    assert chat._with_slip_notes("A.", slips, []) == "A."
-    assert chat._with_slip_notes("A.", slips, None) == "A."
+    assert answer([5, "0", True]) == "A."
+    assert answer([]) == "A."
+    assert answer(None) == "A."
+    # A decline gets no note even if the model still lists a slip (#34).
+    assert answer([0], grounded=False) == "A."
 
 
 async def test_answer_specific_adds_no_slip_block_when_there_are_none(monkeypatch):

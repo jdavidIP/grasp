@@ -140,17 +140,20 @@ async def _answer_specific(
         for chunk in top_chunks
     ]
     return {
-        "answer": _with_slip_notes(result.get("answer", ""), slips, result.get("slips_used")),
+        "answer": _with_slip_notes(result, slips),
         "sources": sources,
         "grounded": bool(result.get("grounded", False)),
     }
 
 
-def _with_slip_notes(answer: str, slips: list[dict], used: object) -> str:
-    """Appends a note for each known slip the model says its answer relies on, so the
-    viewer isn't confused when the video says something else. The model only picks
-    the slips: asked to write the note itself, it silently corrected instead (#34)."""
-    if not isinstance(used, list):
+def _with_slip_notes(result: dict, slips: list[dict]) -> str:
+    """The model's answer plus a note for each known slip it says the answer relies
+    on, so the viewer isn't confused when the video says something else. The model
+    only picks the slips: asked to write the note itself, it silently corrected
+    instead (#34). A decline gets no note even when the model lists one."""
+    answer = result.get("answer", "")
+    used = result.get("slips_used")
+    if not result.get("grounded") or not isinstance(used, list):
         return answer
     indexes = [i for i in used if type(i) is int and 0 <= i < len(slips)]
     notes = [
@@ -195,9 +198,7 @@ async def _answer_broad(
         for segment in segments
     ]
     return {
-        "answer": _with_slip_notes(
-            answer_result.get("answer", ""), slips, answer_result.get("slips_used")
-        ),
+        "answer": _with_slip_notes(answer_result, slips),
         "sources": sources,
         "grounded": bool(answer_result.get("grounded", False)),
     }

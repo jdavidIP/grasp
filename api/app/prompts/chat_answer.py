@@ -1,9 +1,11 @@
 _SPEAKER_SLIPS = (
     "You may also get a numbered list of known speaker slips: places where the "
-    "transcript's words are not what the speaker meant. If your answer relies on one, "
-    "write the intended fact, never the slip, and put the slip's number in "
-    '"slips_used". Don\'t mention the slip in the answer yourself: a note naming it is '
-    "added for you."
+    "transcript's words are not what the speaker meant. The list is only a correction "
+    "aid, not more content: it says nothing about whether the video answers the "
+    'question, so decide "grounded" without it and ignore the list when the video '
+    "doesn't cover the question. If your answer relies on one, write the intended "
+    "fact, never the slip, and put the slip's number in \"slips_used\". Don't mention "
+    "the slip in the answer yourself: a note naming it is added for you."
 )
 
 SPECIFIC_SYSTEM_PROMPT = (
