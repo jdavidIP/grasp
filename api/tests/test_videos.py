@@ -10,6 +10,7 @@ from app.db import async_session
 from app.ingestion import videos as ingestion
 from app.main import app
 from app.models.chunk import TranscriptChunk
+from app.models.video import Video
 
 BASE_URL = "http://test"
 
@@ -272,6 +273,46 @@ async def test_reprocess_failing_mid_write_rolls_back(monkeypatch):
     assert detail["error_message"] == "Reprocessing failed unexpectedly."
     assert [s["label"] for s in detail["segments"]] == ["Intro"]
     assert await _chunk_count(video["id"]) == 1
+
+
+async def test_reprocess_while_processing_returns_409():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        async with async_session() as session:
+            (await session.get(Video, uuid.UUID(video["id"]))).status = "processing"
+            await session.commit()
+
+        response = await client.post(f"/api/videos/{video['id']}/reprocess")
+
+    assert response.status_code == 409
+
+
+@pytest.mark.parametrize("llm_fails", [False, True])
+@pytest.mark.parametrize("runner", ["run_ingestion", "run_reprocessing"])
+async def test_video_deleted_mid_run_is_left_deleted(monkeypatch, runner, llm_fails):
+    # Reprocessing takes minutes (sequential slip checks), so a user can delete the
+    # video while it runs. The run must end quietly, not crash saving its outcome.
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video_id = uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+
+    async def delete_then_finish(*args, **kwargs):
+        async with async_session() as session:
+            await session.delete(await session.get(Video, video_id))
+            await session.commit()
+        if llm_fails:
+            raise ingestion.llm.LLMError("Hit an OpenAI rate limit.")
+        return _fake_segments()
+
+    monkeypatch.setattr(ingestion.segmentation, "segment_transcript", delete_then_finish)
+    await getattr(ingestion, runner)(video_id)
+
+    async with async_session() as session:
+        assert await session.get(Video, video_id) is None
 
 
 async def _chunk_count(video_id: str) -> int:

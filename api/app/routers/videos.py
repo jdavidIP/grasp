@@ -62,6 +62,9 @@ async def reprocess_video(
         raise HTTPException(status_code=404, detail="Video not found.")
     if video.transcript is None:
         raise HTTPException(status_code=400, detail="No stored transcript to reprocess.")
+    if video.status == "processing":
+        # Two runs would each delete and rewrite the segments over several minutes.
+        raise HTTPException(status_code=409, detail="This video is already being processed.")
 
     video.status = "processing"
     await db.commit()

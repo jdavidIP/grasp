@@ -8,6 +8,7 @@ from urllib.parse import parse_qs, urlparse
 import yt_dlp
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.exc import StaleDataError
 from youtube_transcript_api import (
     NoTranscriptFound,
     RequestBlocked,
@@ -191,10 +192,14 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             video.error_message = str(e)
         except Exception:
             logger.exception("ingestion failed unexpectedly for video %s", video_id)
+            await session.rollback()  # a failed flush leaves the session unusable
+            video = await session.get(Video, video_id)
+            if video is None:
+                return  # deleted mid-run
             video.status = "failed"
             video.error_message = "Ingestion failed unexpectedly."
 
-        await session.commit()
+        await _commit_unless_deleted(session)
 
 
 async def run_reprocessing(video_id: uuid.UUID) -> None:
@@ -220,7 +225,18 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             logger.exception("reprocessing failed unexpectedly for video %s", video_id)
             await session.rollback()  # undo a half-done delete/rewrite
             video = await session.get(Video, video_id)
+            if video is None:
+                return  # deleted mid-run
             video.status = "failed"
             video.error_message = "Reprocessing failed unexpectedly."
 
+        await _commit_unless_deleted(session)
+
+
+async def _commit_unless_deleted(session: AsyncSession) -> None:
+    """Saves a run's outcome. The user can delete the video while the run is going
+    (reprocessing takes minutes); then there's no row to update and nothing to save."""
+    try:
         await session.commit()
+    except StaleDataError:
+        await session.rollback()
