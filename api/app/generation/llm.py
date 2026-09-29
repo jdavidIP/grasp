@@ -19,6 +19,7 @@ WHISPER_MODEL = "whisper-1"
 EMBEDDING_MODEL = "text-embedding-3-small"
 GENERATION_MODEL = "gpt-4o-mini"
 EVAL_MODEL = "gpt-4o"
+SLIP_CHECK_MODEL = "gpt-4o"
 
 _client: AsyncOpenAI | None = None
 
@@ -128,8 +129,9 @@ async def generate_json(
     system_prompt: str, user_prompt: str, model: str = GENERATION_MODEL
 ) -> dict:
     """Runs a chat completion constrained to JSON output and parses the result.
-    `model` is overridden only by offline eval tooling (drafting, judging), so the
-    eval doesn't grade the generator with itself."""
+    `model` is overridden by offline eval tooling (drafting, judging), so the eval
+    doesn't grade the generator with itself, and by the ingestion slip check, which
+    needs a stronger model than generation does."""
     started = time.monotonic()
     try:
         response = await _get_client().chat.completions.create(

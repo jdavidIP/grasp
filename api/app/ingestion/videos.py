@@ -6,8 +6,10 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import yt_dlp
-from sqlalchemy import delete
+from sqlalchemy import delete, update
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.exc import StaleDataError
 from youtube_transcript_api import (
     NoTranscriptFound,
     RequestBlocked,
@@ -103,10 +105,17 @@ async def _fetch_transcript(youtube_id: str) -> tuple[list[dict], str]:
     return cues, "whisper"
 
 
-async def _store_segments_and_chunks(session: AsyncSession, video: Video, cues: list[dict]) -> None:
+async def _analyze_transcript(cues: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Every LLM call ingestion makes (segmenting, slips, embeddings), with no DB writes,
+    so a failure here leaves the stored video untouched."""
     segment_dicts = await segmentation.segment_transcript(cues)
     chunk_dicts = await chunking.chunk_transcript(cues, segment_dicts)
+    return segment_dicts, chunk_dicts
 
+
+async def _store_segments_and_chunks(
+    session: AsyncSession, video: Video, segment_dicts: list[dict], chunk_dicts: list[dict]
+) -> None:
     segment_rows = [
         TranscriptSegment(
             order_index=s["order_index"],
@@ -114,6 +123,7 @@ async def _store_segments_and_chunks(session: AsyncSession, video: Video, cues: 
             summary=s["summary"],
             start_time=s["start_time"],
             end_time=s["end_time"],
+            slips=s["slips"],
         )
         for s in segment_dicts
     ]
@@ -173,18 +183,24 @@ async def run_ingestion(video_id: uuid.UUID) -> None:
             video.transcript = cues
             video.transcript_source = source
 
-            await _store_segments_and_chunks(session, video, cues)
+            segment_dicts, chunk_dicts = await _analyze_transcript(cues)
+            await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
 
             video.status = "ready"
+            video.error_message = None
         except (IngestionError, llm.LLMError) as e:
             video.status = "failed"
             video.error_message = str(e)
         except Exception:
             logger.exception("ingestion failed unexpectedly for video %s", video_id)
+            await session.rollback()  # a failed flush leaves the session unusable
+            video = await session.get(Video, video_id)
+            if video is None:
+                return  # deleted mid-run
             video.status = "failed"
             video.error_message = "Ingestion failed unexpectedly."
 
-        await session.commit()
+        await _commit_unless_deleted(session)
 
 
 async def run_reprocessing(video_id: uuid.UUID) -> None:
@@ -194,17 +210,59 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             return
 
         try:
+            # Analyze before deleting: if an LLM call fails, the old segments, chunks,
+            # and the flashcard/quiz links to them must survive for a retry.
+            segment_dicts, chunk_dicts = await _analyze_transcript(video.transcript)
             await session.execute(
                 delete(TranscriptSegment).where(TranscriptSegment.video_id == video.id)
             )
-            await _store_segments_and_chunks(session, video, video.transcript)
+            await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
             video.status = "ready"
+            video.error_message = None  # a previous failed attempt's message is stale now
         except llm.LLMError as e:
             video.status = "failed"
             video.error_message = str(e)
         except Exception:
             logger.exception("reprocessing failed unexpectedly for video %s", video_id)
+            await session.rollback()  # undo a half-done delete/rewrite
+            video = await session.get(Video, video_id)
+            if video is None:
+                return  # deleted mid-run
             video.status = "failed"
             video.error_message = "Reprocessing failed unexpectedly."
 
+        await _commit_unless_deleted(session)
+
+
+async def _commit_unless_deleted(session: AsyncSession) -> None:
+    """Saves a run's outcome. The user can delete the video while the run is going
+    (reprocessing takes minutes); then there's no row to update and nothing to save."""
+    try:
         await session.commit()
+    except StaleDataError:
+        await session.rollback()
+
+
+async def fail_interrupted_runs(video_ids: list[uuid.UUID] | None = None) -> None:
+    """Marks videos a restart left mid-run as failed (all of them, or only `video_ids`).
+    Runs are in-process background tasks, so anything still pending or processing at
+    startup has no run behind it and would otherwise be stuck: the UI offers no retry
+    while a video is processing. Best-effort: a database error (e.g. a fresh database
+    before migrations) is logged, never allowed to stop the API from starting."""
+    # ponytail: assumes one API process (uvicorn without --workers). With several,
+    # a worker starting up would fail another's live runs; track the owner then.
+    statement = update(Video).where(Video.status.in_(("pending", "processing")))
+    if video_ids is not None:
+        statement = statement.where(Video.id.in_(video_ids))
+    try:
+        async with async_session() as session:
+            await session.execute(
+                statement.values(
+                    status="failed",
+                    error_message="Processing was interrupted by a server restart. "
+                    "Reprocess to retry.",
+                )
+            )
+            await session.commit()
+    except (DBAPIError, OSError):  # OSError: asyncpg's unwrapped connect failures
+        logger.exception("couldn't mark interrupted runs as failed at startup")

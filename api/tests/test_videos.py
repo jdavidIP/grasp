@@ -1,12 +1,18 @@
+import asyncio
 import uuid
 from pathlib import Path
 from unittest.mock import AsyncMock
 
 import pytest
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy import func, select
+from sqlalchemy.exc import ProgrammingError
 
+from app.db import async_session
 from app.ingestion import videos as ingestion
-from app.main import app
+from app.main import app, lifespan
+from app.models.chunk import TranscriptChunk
+from app.models.video import Video
 
 BASE_URL = "http://test"
 
@@ -31,6 +37,7 @@ def _fake_segments():
             "summary": "The intro.",
             "start_time": 0.0,
             "end_time": 2.0,
+            "slips": [{"said": "helo", "meant": "hello", "reason": "r"}],
         }
     ]
 
@@ -220,6 +227,208 @@ async def test_reprocess_llm_error_stores_its_message(monkeypatch):
     detail = get_response.json()
     assert detail["status"] == "failed"
     assert detail["error_message"] == "Hit an OpenAI rate limit or quota."
+    # The failed reprocess must not have wiped what the first ingestion stored.
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+    assert await _chunk_count(video["id"]) == 1
+
+
+async def test_successful_reprocess_clears_the_previous_error(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+
+        with monkeypatch.context() as m:
+            m.setattr(
+                ingestion.segmentation,
+                "segment_transcript",
+                AsyncMock(side_effect=ingestion.llm.LLMError("Hit an OpenAI rate limit.")),
+            )
+            await client.post(f"/api/videos/{video['id']}/reprocess")
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+        detail = (await client.get(f"/api/videos/{video['id']}")).json()
+
+    assert detail["status"] == "ready"
+    assert detail["error_message"] is None
+
+
+async def test_reprocess_failing_mid_write_rolls_back(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        create_response = await client.post("/api/videos", json={"url": url})
+        video = create_response.json()
+
+        # A chunk pointing at a segment that doesn't exist fails after the old
+        # segments were deleted and the new ones flushed.
+        bad_chunk = {**_fake_chunks()[0], "segment_order_index": 99}
+        monkeypatch.setattr(
+            ingestion.chunking, "chunk_transcript", AsyncMock(return_value=[bad_chunk])
+        )
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+        get_response = await client.get(f"/api/videos/{video['id']}")
+
+    detail = get_response.json()
+    assert detail["status"] == "failed"
+    assert detail["error_message"] == "Reprocessing failed unexpectedly."
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+    assert await _chunk_count(video["id"]) == 1
+
+
+async def test_reprocess_without_a_transcript_reruns_ingestion(monkeypatch):
+    # e.g. the first ingestion failed, or a restart interrupted it, before a
+    # transcript was stored: there's nothing to reprocess, so fetch it again.
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        with monkeypatch.context() as m:
+            m.setattr(ingestion, "_fetch_transcript", AsyncMock(return_value=([], "captions")))
+            video = (await client.post("/api/videos", json={"url": url})).json()
+        assert (await client.get(f"/api/videos/{video['id']}")).json()["status"] == "failed"
+
+        response = await client.post(f"/api/videos/{video['id']}/reprocess")
+        detail = (await client.get(f"/api/videos/{video['id']}")).json()
+
+    assert response.status_code == 202
+    assert detail["status"] == "ready"
+    assert detail["transcript_source"] == "captions"
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+
+
+@pytest.mark.parametrize("status", ["pending", "processing"])
+async def test_reprocess_while_a_run_is_underway_returns_409(status):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        async with async_session() as session:
+            (await session.get(Video, uuid.UUID(video["id"]))).status = status
+            await session.commit()
+
+        response = await client.post(f"/api/videos/{video['id']}/reprocess")
+
+    assert response.status_code == 409
+
+
+async def test_simultaneous_reprocesses_start_only_one_run():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        responses = await asyncio.gather(
+            *(client.post(f"/api/videos/{video['id']}/reprocess") for _ in range(2))
+        )
+
+    assert sorted(r.status_code for r in responses) == [202, 409]
+    # The claim's UPDATE sets the returned video's status without a refresh.
+    assert next(r for r in responses if r.status_code == 202).json()["status"] == "processing"
+
+
+async def test_simultaneous_adds_of_one_video_return_409_not_500():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        responses = await asyncio.gather(
+            *(client.post("/api/videos", json={"url": url}) for _ in range(2))
+        )
+
+    assert sorted(r.status_code for r in responses) == [201, 409]
+
+
+@pytest.mark.parametrize("status", ["pending", "processing"])
+async def test_runs_interrupted_by_a_restart_are_marked_failed(status):
+    transport = ASGITransport(app=app)
+    video_ids = []
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        for _ in range(2):
+            url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+            video_ids.append(
+                uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+            )
+    interrupted, untouched = video_ids
+    async with async_session() as session:
+        for video_id in video_ids:
+            (await session.get(Video, video_id)).status = status
+        await session.commit()
+
+    # Scoped to this test's video: the tests share the dev database, and marking a
+    # real video's live run as failed would re-enable Reprocess on it mid-run.
+    await ingestion.fail_interrupted_runs(video_ids=[interrupted])
+
+    async with async_session() as session:
+        video = await session.get(Video, interrupted)
+        other = await session.get(Video, untouched)
+    assert video.status == "failed"
+    assert "interrupted" in video.error_message
+    assert other.status == status
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        # A fresh database before `alembic upgrade head`: the table doesn't exist yet.
+        ProgrammingError("UPDATE videos ...", {}, Exception('relation "videos" does not exist')),
+        # Postgres down or unreachable: asyncpg raises a bare OSError, not a DBAPIError.
+        ConnectionRefusedError(111, "Connect call failed"),
+    ],
+)
+async def test_startup_survives_a_database_failure_in_the_interrupted_run_cleanup(
+    monkeypatch, error
+):
+    class BrokenSession:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            return False
+
+        async def execute(self, *args, **kwargs):
+            raise error
+
+    monkeypatch.setattr(ingestion, "async_session", BrokenSession)
+
+    async with lifespan(app):
+        pass
+
+
+@pytest.mark.parametrize("llm_fails", [False, True])
+@pytest.mark.parametrize("runner", ["run_ingestion", "run_reprocessing"])
+async def test_video_deleted_mid_run_is_left_deleted(monkeypatch, runner, llm_fails):
+    # Reprocessing takes minutes (sequential slip checks), so a user can delete the
+    # video while it runs. The run must end quietly, not crash saving its outcome.
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video_id = uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+
+    async def delete_then_finish(*args, **kwargs):
+        async with async_session() as session:
+            await session.delete(await session.get(Video, video_id))
+            await session.commit()
+        if llm_fails:
+            raise ingestion.llm.LLMError("Hit an OpenAI rate limit.")
+        return _fake_segments()
+
+    monkeypatch.setattr(ingestion.segmentation, "segment_transcript", delete_then_finish)
+    await getattr(ingestion, runner)(video_id)
+
+    async with async_session() as session:
+        assert await session.get(Video, video_id) is None
+
+
+async def _chunk_count(video_id: str) -> int:
+    async with async_session() as session:
+        return await session.scalar(
+            select(func.count())
+            .select_from(TranscriptChunk)
+            .where(TranscriptChunk.video_id == uuid.UUID(video_id))
+        )
 
 
 async def test_video_no_transcript_fails(monkeypatch):
