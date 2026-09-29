@@ -277,14 +277,36 @@ async def test_reprocess_failing_mid_write_rolls_back(monkeypatch):
     assert await _chunk_count(video["id"]) == 1
 
 
-async def test_reprocess_while_processing_returns_409():
+async def test_reprocess_without_a_transcript_reruns_ingestion(monkeypatch):
+    # e.g. the first ingestion failed, or a restart interrupted it, before a
+    # transcript was stored: there's nothing to reprocess, so fetch it again.
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        with monkeypatch.context() as m:
+            m.setattr(ingestion, "_fetch_transcript", AsyncMock(return_value=([], "captions")))
+            video = (await client.post("/api/videos", json={"url": url})).json()
+        assert (await client.get(f"/api/videos/{video['id']}")).json()["status"] == "failed"
+
+        response = await client.post(f"/api/videos/{video['id']}/reprocess")
+        detail = (await client.get(f"/api/videos/{video['id']}")).json()
+
+    assert response.status_code == 202
+    assert detail["status"] == "ready"
+    assert detail["transcript_source"] == "captions"
+    assert [s["label"] for s in detail["segments"]] == ["Intro"]
+
+
+@pytest.mark.parametrize("status", ["pending", "processing"])
+async def test_reprocess_while_a_run_is_underway_returns_409(status):
     url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
     transport = ASGITransport(app=app)
 
     async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
         video = (await client.post("/api/videos", json={"url": url})).json()
         async with async_session() as session:
-            (await session.get(Video, uuid.UUID(video["id"]))).status = "processing"
+            (await session.get(Video, uuid.UUID(video["id"]))).status = status
             await session.commit()
 
         response = await client.post(f"/api/videos/{video['id']}/reprocess")
@@ -347,8 +369,18 @@ async def test_runs_interrupted_by_a_restart_are_marked_failed(status):
     assert other.status == status
 
 
-async def test_startup_survives_a_database_error_in_the_interrupted_run_cleanup(monkeypatch):
-    # e.g. a fresh database before `alembic upgrade head`: the table doesn't exist yet.
+@pytest.mark.parametrize(
+    "error",
+    [
+        # A fresh database before `alembic upgrade head`: the table doesn't exist yet.
+        ProgrammingError("UPDATE videos ...", {}, Exception('relation "videos" does not exist')),
+        # Postgres down or unreachable: asyncpg raises a bare OSError, not a DBAPIError.
+        ConnectionRefusedError(111, "Connect call failed"),
+    ],
+)
+async def test_startup_survives_a_database_failure_in_the_interrupted_run_cleanup(
+    monkeypatch, error
+):
     class BrokenSession:
         async def __aenter__(self):
             return self
@@ -357,9 +389,7 @@ async def test_startup_survives_a_database_error_in_the_interrupted_run_cleanup(
             return False
 
         async def execute(self, *args, **kwargs):
-            raise ProgrammingError(
-                "UPDATE videos ...", {}, Exception('relation "videos" does not exist')
-            )
+            raise error
 
     monkeypatch.setattr(ingestion, "async_session", BrokenSession)
 

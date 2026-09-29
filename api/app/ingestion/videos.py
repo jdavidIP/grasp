@@ -259,10 +259,10 @@ async def fail_interrupted_runs(video_ids: list[uuid.UUID] | None = None) -> Non
             await session.execute(
                 statement.values(
                     status="failed",
-                    error_message="Processing was interrupted by a server restart. Reprocess "
-                    "to retry, or remove and re-add the video if it has no transcript yet.",
+                    error_message="Processing was interrupted by a server restart. "
+                    "Reprocess to retry.",
                 )
             )
             await session.commit()
-    except DBAPIError:
+    except (DBAPIError, OSError):  # OSError: asyncpg's unwrapped connect failures
         logger.exception("couldn't mark interrupted runs as failed at startup")

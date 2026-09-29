@@ -63,24 +63,26 @@ async def reprocess_video(
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
 ) -> Video:
-    video = await db.get(Video, video_id)
-    if video is None:
-        raise HTTPException(status_code=404, detail="Video not found.")
-    if video.transcript is None:
-        raise HTTPException(status_code=400, detail="No stored transcript to reprocess.")
-    # Claim the video in one statement: two simultaneous requests can't both pass,
-    # and two runs would each delete and rewrite the segments over several minutes.
-    claimed = await db.execute(
+    # Claim the video in one statement, before looking at anything else: two
+    # simultaneous requests can't both pass, and two runs would each delete and
+    # rewrite the segments over several minutes. A pending video's ingestion is
+    # about to start (startup fails any a restart left stuck).
+    video = await db.scalar(
         update(Video)
-        .where(Video.id == video_id, Video.status != "processing")
+        .where(Video.id == video_id, Video.status.not_in(("pending", "processing")))
         .values(status="processing")
+        .returning(Video)
     )
-    if claimed.rowcount == 0:
+    if video is None:
+        if await db.scalar(select(Video.id).where(Video.id == video_id)) is None:
+            raise HTTPException(status_code=404, detail="Video not found.")
         raise HTTPException(status_code=409, detail="This video is already being processed.")
-    await db.commit()  # no refresh: the claim already set `status` on `video`, and a
-    # refresh would 500 if the video were deleted in the meantime
+    await db.commit()
 
-    background_tasks.add_task(run_reprocessing, video.id)
+    # No stored transcript (the first ingestion failed or was interrupted before
+    # fetching one): there's nothing to reprocess, so run the whole ingestion again.
+    run = run_reprocessing if video.transcript is not None else run_ingestion
+    background_tasks.add_task(run, video.id)
     return video
 
 
