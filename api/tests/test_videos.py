@@ -6,10 +6,11 @@ from unittest.mock import AsyncMock
 import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import func, select
+from sqlalchemy.exc import ProgrammingError
 
 from app.db import async_session
 from app.ingestion import videos as ingestion
-from app.main import app
+from app.main import app, lifespan
 from app.models.chunk import TranscriptChunk
 from app.models.video import Video
 
@@ -302,6 +303,8 @@ async def test_simultaneous_reprocesses_start_only_one_run():
         )
 
     assert sorted(r.status_code for r in responses) == [202, 409]
+    # The claim's UPDATE sets the returned video's status without a refresh.
+    assert next(r for r in responses if r.status_code == 202).json()["status"] == "processing"
 
 
 async def test_simultaneous_adds_of_one_video_return_409_not_500():
@@ -318,20 +321,50 @@ async def test_simultaneous_adds_of_one_video_return_409_not_500():
 
 @pytest.mark.parametrize("status", ["pending", "processing"])
 async def test_runs_interrupted_by_a_restart_are_marked_failed(status):
-    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
     transport = ASGITransport(app=app)
+    video_ids = []
     async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
-        video_id = uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+        for _ in range(2):
+            url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+            video_ids.append(
+                uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+            )
+    interrupted, untouched = video_ids
     async with async_session() as session:
-        (await session.get(Video, video_id)).status = status
+        for video_id in video_ids:
+            (await session.get(Video, video_id)).status = status
         await session.commit()
 
-    await ingestion.fail_interrupted_runs()
+    # Scoped to this test's video: the tests share the dev database, and marking a
+    # real video's live run as failed would re-enable Reprocess on it mid-run.
+    await ingestion.fail_interrupted_runs(video_ids=[interrupted])
 
     async with async_session() as session:
-        video = await session.get(Video, video_id)
+        video = await session.get(Video, interrupted)
+        other = await session.get(Video, untouched)
     assert video.status == "failed"
     assert "interrupted" in video.error_message
+    assert other.status == status
+
+
+async def test_startup_survives_a_database_error_in_the_interrupted_run_cleanup(monkeypatch):
+    # e.g. a fresh database before `alembic upgrade head`: the table doesn't exist yet.
+    class BrokenSession:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *exc):
+            return False
+
+        async def execute(self, *args, **kwargs):
+            raise ProgrammingError(
+                "UPDATE videos ...", {}, Exception('relation "videos" does not exist')
+            )
+
+    monkeypatch.setattr(ingestion, "async_session", BrokenSession)
+
+    async with lifespan(app):
+        pass
 
 
 @pytest.mark.parametrize("llm_fails", [False, True])

@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, urlparse
 
 import yt_dlp
 from sqlalchemy import delete, update
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.exc import StaleDataError
 from youtube_transcript_api import (
@@ -242,20 +243,26 @@ async def _commit_unless_deleted(session: AsyncSession) -> None:
         await session.rollback()
 
 
-async def fail_interrupted_runs() -> None:
-    """Marks videos a restart left mid-run as failed. Runs are in-process background
-    tasks, so anything still pending or processing at startup has no run behind it
-    and would otherwise be stuck: the UI offers no retry while a video is processing."""
+async def fail_interrupted_runs(video_ids: list[uuid.UUID] | None = None) -> None:
+    """Marks videos a restart left mid-run as failed (all of them, or only `video_ids`).
+    Runs are in-process background tasks, so anything still pending or processing at
+    startup has no run behind it and would otherwise be stuck: the UI offers no retry
+    while a video is processing. Best-effort: a database error (e.g. a fresh database
+    before migrations) is logged, never allowed to stop the API from starting."""
     # ponytail: assumes one API process (uvicorn without --workers). With several,
     # a worker starting up would fail another's live runs; track the owner then.
-    async with async_session() as session:
-        await session.execute(
-            update(Video)
-            .where(Video.status.in_(("pending", "processing")))
-            .values(
-                status="failed",
-                error_message="Processing was interrupted by a server restart. "
-                "Reprocess to retry, or remove and re-add the video if it has no transcript yet.",
+    statement = update(Video).where(Video.status.in_(("pending", "processing")))
+    if video_ids is not None:
+        statement = statement.where(Video.id.in_(video_ids))
+    try:
+        async with async_session() as session:
+            await session.execute(
+                statement.values(
+                    status="failed",
+                    error_message="Processing was interrupted by a server restart. Reprocess "
+                    "to retry, or remove and re-add the video if it has no transcript yet.",
+                )
             )
-        )
-        await session.commit()
+            await session.commit()
+    except DBAPIError:
+        logger.exception("couldn't mark interrupted runs as failed at startup")

@@ -77,8 +77,8 @@ async def reprocess_video(
     )
     if claimed.rowcount == 0:
         raise HTTPException(status_code=409, detail="This video is already being processed.")
-    await db.commit()
-    await db.refresh(video)
+    await db.commit()  # no refresh: the claim already set `status` on `video`, and a
+    # refresh would 500 if the video were deleted in the meantime
 
     background_tasks.add_task(run_reprocessing, video.id)
     return video
