@@ -6,7 +6,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 import yt_dlp
-from sqlalchemy import delete
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.exc import StaleDataError
 from youtube_transcript_api import (
@@ -240,3 +240,22 @@ async def _commit_unless_deleted(session: AsyncSession) -> None:
         await session.commit()
     except StaleDataError:
         await session.rollback()
+
+
+async def fail_interrupted_runs() -> None:
+    """Marks videos a restart left mid-run as failed. Runs are in-process background
+    tasks, so anything still pending or processing at startup has no run behind it
+    and would otherwise be stuck: the UI offers no retry while a video is processing."""
+    # ponytail: assumes one API process (uvicorn without --workers). With several,
+    # a worker starting up would fail another's live runs; track the owner then.
+    async with async_session() as session:
+        await session.execute(
+            update(Video)
+            .where(Video.status.in_(("pending", "processing")))
+            .values(
+                status="failed",
+                error_message="Processing was interrupted by a server restart. "
+                "Reprocess to retry, or remove and re-add the video if it has no transcript yet.",
+            )
+        )
+        await session.commit()

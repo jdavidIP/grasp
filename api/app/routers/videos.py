@@ -1,7 +1,8 @@
 import uuid
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_db
@@ -36,7 +37,12 @@ async def create_video(
 
     video = Video(youtube_id=youtube_id, title=youtube_id, status="pending")
     db.add(video)
-    await db.commit()
+    try:
+        await db.commit()
+    except IntegrityError:  # added by a simultaneous request since the check above
+        raise HTTPException(
+            status_code=409, detail="This video is already in the library."
+        ) from None
     await db.refresh(video)
 
     background_tasks.add_task(run_ingestion, video.id)
@@ -62,11 +68,15 @@ async def reprocess_video(
         raise HTTPException(status_code=404, detail="Video not found.")
     if video.transcript is None:
         raise HTTPException(status_code=400, detail="No stored transcript to reprocess.")
-    if video.status == "processing":
-        # Two runs would each delete and rewrite the segments over several minutes.
+    # Claim the video in one statement: two simultaneous requests can't both pass,
+    # and two runs would each delete and rewrite the segments over several minutes.
+    claimed = await db.execute(
+        update(Video)
+        .where(Video.id == video_id, Video.status != "processing")
+        .values(status="processing")
+    )
+    if claimed.rowcount == 0:
         raise HTTPException(status_code=409, detail="This video is already being processed.")
-
-    video.status = "processing"
     await db.commit()
     await db.refresh(video)
 

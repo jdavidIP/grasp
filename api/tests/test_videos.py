@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 from pathlib import Path
 from unittest.mock import AsyncMock
@@ -288,6 +289,49 @@ async def test_reprocess_while_processing_returns_409():
         response = await client.post(f"/api/videos/{video['id']}/reprocess")
 
     assert response.status_code == 409
+
+
+async def test_simultaneous_reprocesses_start_only_one_run():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        responses = await asyncio.gather(
+            *(client.post(f"/api/videos/{video['id']}/reprocess") for _ in range(2))
+        )
+
+    assert sorted(r.status_code for r in responses) == [202, 409]
+
+
+async def test_simultaneous_adds_of_one_video_return_409_not_500():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        responses = await asyncio.gather(
+            *(client.post("/api/videos", json={"url": url}) for _ in range(2))
+        )
+
+    assert sorted(r.status_code for r in responses) == [201, 409]
+
+
+@pytest.mark.parametrize("status", ["pending", "processing"])
+async def test_runs_interrupted_by_a_restart_are_marked_failed(status):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video_id = uuid.UUID((await client.post("/api/videos", json={"url": url})).json()["id"])
+    async with async_session() as session:
+        (await session.get(Video, video_id)).status = status
+        await session.commit()
+
+    await ingestion.fail_interrupted_runs()
+
+    async with async_session() as session:
+        video = await session.get(Video, video_id)
+    assert video.status == "failed"
+    assert "interrupted" in video.error_message
 
 
 @pytest.mark.parametrize("llm_fails", [False, True])

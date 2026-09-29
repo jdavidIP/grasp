@@ -1,11 +1,22 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.generation.llm import LLMError
+from app.ingestion.videos import fail_interrupted_runs
 from app.routers import chat, flashcards, quizzes, videos
 
-app = FastAPI(title="Grasp")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    await fail_interrupted_runs()
+    yield
+
+
+app = FastAPI(title="Grasp", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
