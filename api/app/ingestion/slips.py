@@ -15,6 +15,13 @@ def _normalize(text: str) -> str:
     return _NON_WORD_RE.sub(" ", text.lower()).strip()
 
 
+def _slip_sized(text: str) -> bool:
+    """A slip is a few words. Both quote and correction reach the chat prompt and the
+    note shown to the viewer, and they come from an untrusted transcript, so anything
+    longer (a whole passage, an injected instruction) is dropped."""
+    return len(text) <= 200 and len(text.split()) <= 12
+
+
 def parse_slips(result: dict, transcript: str) -> list[dict]:
     """Keeps well-formed slips whose `said` actually occurs in the transcript, ignoring
     case and punctuation — a quote the model can't point to is an invented slip."""
@@ -30,13 +37,22 @@ def parse_slips(result: dict, transcript: str) -> list[dict]:
         said, meant = slip.get("said"), slip.get("meant")
         if not isinstance(said, str) or not isinstance(meant, str):
             continue
+        if not _slip_sized(said) or not _slip_sized(meant):
+            continue
         key = _normalize(said)
         if not key or key == _normalize(meant) or key in seen:
             continue
         if f" {key} " not in haystack:
             continue
         seen.add(key)
-        slips.append({"said": said.strip(), "meant": meant.strip(), "reason": slip.get("reason")})
+        reason = slip.get("reason")
+        slips.append(
+            {
+                "said": said.strip(),
+                "meant": meant.strip(),
+                "reason": reason if isinstance(reason, str) else None,
+            }
+        )
     return slips
 
 
