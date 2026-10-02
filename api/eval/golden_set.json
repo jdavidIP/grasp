@@ -388,5 +388,47 @@
     "question": "What did they talk about?",
     "kind": "broad",
     "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-broad-3",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "What topics does the professor cover?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-broad-4",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "Give me the big picture of this lecture.",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "fWjsdhR3z3c-broad-3",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "What Python concepts does this teach?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "fWjsdhR3z3c-broad-4",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "What's covered here?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "qiP1E6iAVS8-broad-3",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "What subjects come up in this episode?",
+    "kind": "broad",
+    "span": null
+  },
+  {
+    "id": "qiP1E6iAVS8-broad-4",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "Walk me through the conversation.",
+    "kind": "broad",
+    "span": null
   }
 ]
