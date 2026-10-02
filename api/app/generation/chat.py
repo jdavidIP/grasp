@@ -22,7 +22,8 @@ async def classify_question(question: str) -> bool:
     # No keyword shortcut: "summarize what they said about X" is specific, and
     # "what will I learn here?" is broad, so wording alone can't decide (#37).
     result = await llm.generate_json(CLASSIFY_SYSTEM_PROMPT, question)
-    return bool(result.get("broad", False))
+    # Anything but a real `true` (a "false" string, a missing key) means specific.
+    return result.get("broad") is True
 
 
 async def answer_question(

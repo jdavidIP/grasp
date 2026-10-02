@@ -35,6 +35,13 @@ async def test_classify_question_always_asks_the_classifier(monkeypatch, questio
     mock_generate.assert_awaited_once()
 
 
+@pytest.mark.parametrize("result", [{"broad": "false"}, {}])
+async def test_classify_question_defaults_to_specific(monkeypatch, result):
+    monkeypatch.setattr(chat.llm, "generate_json", AsyncMock(return_value=result))
+
+    assert await chat.classify_question("q") is False
+
+
 @pytest.mark.parametrize("broad", [True, False])
 async def test_answer_question_reports_its_path_even_with_no_sources(monkeypatch, broad):
     # Both paths can return no sources (an unprocessed video, no retrieval hits), so the
