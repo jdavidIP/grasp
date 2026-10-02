@@ -205,7 +205,7 @@ The chat and faithfulness evals also report **tokens per feature**. `llm.track_u
 
 **Limitations:**
 - With 250-token chunks, a 10-minute video has 11 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
-- The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With 26 questions, one question is worth ~0.04 at @1.
+- The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With the 26 questions those runs used, one question is worth ~0.04 at @1.
 - Broad questions ("what is this video about?") have no span, so retrieval doesn't score them. The chat eval covers them instead.
 - One of the two baseline misses (answers diluted inside a chunk mostly about something else) is fixed by the 250-token chunk size tuned in §3 ([#17](https://github.com/jdavidIP/grasp/issues/17)); the other survives because it lives in a segment whose entire transcript is already under 250 tokens, which no chunk-size change can address.
 
