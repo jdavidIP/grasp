@@ -30,7 +30,7 @@ _usage: ContextVar[Usage | None] = ContextVar("llm_usage", default=None)
 class LLMError(Exception):
     """An OpenAI call failed. The message is written for a user, not a stack trace:
     ingestion stores it verbatim as `videos.error_message`, and the app-level handler
-    in main.py returns it verbatim as a 503 `detail`."""
+    in main.py returns it verbatim as a 502 `detail`."""
 
 
 @contextmanager

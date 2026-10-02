@@ -18,26 +18,28 @@ def _chunk(text: str, label: str, slips: list[dict] | None = None) -> Transcript
     return chunk
 
 
-async def test_classify_question_broad_keyword_no_llm_call(monkeypatch):
-    mock_generate = AsyncMock()
+@pytest.mark.parametrize(
+    ("question", "broad"),
+    [
+        # Keyword-worded but scoped to one topic, and naturally worded but whole-video:
+        # both used to be routed by wording alone (#37).
+        ("Summarize what they said about gradient descent.", False),
+        ("What will I learn from this tutorial?", True),
+    ],
+)
+async def test_classify_question_always_asks_the_classifier(monkeypatch, question, broad):
+    mock_generate = AsyncMock(return_value={"broad": broad})
     monkeypatch.setattr(chat.llm, "generate_json", mock_generate)
 
-    assert await chat.classify_question("Can you summarize this video?") is True
-    mock_generate.assert_not_called()
+    assert await chat.classify_question(question) is broad
+    mock_generate.assert_awaited_once()
 
 
-async def test_classify_question_specific_with_noun_no_llm_call(monkeypatch):
-    mock_generate = AsyncMock()
-    monkeypatch.setattr(chat.llm, "generate_json", mock_generate)
+@pytest.mark.parametrize("result", [{"broad": "false"}, {}])
+async def test_classify_question_defaults_to_specific(monkeypatch, result):
+    monkeypatch.setattr(chat.llm, "generate_json", AsyncMock(return_value=result))
 
-    assert await chat.classify_question("What did they say about gradient descent?") is False
-    mock_generate.assert_not_called()
-
-
-async def test_classify_question_ambiguous_falls_back_to_llm(monkeypatch):
-    monkeypatch.setattr(chat.llm, "generate_json", AsyncMock(return_value={"broad": True}))
-
-    assert await chat.classify_question("tell me more about that") is True
+    assert await chat.classify_question("q") is False
 
 
 @pytest.mark.parametrize("broad", [True, False])

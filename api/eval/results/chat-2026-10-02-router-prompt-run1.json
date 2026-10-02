@@ -1,0 +1,2477 @@
+{
+  "run_at": "2026-10-02T17:23:18+00:00",
+  "label": "router-prompt-run1",
+  "judge_model": "gpt-4o",
+  "generation_model": "gpt-4o-mini",
+  "summary": {
+    "specific": {
+      "n": 28,
+      "unjudged": 0,
+      "supported": 1.0,
+      "answers_question": 1.0,
+      "faithful": 1.0,
+      "speaker_slips": 5,
+      "grounded": 1.0,
+      "routed_broad": 0.0
+    },
+    "broad": {
+      "n": 12,
+      "unjudged": 0,
+      "supported": 1.0,
+      "answers_question": 1.0,
+      "faithful": 1.0,
+      "speaker_slips": 1,
+      "grounded": 1.0,
+      "routed_broad": 0.9166666666666666
+    },
+    "out_of_scope": {
+      "n": 6,
+      "unjudged": 0,
+      "declines": 0.8333333333333334,
+      "supported": 0.8333333333333334,
+      "faithful": 0.8333333333333334,
+      "speaker_slips": 1,
+      "grounded": 0.16666666666666666,
+      "routed_broad": 0.0
+    }
+  },
+  "usage": {
+    "chat_specific": {
+      "gpt-4o-mini": {
+        "calls": 84,
+        "prompt_tokens": 106571,
+        "completion_tokens": 3980
+      },
+      "text-embedding-3-small": {
+        "calls": 28,
+        "prompt_tokens": 459,
+        "completion_tokens": 0
+      }
+    },
+    "chat_broad": {
+      "gpt-4o-mini": {
+        "calls": 25,
+        "prompt_tokens": 18463,
+        "completion_tokens": 1568
+      },
+      "text-embedding-3-small": {
+        "calls": 1,
+        "prompt_tokens": 7,
+        "completion_tokens": 0
+      }
+    },
+    "chat_out_of_scope": {
+      "gpt-4o-mini": {
+        "calls": 18,
+        "prompt_tokens": 22977,
+        "completion_tokens": 595
+      },
+      "text-embedding-3-small": {
+        "calls": 6,
+        "prompt_tokens": 90,
+        "completion_tokens": 0
+      }
+    },
+    "judge": {
+      "gpt-4o": {
+        "calls": 46,
+        "prompt_tokens": 71686,
+        "completion_tokens": 3583
+      }
+    }
+  },
+  "items": [
+    {
+      "id": "BDqvzFY72mg-13",
+      "kind": "specific",
+      "question": "How did the Marshall Plan contribute to political stability in post-World War II Europe?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The Marshall Plan contributed to political stability in post-World War II Europe by providing aid to countries recovering from the war, which facilitated their rebuilding and led to an era of great prosperity and stability in most advanced capitalist democracies. This financial support was crucial for establishing a stable political environment during a time of recovery.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 111.707
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the Marshall Plan provided aid to countries recovering from World War II, facilitating their rebuilding and leading to a period of political stability and prosperity in most advanced capitalist democracies, as mentioned in source [0]. This aligns with the information given in the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-14",
+      "kind": "specific",
+      "question": "What was the significance of the symbolic dismantling of the Berlin Wall during the celebrations in Berlin?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The symbolic dismantling of the Berlin Wall was significant as it represented the deep feelings of the Germans about their reunification and the end of the artificial division of Berlin. The tearing down of portions of the wall allowed East Germans to come into West Berlin freely, fostering joy and family reunions after years of hardship. This event marked a turning point towards the closer integration of East and West Germany and the broader democratization movement across Eastern Europe.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 264.05,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 185.24,
+          "end_time": 276.42
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which describe the symbolic dismantling of the Berlin Wall as a deeply emotional event for Germans, highlighting the end of Berlin's artificial division. It acknowledges the freer movement between East and West Berlin, fostering family reunions, and situates the event within the broader context of democratization in Eastern Europe."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-15",
+      "kind": "specific",
+      "question": "What was the outcome of democratization movements in Eastern Europe and other regions following the decline of Soviet dominance?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The outcome of democratization movements following the decline of Soviet dominance included the democratization of all former Soviet bloc countries in Eastern Europe and the transition of South Africa to a multi-racial democracy. This period witnessed significant enthusiasm for change, as many countries shed totalitarian control and moved toward democratic governance. Notably, there were also efforts towards resolution in conflicts like Northern Ireland and Israel-Palestine during this time, highlighting a broader trend of democratization in various global contexts.",
+      "sources": [
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 447.25
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the information provided in the sources. It states that former Soviet bloc countries in Eastern Europe underwent democratization and that South Africa transitioned to a multi-racial democracy, both of which are supported by the sources. The sources also discuss efforts toward resolving conflicts in Northern Ireland and Israel-Palestine, corresponding to the claim of a broader trend of democratization during this period."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-16",
+      "kind": "specific",
+      "question": "After the Cold War, what did people expect would happen to global poverty and the world economy?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "After the Cold War, there was a massive confidence in unregulated or mildly regulated free-market capitalism to deliver the best results for every country in the world. This confidence was part of a broader neoliberal approach, which included trade deregulation and privatization, and it was adopted globally as part of the Washington Consensus.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2163.89,
+          "end_time": 2260.61
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The provided answer accurately captures the expectation after the Cold War regarding global poverty and the world economy, as explained in the sources. It describes the confidence in free-market capitalism and the global adoption of neoliberal policies like trade deregulation and privatization, which were central to the Washington Consensus."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-17",
+      "kind": "specific",
+      "question": "How did the traditional political parties fare in the Bavarian regional elections?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The traditional political parties, particularly the Christian Democratic Union (CDU) and the Social Democratic Party (SPD), had disappointing performances in the Bavarian regional elections, with the CDU hemorrhaging about 10% of their vote to the Alternative for Germany (AfD) and the SPD also losing support to the Greens. (The video says \"AFP here on this graph.\" here; the speaker means \"AfD here on this graph.\".)",
+      "sources": [
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 871.63,
+          "end_time": 946.2030000000001
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 937.97,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 888.1
+        },
+        {
+          "segment_label": "German Electoral Politics Overview",
+          "start_time": 673.63,
+          "end_time": 767.01
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The answer is supported by the sources: the CDU lost about 10% of their vote to the AfD, and the SPD also lost support to the Greens, which both indicate poor performance in the Bavarian regional elections. The answer correctly notes the slip regarding 'AFP' instead of 'AfD'."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The political landscape in some European countries has changed significantly with the rise of far-right parties, as evidenced by various elections where traditional establishment parties have weakened and far-right parties have gained seats and support. For example, in Austria, the far-right party increased its representation to a close third in the 2017 legislative elections, while in Belgium, the far-right Vlaams Belang gained almost 12% of the vote. Italy saw a significant proportion of votes for a far-right populist party, League, which secured 125 seats. Additionally, the establishment parties like the SPD in Germany faced challenges as they lost support to far-right parties like the Alternative for Germany (AFD), prompting fears of further electoral losses and leading to difficult coalition negotiations. This trend of far-right parties performing well appears consistent across many European countries, including those considered stable in previous decades.",
+      "sources": [
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1075.86,
+          "end_time": 1167.143
+        },
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1156.18,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 937.97,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 888.1
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 871.63,
+          "end_time": 946.2030000000001
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately describes the rise of far-right parties in European countries like Austria, Belgium, and Italy, highlighting their increased seats and vote shares. It also correctly explains the situation in Germany with the AFD's rising popularity affecting other parties. The trend is mentioned as widespread across Europe, fitting the source material."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-20",
+      "kind": "specific",
+      "question": "What is the difference between normative political theory and empirical work in political science?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The difference between normative political theory and empirical work in political science lies in their focus and methodology. Normative political theory concerns itself with what should happen and how the world should be organized, emphasizing theoretical ideals and goals. In contrast, empirical political science deals with how the world is organized, using data and historical events to test theories and understand reality. The speaker highlights that political philosophy often develops theories without considering practical implementation, while empirical work looks at data, as seen in the analysis of the events of 1989, which provides new insights and tests conventional wisdom.",
+      "sources": [
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1570.13,
+          "end_time": 1671.64
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1659.01,
+          "end_time": 1760.8100000000002
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1400.4099999999999
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which differentiate normative political theory as focusing on ideals and what should happen, while empirical political science is concerned with what is and uses data to analyze reality. This distinction is clearly mentioned in the sources, especially in the context of analyzing events like those of 1989 for empirical insights."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-21",
+      "kind": "specific",
+      "question": "What connection is drawn between Ukraine's interest in joining NATO and the invasion of Ukraine?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The connection drawn is that part of the reason the Soviet Union invaded Ukraine was Ukraine's interest in joining NATO, as suggested by a statement made about the discussions around NATO while Ukraine and Georgia were seeking membership.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1806.12,
+          "end_time": 1901.28
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1746.75,
+          "end_time": 1810.61
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2243.47,
+          "end_time": 2355.853
+        },
+        {
+          "segment_label": "Copyright and Course Structure",
+          "start_time": 3056.89,
+          "end_time": 3155.42
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 888.1
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The sources indicate that Ukraine's interest in joining NATO was part of the discussion around why the Soviet Union invaded Ukraine. However, the use of 'Soviet Union' seems an error, as it likely refers to Russia post-Soviet Union. The answer reflects this implication but does not highlight the apparent slip."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-22",
+      "kind": "specific",
+      "question": "What role did the Washington Consensus play in the economic policies of developing countries after the post-communist era?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The Washington Consensus played a significant role in shaping the economic policies of developing countries after the post-communist era by promoting neoliberalism, which emphasized trade deregulation, the removal of internal regulations, and massive privatization of state assets. Adopted by institutions like the World Bank and IMF as conditions for loans, the Washington Consensus essentially aimed to take the principles of neoliberalism global, reflecting a belief in the effectiveness of unregulated or mildly regulated free-market capitalism in delivering positive economic outcomes.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 425.87,
+          "end_time": 529.8299999999999
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2523.14,
+          "end_time": 2622.7200000000003
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately captures the role of the Washington Consensus in influencing economic policies in developing countries by promoting neoliberal principles such as trade deregulation, removal of internal regulations, and privatization of state assets. It correctly states that these policies were conditions set by the World Bank and IMF for loans, aiming to globalize neoliberalism. These points are supported by the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-23",
+      "kind": "out_of_scope",
+      "question": "How does the lecture address the role of social media in shaping modern political movements?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not address the role of social media in shaping modern political movements. They discuss historical democratization processes, political theories, and the impact of events since 1989, but social media's influence is not mentioned.",
+      "sources": [
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1400.4099999999999
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2163.89,
+          "end_time": 2260.61
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 111.707
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly identifies that the sources do not cover the role of social media in shaping modern political movements. The excerpts focus on democratization processes, political theories, and historical events but do not mention social media."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-24",
+      "kind": "out_of_scope",
+      "question": "What insights does the lecture provide on the impact of climate change on global political stability?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not provide specific insights on the impact of climate change on global political stability. They discuss various political shifts, including state capitalism, the global war on terror, and the restructuring of politics after the end of the Cold War, but do not mention climate change or its effects.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2343.44,
+          "end_time": 2441.21
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2243.47,
+          "end_time": 2355.853
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1481.71,
+          "end_time": 1585.21
+        },
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 97.77,
+          "end_time": 200.42000000000002
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly declines the question, as the sources do not mention climate change or its impact on global political stability."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-25",
+      "kind": "specific",
+      "question": "How do you create a variable and what should you keep in mind regarding Python's case sensitivity and naming conventions?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To create a variable in Python, you simply need to decide on a name and assign it a value. It's important to remember that Python is a case-sensitive language, meaning 'item' with a small 'i' and 'Item' with a big 'I' are considered different variables. Additionally, when naming variables that comprise multiple words, the convention is to use an underscore to separate the words, for example, 'item_name'.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 124.399,
+          "end_time": 192.319
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately describes how to create a variable by naming it and assigning a value. It also correctly explains Python's case sensitivity and the naming convention of using underscores for multi-word variable names, both of which are covered in the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-27",
+      "kind": "specific",
+      "question": "How do you create a list in Python that contains different types of values?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To create a list in Python that contains different types of values, you just need to create a pair of angle brackets and insert the values you want inside. It can include a mixture of numbers, booleans, and strings. For example, you can create a list like this: my_list = [2021, 'text', False].",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 305.36,
+          "end_time": 377.59999999999997
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly explains how to create a list in Python with different data types, which matches the explanation given in the sources about lists being able to contain a mix of numbers, booleans, and strings."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-28",
+      "kind": "specific",
+      "question": "How can you convert a string to an integer in Python before performing arithmetic operations on it?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To convert a string to an integer in Python before performing arithmetic operations, you can use the `int()` function. For example, if you have a string number from user input, you can convert it by writing `int(string_number)` and then add it to another number. If the conversion fails (for example, trying to convert a non-numeric string), you can handle the exception using a try and except block, which allows you to catch the error and print a message that indicates the input is not a valid number. (The video says \"try and accept block\" here; the speaker means \"try and except block\".)",
+      "sources": [
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 124.399,
+          "end_time": 192.319
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The answer correctly describes using the `int()` function to convert a string to an integer in Python, supported by the sources stating we should 'type in int ahead of that so we can convert it to an integer.' It also accurately includes the handling of exceptions using a try and except block, which is derived from the description in the sources mentioning 'execute the code that's inside here and if anything goes wrong if an exception occurs it's going to go to the accept block.' The explanation about the speaker meaning 'except' instead of 'accept' indicates a speaker slip, not an unsupported claim."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-29",
+      "kind": "specific",
+      "question": "How does one use conditional statements to provide different outputs based on a person's age and happiness in Python?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "You can use conditional statements in Python to provide different outputs based on a person's age and happiness by using 'if' statements. For example, if the age is more than 21, you can print 'you are old'; if the age is 18, you can print 'you are getting old'; otherwise, you would print 'you are still young'. For happiness, if the person is happy, you would print 'you are happy'; if not, you would print 'you are not happy.' This uses the truth value of the conditions to determine which output to give. (The video says \"try and accept block\" here; the speaker means \"try and except block\".)",
+      "sources": [
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 318.08
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The answer accurately describes how to use conditional statements in Python to give different outputs based on age and happiness, directly reflecting the examples given in the sources. The mention of 'try and accept block' is acknowledged as a slip, suggesting the correct term 'try and except block'."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-30",
+      "kind": "specific",
+      "question": "How can you modify a loop in Python to start its index at 1 instead of 0?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To modify a loop in Python to start its index at 1 instead of 0, you can manually add one to the index variable 'i' inside the loop. For example, if you use 'for i in range(3)' which starts at 0, you can adjust it to print 'hello' with 'i + 1', resulting in 'hello one', 'hello two', and 'hello three'.",
+      "sources": [
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 305.36,
+          "end_time": 377.59999999999997
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 318.08
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer is supported by the sources, which explain that you can manually add one to the index variable 'i' inside the loop to start at 1 instead of 0. It also directly answers the question on how to modify a loop to start its index at 1."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-31",
+      "kind": "specific",
+      "question": "What is the purpose of using 'break' in a Python loop?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The purpose of using 'break' in a Python loop is to cancel the loop and exit it when a certain condition is met. For example, if a user inputs the string '0', the program will print a message and then use 'break' to terminate the loop, preventing it from continuing indefinitely.",
+      "sources": [
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 318.08
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly explains that 'break' is used to exit a loop when a condition is met, as shown in the source where the loop breaks when the user inputs '0' to prevent the loop from running indefinitely."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-32",
+      "kind": "specific",
+      "question": "Why are functions used in programming?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Functions are used in programming to reuse code in many different instances. The main point of programming is to maximize how often you can reuse the same line of code without having to rewrite it. For example, a function that says hello can be used multiple times with different names without rewriting the print statement each time.",
+      "sources": [
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 318.08
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the source, which states that functions are used to reuse code in many different instances to avoid rewriting the same code multiple times."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-33",
+      "kind": "specific",
+      "question": "How can you prevent a function in Python from causing an error when it doesn't contain any logic yet?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "To prevent a function in Python from causing an error when it doesn't contain any logic yet, you can use the keyword 'pass'. This tells Python that there is nothing in the function, and the program will still run without errors.",
+      "sources": [
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer is supported by source [0] which states that using the 'pass' keyword in a function tells Python there's nothing in it and prevents errors, allowing the program to run."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-34",
+      "kind": "specific",
+      "question": "How does a try-except block handle exceptions in Python?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "A try-except block in Python works by attempting to execute the code inside the 'try' block. If an exception occurs during that execution, the program jumps to the 'except' block where it handles the exception. For example, if a user inputs a value that cannot be converted to an integer, instead of the program throwing an error, it will execute the code in the 'except' block, which can display a message like 'that is not a valid number'. (The video says \"try and accept block\" here; the speaker means \"try and except block\".)",
+      "sources": [
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 366.88,
+          "end_time": 436.71999999999997
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The answer correctly explains that a try-except block attempts to execute code in the try block and jumps to the except block if an exception occurs, as detailed in the sources. It uses the specific example from the sources where a user inputs an invalid number. The slip in 'try and accept' vs. 'try and except' is noted and correctly addressed in the answer."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-35",
+      "kind": "out_of_scope",
+      "question": "How do you integrate Python with web development frameworks like Django or Flask?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The video does not cover integrating Python with web development frameworks like Django or Flask.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The video does not mention anything about web development frameworks like Django or Flask based on the provided sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-36",
+      "kind": "out_of_scope",
+      "question": "What are some best practices for handling file I/O operations in Python applications?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The video covers using the try and except block for handling exceptions in Python, which is a best practice for managing potential errors during file I/O operations or user input. When an operation may lead to an exception, it is encapsulated within a try block, and if an error occurs, it moves to the except block where custom error messages can be printed. This prevents the program from crashing and provides user-friendly feedback. (The video says \"try and accept block\" here; the speaker means \"try and except block\".)",
+      "sources": [
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 575.279
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 504.63899999999995
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        }
+      ],
+      "judgment": {
+        "declines": false,
+        "supported": false,
+        "speaker_slip": true,
+        "reason": "The video does not cover best practices for file I/O operations in Python applications. It discusses using try and except blocks for error handling, but only in the context of integer conversion. The answer inappropriately generalizes this to file I/O."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-01",
+      "kind": "specific",
+      "question": "How has the Pentagon recently changed its stance on unidentified aerial phenomena captured by military personnel?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The Pentagon has recently acknowledged that there are real videos captured by military personnel showing unidentified aerial phenomena (UAP), and they admit they do not know what these phenomena are or how they operate. Specifically, they have confirmed that UAP have been observed hovering over Navy defense systems and that one video shows an object transitioning from air to water, which they attempted to track but could not find afterward.",
+      "sources": [
+        {
+          "segment_label": "Teaching Effectiveness and Audience Engagement",
+          "start_time": 800.88,
+          "end_time": 865.6800000000001
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 3022.079,
+          "end_time": 3097.119
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1328.96,
+          "end_time": 1408.9599999999998
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1206.72,
+          "end_time": 1276.559
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer is supported by the sources. The Pentagon has confirmed that real videos, captured off naval vessels, depict unidentified aerial phenomena that they do not understand, including one object moving from air into water. The details about attempting and failing to track the object underwater are also mentioned in the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-02",
+      "kind": "specific",
+      "question": "What does Neil deGrasse Tyson believe unidentified aerial phenomena (UAPs) might actually be?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Neil deGrasse Tyson believes that unidentified aerial phenomena (UAPs) might actually be probes rather than aliens. He points out that instead of sending biological entities to explore, sophisticated technology like rovers and drones could be employed, which is much more practical.",
+      "sources": [
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1328.96,
+          "end_time": 1408.9599999999998
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1206.72,
+          "end_time": 1276.559
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3157.359,
+          "end_time": 3238.48
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5415.36,
+          "end_time": 5479.84
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly reflects Tyson's perspective from the sources that USO might not actually be aliens but rather probes, analogous to how we send rovers and drones for exploration."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-04",
+      "kind": "specific",
+      "question": "What does our fear of aliens reveal about ourselves?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Our fear of aliens reveals our fear of ourselves and what we are capable of doing if we had the capability to reach out to another planet. The portrayal of aliens as evil in media acts as a mirror of our own conduct, reflecting the historical behaviors of humanity when civilizations with superior technology encounter those with lesser technology, often leading to violence and oppression.",
+      "sources": [
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2944.48,
+          "end_time": 3033.839
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2872.319,
+          "end_time": 2957.04
+        },
+        {
+          "segment_label": "Alien Encounters and Human Nature",
+          "start_time": 2511.44,
+          "end_time": 2595.2
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1267.039,
+          "end_time": 1338.32
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1131.919,
+          "end_time": 1219.36
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources, which discuss how portrayals of evil aliens mirror human behavior when meeting technologically inferior societies. This suggests that our fear of aliens is actually a fear of what we would do if roles were reversed."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-06",
+      "kind": "specific",
+      "question": "How did past predictions about future technology often differ from the reality we experience today?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "Past predictions about future technology often differed from reality because many anticipated that advancements would lead to a world filled with automation, such as homes functioning primarily through buttons. However, the actual developments, like the diversity of functions available on a single remote control and the unexpected accessibility of information (e.g., the internet), were not foreseen. Instead of achieving motorized transportation or low-energy costs as envisioned, the critical advancement was in making information cheap and widely available, fundamentally changing how we interact with technology.",
+      "sources": [
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 5031.28,
+          "end_time": 5106.4
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 5169.679,
+          "end_time": 5237.678999999999
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 5092.719,
+          "end_time": 5182.639
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 10156.399,
+          "end_time": 10234.88
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 10223.12,
+          "end_time": 10297.6
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the sources by highlighting that past predictions about technology often missed reality because many advancements, like the internet and cheap information, were unforeseen, whereas imagined scenarios of automation or low-energy costs did not come to pass. The sources explicitly mention these examples, such as the imagined future homes with many buttons which did not happen, and the unexpected value of cheap information."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-07",
+      "kind": "specific",
+      "question": "What was the state of the universe in its early stages that affected the behavior of light?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "In the early universe, the state of matter was such that it was extremely hot and consisted mostly of plasma, where all atoms were ionized. This resulted in light interacting heavily with free electrons, causing it to scatter rather than travel in a straight line. As the universe expanded and cooled, electrons combined with atoms, allowing light to move freely and making the universe transparent.",
+      "sources": [
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6708.48,
+          "end_time": 6801.599
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6784.88,
+          "end_time": 6888.159
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6874.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7425.92,
+          "end_time": 7499.679
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6638.56,
+          "end_time": 6722.0
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately describes the early universe as a hot plasma where free electrons scattered light, preventing it from traveling in straight lines. It mentions the subsequent cooling and combination of electrons with atoms, leading to transparency, which is supported by source [0]."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-08",
+      "kind": "specific",
+      "question": "What is the traditional concept of a multiverse that people commonly envision?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The traditional concept of a multiverse that people commonly envision includes the idea that there are other bubbles, or universes, alongside ours that may have the same laws of physics. Additionally, there could be an infinite number of these bubbles existing within a larger infinite universe. This idea suggests that just as there can be multiple versions of individuals existing across these different universes, each universe may have variations in the laws of physics.",
+      "sources": [
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7638.4,
+          "end_time": 7711.599
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7561.199,
+          "end_time": 7649.679
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7344.719,
+          "end_time": 7440.2390000000005
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7488.32,
+          "end_time": 7577.92
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7425.92,
+          "end_time": 7499.679
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately describes the traditional concept of multiverses as presented in the sources. It mentions the existence of multiple universes or 'bubbles,' each potentially with the same or different laws of physics, existing within a larger infinite universe. This is consistent with the explanation given in the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-09",
+      "kind": "specific",
+      "question": "What was James Randi's approach to investigating psychic claims?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "James Randi's approach to investigating psychic claims involved careful scrutiny and controlled situations. He challenged the credibility of psychics by testing their abilities under conditions that would reveal the truth, insisting on clear and replicable outcomes. Randi exposed frauds in the psychic community, as exemplified by a case where he presented a photograph to a psychic who failed to accurately provide important information about the person in the photo, illustrating a lack of genuine psychic ability.",
+      "sources": [
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9594.319,
+          "end_time": 9664.08
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9395.76,
+          "end_time": 9477.12
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9465.76,
+          "end_time": 9529.119999999999
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9515.6,
+          "end_time": 9604.319
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 4515.36,
+          "end_time": 4597.04
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects James Randi's approach of scrutinizing and testing psychic claims under controlled conditions to expose frauds, as detailed in the sources. The example of the psychic failing to identify details about Ted Bundy matches Randi's method of proving the inadequacy of claimed psychic abilities."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-10",
+      "kind": "specific",
+      "question": "Why does the idea of psychic abilities captivate people and remain widespread throughout history?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The idea of psychic abilities captivates people because throughout history, there has been a deep respect for those who appear to have the power of prophecy, such as shamans in various cultures. This fascination stems from humanity's desire to predict the future and find reassurance in the uncertain, as seen in the belief that dreams may hold prophetic significance. Additionally, people are drawn to methods like astrology, which aim to predict personal outcomes based on celestial positions, showcasing an enduring interest in understanding unseen influences on their lives.",
+      "sources": [
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 10156.399,
+          "end_time": 10234.88
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 10081.92,
+          "end_time": 10172.0
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 10223.12,
+          "end_time": 10297.6
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9594.319,
+          "end_time": 9664.08
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9395.76,
+          "end_time": 9477.12
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that people have historically respected individuals who seem to possess prophetic powers, like shamans, and that there is a desire to predict the future through dreams or astrology. These points are supported by the sources which discuss the cultural admiration for those perceived to have psychic abilities and the ongoing interest in future predictions and unseen influences."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-oos-1",
+      "kind": "out_of_scope",
+      "question": "What does Neil deGrasse Tyson expect the James Webb Space Telescope to reveal?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not specify what Neil deGrasse Tyson expects the James Webb Space Telescope to reveal.",
+      "sources": [
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1824.32,
+          "end_time": 1917.76
+        },
+        {
+          "segment_label": "Pluto and Kuiper Belt Theories",
+          "start_time": 2062.079,
+          "end_time": 2138.0789999999997
+        },
+        {
+          "segment_label": "Education and Engagement Challenges",
+          "start_time": 285.68,
+          "end_time": 366.56
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3228.16,
+          "end_time": 3312.88
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1463.36,
+          "end_time": 1539.6
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the sources do not provide any information on what Neil deGrasse Tyson expects from the James Webb Space Telescope."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-oos-2",
+      "kind": "out_of_scope",
+      "question": "How do neutrino detectors help astronomers study distant cosmic events?",
+      "path": "specific",
+      "grounded": false,
+      "answer": "The excerpts do not cover how neutrino detectors specifically help astronomers study distant cosmic events.",
+      "sources": [
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6784.88,
+          "end_time": 6888.159
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1824.32,
+          "end_time": 1917.76
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1747.039,
+          "end_time": 1843.039
+        },
+        {
+          "segment_label": "Internet, Deception, and Knowledge",
+          "start_time": 4280.56,
+          "end_time": 4347.199
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1575.919,
+          "end_time": 1645.52
+        }
+      ],
+      "judgment": {
+        "declines": true,
+        "supported": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly states that the provided sources do not cover the role of neutrino detectors in studying cosmic events, and the information present in the excerpts is unrelated to the question."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-1",
+      "kind": "broad",
+      "question": "What is this video about?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The video discusses the DeVane Lectures, which focus on power and politics over the last 30 years since 1989. It highlights historical events during this period, including the rise of democracy after the Cold War, the growth of far-right politics in Europe, particularly the Alternative for Deutschland party in Germany, and the changes in political landscapes across various countries. The video also mentions the implications of the events of 1989 for democracy and outlines the course structure and approach to studying these themes.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 555.013
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        },
+        {
+          "segment_label": "German Electoral Politics Overview",
+          "start_time": 673.63,
+          "end_time": 786.743
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "Historical Electoral Trends",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        },
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1075.86,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1806.1200000000001
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1806.12,
+          "end_time": 2624.433
+        },
+        {
+          "segment_label": "Office Hours and Resources",
+          "start_time": 2626.89,
+          "end_time": 2813.41
+        },
+        {
+          "segment_label": "Exam Scheduling and Policy",
+          "start_time": 2814.44,
+          "end_time": 2883.49
+        },
+        {
+          "segment_label": "Classroom Distractions and Resources",
+          "start_time": 2883.49,
+          "end_time": 2987.34
+        },
+        {
+          "segment_label": "Copyright and Course Structure",
+          "start_time": 2987.34,
+          "end_time": 3258.253
+        },
+        {
+          "segment_label": "Course Structure and Interaction",
+          "start_time": 3261.09,
+          "end_time": 3367.023
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer correctly summarizes the focus of the video on the DeVane Lectures, which cover power and politics over the last three decades. It accurately mentions the rise of democracy post-Cold War and the growth of far-right politics, particularly in Germany, which are supported by the provided sources. It also notes the implications of the 1989 events for democracy and highlights that the course structure and approach are outlined in the video, all of which are covered in the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The main themes of the lecture include the examination of power and politics over the past 30 years, with a focus on the optimism following the end of the Cold War, the rise of far-right politics in Europe, historical electoral trends, and the impact of the events of 1989 on democracy and political structures. Additionally, the course aims to address future challenges and the dynamics between politics and public policy.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 555.013
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        },
+        {
+          "segment_label": "German Electoral Politics Overview",
+          "start_time": 673.63,
+          "end_time": 786.743
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "Historical Electoral Trends",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        },
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1075.86,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1806.1200000000001
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1806.12,
+          "end_time": 2624.433
+        },
+        {
+          "segment_label": "Office Hours and Resources",
+          "start_time": 2626.89,
+          "end_time": 2813.41
+        },
+        {
+          "segment_label": "Exam Scheduling and Policy",
+          "start_time": 2814.44,
+          "end_time": 2883.49
+        },
+        {
+          "segment_label": "Classroom Distractions and Resources",
+          "start_time": 2883.49,
+          "end_time": 2987.34
+        },
+        {
+          "segment_label": "Copyright and Course Structure",
+          "start_time": 2987.34,
+          "end_time": 3258.253
+        },
+        {
+          "segment_label": "Course Structure and Interaction",
+          "start_time": 3261.09,
+          "end_time": 3367.023
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the main themes outlined in the sources. These themes include power and politics over the past 30 years, post-Cold War optimism, the rise of far-right politics, historical electoral trends, and the impact of 1989 on democracy, all of which are topics discussed in the lecture. The course's aim to address future challenges and the relationship between politics and public policy is also mentioned, aligning with the focus on historical outcomes and political analysis described in the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The video provides an introduction to Python programming, covering the basics such as variable assignment, data types, and arithmetic operations. It explains conditionals and loops, demonstrating how to use if-else statements and loops for controlling program flow. Additionally, it introduces functions and their significance in reusing code, alongside error handling techniques using the 'pass' keyword and try-except blocks to manage user input errors.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 241.76
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 436.24
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 503.599
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the video's content as it covers the basics of Python programming, conditionals, loops, functions, and error handling, which aligns with the provided sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "In this tutorial, you will learn the basics of Python programming, including variable assignment, data types, arithmetic operations, conditionals, loops, functions, and error handling.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 241.76
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 436.24
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 503.599
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the topics covered in the tutorial segments: basics of Python (variable assignment, data types, arithmetic operations), conditionals and loops, functions, and error handling using try-except blocks. Each of these is supported by the given sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-1",
+      "kind": "broad",
+      "question": "Summarize this conversation.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The conversation covers a range of topics including critiques of environmental portrayals in media, engagement challenges in education, alien abduction theories, celestial phenomena, technology advancements, and the nature of truth and deception. The speaker emphasizes the importance of connecting with audiences in education, explores skepticism around UFOs and psychic phenomena, and discusses the role of collaboration in scientific discovery. Various theories about the universe and creativity are also examined, highlighting the complexities of understanding and communication.",
+      "sources": [
+        {
+          "segment_label": "Discussion on Environmental Details",
+          "start_time": 5.84,
+          "end_time": 289.28
+        },
+        {
+          "segment_label": "Education and Engagement Challenges",
+          "start_time": 285.68,
+          "end_time": 671.2
+        },
+        {
+          "segment_label": "Teaching Effectiveness and Audience Engagement",
+          "start_time": 669.36,
+          "end_time": 1134.96
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1131.919,
+          "end_time": 1579.12
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1575.919,
+          "end_time": 1926.72
+        },
+        {
+          "segment_label": "Pluto and Kuiper Belt Theories",
+          "start_time": 1924.08,
+          "end_time": 2368.16
+        },
+        {
+          "segment_label": "Alien Encounters and Human Nature",
+          "start_time": 2364.8,
+          "end_time": 2811.52
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2809.119,
+          "end_time": 3095.2000000000003
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3090.559,
+          "end_time": 3891.119
+        },
+        {
+          "segment_label": "Internet, Deception, and Knowledge",
+          "start_time": 3892.0,
+          "end_time": 4464.239
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 4461.52,
+          "end_time": 5233.4400000000005
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5230.08,
+          "end_time": 5925.04
+        },
+        {
+          "segment_label": "Billionaires and Curiosity",
+          "start_time": 5925.92,
+          "end_time": 6361.44
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6358.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "The Big Rip Theory",
+          "start_time": 6966.0,
+          "end_time": 7277.76
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7275.28,
+          "end_time": 7738.4800000000005
+        },
+        {
+          "segment_label": "Creative Process and Inspiration",
+          "start_time": 7735.36,
+          "end_time": 7936.719
+        },
+        {
+          "segment_label": "Inspiration and Collaboration in Science",
+          "start_time": 7934.48,
+          "end_time": 8360.399
+        },
+        {
+          "segment_label": "The Role of Comedy in Education",
+          "start_time": 8358.319,
+          "end_time": 9267.6
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9264.88,
+          "end_time": 10965.369
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the content across various segments, touching on media portrayal, education challenges, alien theories, technology, and truth. It includes points about audience connection in education, skepticism around UFOs and psychic phenomena, and the importance of collaboration in science. These topics are supported by the sources, which collectively cover these discussions."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-2",
+      "kind": "broad",
+      "question": "What did they talk about?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The video covers a diverse range of topics including critiques of environmental portrayals in media, challenges in engaging education, discussions on alien abduction theories, the complexities of truth and deception, advancements in technology particularly concerning self-driving cars, and reflections on creativity and inspiration in science. It also explores government concealment of UFO information, the implications of billionaires' investments in technology, and concepts in cosmology like the Big Rip and simulation theory.",
+      "sources": [
+        {
+          "segment_label": "Discussion on Environmental Details",
+          "start_time": 5.84,
+          "end_time": 289.28
+        },
+        {
+          "segment_label": "Education and Engagement Challenges",
+          "start_time": 285.68,
+          "end_time": 671.2
+        },
+        {
+          "segment_label": "Teaching Effectiveness and Audience Engagement",
+          "start_time": 669.36,
+          "end_time": 1134.96
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1131.919,
+          "end_time": 1579.12
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1575.919,
+          "end_time": 1926.72
+        },
+        {
+          "segment_label": "Pluto and Kuiper Belt Theories",
+          "start_time": 1924.08,
+          "end_time": 2368.16
+        },
+        {
+          "segment_label": "Alien Encounters and Human Nature",
+          "start_time": 2364.8,
+          "end_time": 2811.52
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2809.119,
+          "end_time": 3095.2000000000003
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3090.559,
+          "end_time": 3891.119
+        },
+        {
+          "segment_label": "Internet, Deception, and Knowledge",
+          "start_time": 3892.0,
+          "end_time": 4464.239
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 4461.52,
+          "end_time": 5233.4400000000005
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5230.08,
+          "end_time": 5925.04
+        },
+        {
+          "segment_label": "Billionaires and Curiosity",
+          "start_time": 5925.92,
+          "end_time": 6361.44
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6358.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "The Big Rip Theory",
+          "start_time": 6966.0,
+          "end_time": 7277.76
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7275.28,
+          "end_time": 7738.4800000000005
+        },
+        {
+          "segment_label": "Creative Process and Inspiration",
+          "start_time": 7735.36,
+          "end_time": 7936.719
+        },
+        {
+          "segment_label": "Inspiration and Collaboration in Science",
+          "start_time": 7934.48,
+          "end_time": 8360.399
+        },
+        {
+          "segment_label": "The Role of Comedy in Education",
+          "start_time": 8358.319,
+          "end_time": 9267.6
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9264.88,
+          "end_time": 10965.369
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the discussed topics, including environmental critiques, education challenges, alien abduction theories, technology advancements, especially self-driving cars, creativity in science, government UFO secrecy, billionaire investments, and cosmological theories like the Big Rip and simulation theory. These are all supported by the provided sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-3",
+      "kind": "broad",
+      "question": "What topics does the professor cover?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The professor covers a variety of topics including the introduction to the DeVane Lectures, end of Cold War optimism, rise of far-right politics, German electoral politics, changes in the German political landscape, historical electoral trends, rise of far-right parties in Europe, impact of the events of 1989 on democracy, an overview of the course and structure, and specific administrative details related to the course.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 555.013
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        },
+        {
+          "segment_label": "German Electoral Politics Overview",
+          "start_time": 673.63,
+          "end_time": 786.743
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "Historical Electoral Trends",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        },
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1075.86,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1806.1200000000001
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1806.12,
+          "end_time": 2624.433
+        },
+        {
+          "segment_label": "Office Hours and Resources",
+          "start_time": 2626.89,
+          "end_time": 2813.41
+        },
+        {
+          "segment_label": "Exam Scheduling and Policy",
+          "start_time": 2814.44,
+          "end_time": 2883.49
+        },
+        {
+          "segment_label": "Classroom Distractions and Resources",
+          "start_time": 2883.49,
+          "end_time": 2987.34
+        },
+        {
+          "segment_label": "Copyright and Course Structure",
+          "start_time": 2987.34,
+          "end_time": 3258.253
+        },
+        {
+          "segment_label": "Course Structure and Interaction",
+          "start_time": 3261.09,
+          "end_time": 3367.023
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately lists the topics covered by the professor as reflected in the sources. These topics include the focus on power and politics since 1989, the end of Cold War optimism, rise and influence of far-right parties, changes in German politics, the impact of 1989 events on democracy, and details regarding the course structure and administration."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-broad-4",
+      "kind": "broad",
+      "question": "Give me the big picture of this lecture.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The lecture series focuses on the evolution of power and politics over the past 30 years since 1989, marked by significant changes following the end of the Cold War. It reviews the optimism for democracy after 1989, the rise of far-right politics in Germany and Europe, and the challenges faced by traditional political parties. Additionally, it seeks to examine the impact of these developments on historical electoral trends and the implications for future politics, using a combination of political science and historical analysis.",
+      "sources": [
+        {
+          "segment_label": "Introduction to DeVane Lectures",
+          "start_time": 8.06,
+          "end_time": 334.52299999999997
+        },
+        {
+          "segment_label": "End of Cold War Optimism",
+          "start_time": 336.34,
+          "end_time": 555.013
+        },
+        {
+          "segment_label": "Rise of Far-Right Politics",
+          "start_time": 560.75,
+          "end_time": 673.63
+        },
+        {
+          "segment_label": "German Electoral Politics Overview",
+          "start_time": 673.63,
+          "end_time": 786.743
+        },
+        {
+          "segment_label": "German Political Landscape Changes",
+          "start_time": 788.48,
+          "end_time": 974.952
+        },
+        {
+          "segment_label": "Historical Electoral Trends",
+          "start_time": 993.69,
+          "end_time": 1075.86
+        },
+        {
+          "segment_label": "Rise of Far-Right Parties in Europe",
+          "start_time": 1075.86,
+          "end_time": 1237.963
+        },
+        {
+          "segment_label": "Course Overview and Approach",
+          "start_time": 1239.41,
+          "end_time": 1303.693
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1305.82,
+          "end_time": 1806.1200000000001
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1806.12,
+          "end_time": 2624.433
+        },
+        {
+          "segment_label": "Office Hours and Resources",
+          "start_time": 2626.89,
+          "end_time": 2813.41
+        },
+        {
+          "segment_label": "Exam Scheduling and Policy",
+          "start_time": 2814.44,
+          "end_time": 2883.49
+        },
+        {
+          "segment_label": "Classroom Distractions and Resources",
+          "start_time": 2883.49,
+          "end_time": 2987.34
+        },
+        {
+          "segment_label": "Copyright and Course Structure",
+          "start_time": 2987.34,
+          "end_time": 3258.253
+        },
+        {
+          "segment_label": "Course Structure and Interaction",
+          "start_time": 3261.09,
+          "end_time": 3367.023
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the big picture of the lecture series, as described in the sources. It mentions the focus on power and politics over the past 30 years since 1989, the optimism following the end of the Cold War, the rise of far-right politics, the challenges to traditional political parties, and the course's approach of combining political science with historical analysis. These elements are drawn from the various topics and themes mentioned in the sources."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The video teaches several Python concepts, including how to assign values to variables, the importance of case sensitivity, naming conventions with underscores, data types (integers, strings, booleans, and lists), exception handling with try and except blocks, basic math operations, and conditional logic using if statements and for loops. (The video says \"try and accept block\" here; the speaker means \"try and except block\".)",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 74.479
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 63.6,
+          "end_time": 136.319
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 560.64,
+          "end_time": 631.76
+        },
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 182.72,
+          "end_time": 243.35999999999999
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 318.08
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": true,
+        "reason": "The answer accurately lists the Python concepts covered in the video, such as variable assignment, case sensitivity, naming conventions, data types, exception handling, math operations, and conditionals. It also appropriately notes the speaker's slip regarding 'try and accept block'."
+      }
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-4",
+      "kind": "broad",
+      "question": "What's covered here?",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The video covers the basics of Python programming, including variable assignment, data types, arithmetic operations, conditionals and loops, functions, and error handling.",
+      "sources": [
+        {
+          "segment_label": "Getting Started with Python",
+          "start_time": 0.16,
+          "end_time": 241.76
+        },
+        {
+          "segment_label": "Conditionals and Loops in Programming",
+          "start_time": 238.319,
+          "end_time": 436.24
+        },
+        {
+          "segment_label": "Introduction to Functions",
+          "start_time": 433.44,
+          "end_time": 503.599
+        },
+        {
+          "segment_label": "Using 'pass' and Error Handling",
+          "start_time": 501.84,
+          "end_time": 631.76
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the topics covered in the segments: basics of Python programming including variable assignment, data types, and arithmetic operations ([0]), conditionals and loops ([1]), functions ([2]), and error handling ([3])."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-3",
+      "kind": "broad",
+      "question": "What subjects come up in this episode?",
+      "path": "broad",
+      "grounded": true,
+      "answer": [
+        "Critique of unrealistic environmental portrayals in TV shows and UFO disclosures",
+        "Challenges in making education engaging, especially with disengaged students",
+        "Importance of audience engagement in teaching",
+        "Historical context of alien abduction theories",
+        "Oddities of Neptune's orbit and the hypothetical Planet X",
+        "Pluto's relationship to the Kuiper Belt and extinction theories",
+        "Consideration of human nature in the context of alien encounters",
+        "Hollywood depictions of aliens and skepticism towards UFO reports",
+        "Government concealment of UFO information and technological speculation",
+        "Evolution of internet communication and the challenges of truthfulness",
+        "Complexities of deception and understanding in human communication",
+        "Future implications of self-driving cars on society",
+        "Impact of billionaires on technology and curiosity in science",
+        "Paradox of truth and deception illustrated by Pinocchio",
+        "Concept of the Big Rip and universe's accelerated expansion",
+        "Discussion on simulation theory and multiverses",
+        "Nature of creativity and the impact of solitude on inspiration",
+        "Collaboration in science and public curiosity's role in research",
+        "Integration of comedy in education to engage students",
+        "Critique of psychic phenomena and the role of scientific reasoning"
+      ],
+      "sources": [
+        {
+          "segment_label": "Discussion on Environmental Details",
+          "start_time": 5.84,
+          "end_time": 289.28
+        },
+        {
+          "segment_label": "Education and Engagement Challenges",
+          "start_time": 285.68,
+          "end_time": 671.2
+        },
+        {
+          "segment_label": "Teaching Effectiveness and Audience Engagement",
+          "start_time": 669.36,
+          "end_time": 1134.96
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1131.919,
+          "end_time": 1579.12
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1575.919,
+          "end_time": 1926.72
+        },
+        {
+          "segment_label": "Pluto and Kuiper Belt Theories",
+          "start_time": 1924.08,
+          "end_time": 2368.16
+        },
+        {
+          "segment_label": "Alien Encounters and Human Nature",
+          "start_time": 2364.8,
+          "end_time": 2811.52
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2809.119,
+          "end_time": 3095.2000000000003
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3090.559,
+          "end_time": 3891.119
+        },
+        {
+          "segment_label": "Internet, Deception, and Knowledge",
+          "start_time": 3892.0,
+          "end_time": 4464.239
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 4461.52,
+          "end_time": 5233.4400000000005
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5230.08,
+          "end_time": 5925.04
+        },
+        {
+          "segment_label": "Billionaires and Curiosity",
+          "start_time": 5925.92,
+          "end_time": 6361.44
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6358.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "The Big Rip Theory",
+          "start_time": 6966.0,
+          "end_time": 7277.76
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7275.28,
+          "end_time": 7738.4800000000005
+        },
+        {
+          "segment_label": "Creative Process and Inspiration",
+          "start_time": 7735.36,
+          "end_time": 7936.719
+        },
+        {
+          "segment_label": "Inspiration and Collaboration in Science",
+          "start_time": 7934.48,
+          "end_time": 8360.399
+        },
+        {
+          "segment_label": "The Role of Comedy in Education",
+          "start_time": 8358.319,
+          "end_time": 9267.6
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9264.88,
+          "end_time": 10965.369
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately reflects the topics covered in the sources. It lists most of the subjects mentioned across the provided excerpts, ranging from critique of environmental portrayals in media to the educational challenges, alien theories, government UFO information, and various scientific discussions - all in line with the individual segments listed in the sources."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-4",
+      "kind": "broad",
+      "question": "Walk me through the conversation.",
+      "path": "broad",
+      "grounded": true,
+      "answer": "The conversation begins with a critique of natural elements in media, specifically in 'The Walking Dead', and shifts to UFO disclosures and military budgets. It then covers challenges in engaging education, stressing the role of entertaining educators and societal issues. The speaker discusses how to captivate audiences through humor in teaching, while reflecting on technological advances and animal intelligence. Alien abduction theories are presented in a historical context, questioning the evidence behind them. The discourse continues with speculations on extraterrestrial life and how it may perceive humanity. Government concealment of UFO information is also addressed, with skepticism about the credibility of such reports. The evolution of the internet and the complexities of deception in communication follow, touching on the emotional aspects tied to logic. Advancements in self-driving cars are discussed, alongside billionaire investments in technology and the importance of science questioning. The conversation explores the Big Rip theory and simulation theory, before reflecting on creativity's unpredictable nature and the role of collaboration in scientific discovery. Lastly, the speaker emphasizes how comedy can enhance education by connecting to students' interests.",
+      "sources": [
+        {
+          "segment_label": "Discussion on Environmental Details",
+          "start_time": 5.84,
+          "end_time": 289.28
+        },
+        {
+          "segment_label": "Education and Engagement Challenges",
+          "start_time": 285.68,
+          "end_time": 671.2
+        },
+        {
+          "segment_label": "Teaching Effectiveness and Audience Engagement",
+          "start_time": 669.36,
+          "end_time": 1134.96
+        },
+        {
+          "segment_label": "Alien Abduction Theories",
+          "start_time": 1131.919,
+          "end_time": 1579.12
+        },
+        {
+          "segment_label": "Neptune's Orbit and Planet X",
+          "start_time": 1575.919,
+          "end_time": 1926.72
+        },
+        {
+          "segment_label": "Pluto and Kuiper Belt Theories",
+          "start_time": 1924.08,
+          "end_time": 2368.16
+        },
+        {
+          "segment_label": "Alien Encounters and Human Nature",
+          "start_time": 2364.8,
+          "end_time": 2811.52
+        },
+        {
+          "segment_label": "Aliens and Human Nature",
+          "start_time": 2809.119,
+          "end_time": 3095.2000000000003
+        },
+        {
+          "segment_label": "Government and UFOs",
+          "start_time": 3090.559,
+          "end_time": 3891.119
+        },
+        {
+          "segment_label": "Internet, Deception, and Knowledge",
+          "start_time": 3892.0,
+          "end_time": 4464.239
+        },
+        {
+          "segment_label": "Deception and Human Understanding",
+          "start_time": 4461.52,
+          "end_time": 5233.4400000000005
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5230.08,
+          "end_time": 5925.04
+        },
+        {
+          "segment_label": "Billionaires and Curiosity",
+          "start_time": 5925.92,
+          "end_time": 6361.44
+        },
+        {
+          "segment_label": "Pinocchio's Lies and Truths",
+          "start_time": 6358.4,
+          "end_time": 6970.88
+        },
+        {
+          "segment_label": "The Big Rip Theory",
+          "start_time": 6966.0,
+          "end_time": 7277.76
+        },
+        {
+          "segment_label": "Simulation Theory and Multiverses",
+          "start_time": 7275.28,
+          "end_time": 7738.4800000000005
+        },
+        {
+          "segment_label": "Creative Process and Inspiration",
+          "start_time": 7735.36,
+          "end_time": 7936.719
+        },
+        {
+          "segment_label": "Inspiration and Collaboration in Science",
+          "start_time": 7934.48,
+          "end_time": 8360.399
+        },
+        {
+          "segment_label": "The Role of Comedy in Education",
+          "start_time": 8358.319,
+          "end_time": 9267.6
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9264.88,
+          "end_time": 10965.369
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer successfully summarizes the provided sources on several topics, including critiques of media, discussions on UFOs, education challenges, engaging audiences, theories about alien life, government and UFOs, communication and deception, self-driving cars, billionaires' investments, the Big Rip and simulation theories, creativity, collaboration in science, and comedy in education. All points in the answer are supported by the sources."
+      }
+    },
+    {
+      "id": "BDqvzFY72mg-keyword-1",
+      "kind": "specific",
+      "question": "What was the main point of the Washington Consensus section?",
+      "path": "specific",
+      "grounded": true,
+      "answer": "The main point of the Washington Consensus section is that it emerged as a result of the collapse of communism, reflecting the rise of neoliberalism characterized by trade deregulation, removal of internal regulations, and massive privatization. The Washington Consensus became a framework adopted by organizations like the World Bank and IMF for lending to developing countries, promoting the belief in unregulated free-market capitalism as a solution for economic growth globally.",
+      "sources": [
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2060.59,
+          "end_time": 2177.0699999999997
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 1971.92,
+          "end_time": 2075.1299999999997
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2343.44,
+          "end_time": 2441.21
+        },
+        {
+          "segment_label": "Impact of 1989 on Democracy",
+          "start_time": 1391.23,
+          "end_time": 1494.48
+        },
+        {
+          "segment_label": "Course Overview and Structure",
+          "start_time": 2426.59,
+          "end_time": 2536.1
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately summarizes the main point of the Washington Consensus section as described in the sources. It mentions the collapse of communism, the rise of neoliberalism, and the framework by the World Bank and IMF for lending purposes, reflecting a belief in unregulated capitalism for global economic growth."
+      }
+    },
+    {
+      "id": "qiP1E6iAVS8-keyword-1",
+      "kind": "specific",
+      "question": "Summarize what they said about James Randi.",
+      "path": "specific",
+      "grounded": true,
+      "answer": "James Randi is mentioned as someone who exposed fraudulent claims about psychic abilities. He approached individuals who were widely considered psychics, aiming to demonstrate their fraudulence, as illustrated by an example involving a woman who claimed to be a psychic and failed to provide key information about a photo of a deceased serial killer.",
+      "sources": [
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9594.319,
+          "end_time": 9664.08
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9515.6,
+          "end_time": 9604.319
+        },
+        {
+          "segment_label": "Psychic Phenomenon and Science",
+          "start_time": 9395.76,
+          "end_time": 9477.12
+        },
+        {
+          "segment_label": "The Role of Comedy in Education",
+          "start_time": 8776.56,
+          "end_time": 8857.04
+        },
+        {
+          "segment_label": "Future of Self-Driving Cars",
+          "start_time": 5748.32,
+          "end_time": 5817.1990000000005
+        }
+      ],
+      "judgment": {
+        "supported": true,
+        "answers_question": true,
+        "speaker_slip": false,
+        "reason": "The answer accurately captures that James Randi is known for exposing fraudulent psychic claims and provides an example involving a woman who failed to identify key information about a photo of a deceased serial killer. This is consistent with the details from the sources provided."
+      }
+    }
+  ]
+}

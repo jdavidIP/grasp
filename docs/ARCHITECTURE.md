@@ -123,13 +123,15 @@ There is no app-level query router (see `CLAUDE.md` — intent is decided by whi
 
 Handle this with a lightweight strategy check at the top of `POST /videos/{id}/chat`, before retrieval runs:
 
-1. Classify the question as `specific` or `broad`. A cheap heuristic covers most cases (keyword/pattern match on things like "summarize," "overview," "main points," "what is this video about," or a question with no concrete noun to anchor a search on) with a fallback to a single small LLM call when the heuristic is unsure. This is a much narrower decision than the old app-level router — it picks a *retrieval strategy* for one endpoint, not an app section — so it doesn't reintroduce the misrouting risk discussed earlier.
+1. Classify the question as `specific` or `broad` with one gpt-4o-mini call (`app/prompts/chat_classify.py`) on every question. The test is scope: does answering need the whole video, or one part of it? When unsure, it answers `specific`. This is a much narrower decision than the old app-level router — it picks a *retrieval strategy* for one endpoint, not an app section — so it doesn't reintroduce the misrouting risk discussed earlier.
 2. `specific` → the normal path: embed the question, vector search, rerank, generate.
 3. `broad` → reuse the same map-reduce-over-segments approach the flashcard/quiz pipelines already use: pull all segment summaries for the video, generate the answer from those instead of individual chunks.
 
 Both paths return the same response shape (`answer`, `sources`, `grounded`); for the `broad` path, `sources` lists the segments used rather than individual chunks. Worth testing explicitly once chat is built — try "what's this video about?" and confirm it doesn't just answer from the first few chunks it happens to retrieve.
 
-**Measured** (§6, Chat answers): the heuristic is too eager to call a question specific. Any content word counts as "a concrete noun", so "What will I learn from this tutorial?" never reaches the LLM fallback and gets a few-chunk answer. 3 of the golden set's 6 broad questions go this way. The obvious fix is to let only the keyword match skip the LLM call. It's deferred until there's real usage phrasing to tune against.
+**Why no keyword heuristic** ([#37](https://github.com/jdavidIP/grasp/issues/37)). The first version used one: a keyword match ("summarize", "overview") meant broad, any content word meant specific, and only the rest reached the LLM. Wording fails both ways. "What will I learn from this tutorial?" has content words, so 3 of the original 6 broad golden questions got few-chunk answers. "Summarize what they said about James Randi" has the keyword but is about one topic. Dropping the shortcut costs one small call per question (about 300 prompt tokens) and its latency, which is cheap next to a wrong-path answer that the judge can't detect (§6).
+
+**Tradeoff in the prompt: subject breadth vs video breadth.** The classifier's first prompt called a question broad when it had "no concrete detail to search for", and it sent wide-ranging subject questions ("Why does the idea of psychic abilities captivate people?") to the whole-video path, about 0.3 of specific questions. The prompt now says a question can be wide-ranging in subject and still be specific, and defaults to specific when unsure. A wrongly specific answer is a thin overview; a wrongly broad one answers a single topic from topic summaries and loses its detail. Specific questions are the common case, so the default protects them. Measured over two chat eval runs: broad 0.92 and specific 0.00 `routed_broad`. The remaining miss names a field ("What Python concepts does this teach?").
 
 ---
 
@@ -190,7 +192,7 @@ The chat and faithfulness evals also report **tokens per feature**. `llm.track_u
 - **Drafted by LLM, reviewed by a human.** `python -m app.eval.draft_golden <youtube_ids>` samples evenly spaced 40-second transcript windows, and gpt-4o writes one paraphrased question per window. Paraphrasing matters: questions that copy the transcript's wording would make keyword search look better than it is. The prompt gets the video's topic list and must skip incidental content: logistics, classroom remarks, "what this course will cover", small talk. Every entry is then reviewed by hand. Questions are never edited just because retrieval missed them, since that would bias the set toward the system.
 - **Speaker slips.** The transcript is the source of truth, but speakers misspeak (the lecture says "the Soviet Union invaded Ukraine"). The drafter flags apparent slips in a `note` and words the question so it doesn't depend on the slip.
 - **Out-of-scope questions** have to be adjacent to the video's subject to be a real test. Each one is grep-checked against the transcript. Two drafted podcast questions turned out to be covered and were replaced.
-- **Broad questions** (`"kind": "broad"`, `span: null`) ask about the whole video, which chat answers from segment summaries rather than retrieved chunks. The retrieval eval skips them; the chat eval uses them. They are hand-written, two per video: one worded with a phrase the chat router matches by keyword ("overview", "summarize"), and one worded naturally ("What will I learn from this tutorial?"). The keyword heuristic routes that second kind to the specific path, so they measure the router as well as the answer.
+- **Broad questions** (`"kind": "broad"`, `span: null`) ask about the whole video, which chat answers from segment summaries rather than retrieved chunks. The retrieval eval skips them; the chat eval uses them. They are hand-written, four per video: one worded with a summary keyword ("overview", "summarize") and three worded naturally ("What will I learn from this tutorial?"), so they measure the router as well as the answer. The reverse case has two specific questions (`-keyword-1`): worded with a summary keyword but scoped to one topic, reusing an existing question's span. The retrieval eval scores those two as well.
 
 ### Retrieval
 
@@ -203,7 +205,7 @@ The chat and faithfulness evals also report **tokens per feature**. `llm.track_u
 
 **Limitations:**
 - With 250-token chunks, a 10-minute video has 11 chunks, so @5 and @8 saturate for short videos. hit@1 and MRR are the metrics that separate strategies.
-- The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With 26 questions, one question is worth ~0.04 at @1.
+- The rerank strategy is an LLM call, so it isn't deterministic. Two identical baseline runs differed by 0.01 on recall@1. With the 26 questions those runs used, one question is worth ~0.04 at @1.
 - Broad questions ("what is this video about?") have no span, so retrieval doesn't score them. The chat eval covers them instead.
 - One of the two baseline misses (answers diluted inside a chunk mostly about something else) is fixed by the 250-token chunk size tuned in §3 ([#17](https://github.com/jdavidIP/grasp/issues/17)); the other survives because it lives in a segment whose entire transcript is already under 250 tokens, which no chunk-size change can address.
 
