@@ -1,4 +1,3 @@
-import re
 import uuid
 
 from sqlalchemy import select
@@ -17,84 +16,11 @@ from app.prompts.chat_classify import SYSTEM_PROMPT as CLASSIFY_SYSTEM_PROMPT
 from app.retrieval.rerank import rerank
 from app.retrieval.search import hybrid_search
 
-BROAD_KEYWORDS = (
-    "summarize",
-    "summary",
-    "overview",
-    "main points",
-    "main point",
-    "what is this video about",
-    "what's this video about",
-)
-
-# ponytail: a hand-picked stopword list, not real NLP — good enough to tell
-# "tell me more" from "what did they say about gradient descent".
-STOPWORDS = {
-    "what",
-    "when",
-    "where",
-    "which",
-    "who",
-    "why",
-    "how",
-    "does",
-    "do",
-    "did",
-    "is",
-    "are",
-    "was",
-    "were",
-    "this",
-    "that",
-    "the",
-    "a",
-    "an",
-    "of",
-    "in",
-    "on",
-    "to",
-    "and",
-    "or",
-    "it",
-    "its",
-    "tell",
-    "me",
-    "more",
-    "they",
-    "say",
-    "said",
-    "can",
-    "you",
-    "please",
-    "explain",
-    "about",
-    "video",
-}
-
-_WORD_RE = re.compile(r"[a-zA-Z']+")
-
-
-def _has_concrete_noun(question: str) -> bool:
-    # ponytail: presence of a content word is treated as "confidently specific" and
-    # never escalates to the LLM classifier — misses whole-video questions phrased
-    # with real nouns (e.g. "what is this video mainly discussing?", "explain
-    # neural networks" meaning the video's whole treatment of it). No usage data
-    # exists yet to tune the keyword/stopword lists against real phrasing. If broad
-    # questions are getting misrouted in practice, widen the LLM fallback so only
-    # the keyword shortcut skips it. `python -m app.eval.chat` measures this: see
-    # `routed_broad` for the golden set's broad questions.
-    words = _WORD_RE.findall(question.lower())
-    return any(len(word) > 3 and word not in STOPWORDS for word in words)
-
 
 async def classify_question(question: str) -> bool:
     """True for a "broad" (whole-video) question, False for "specific"."""
-    lowered = question.lower()
-    if any(keyword in lowered for keyword in BROAD_KEYWORDS):
-        return True
-    if _has_concrete_noun(question):
-        return False
-
+    # No keyword shortcut: "summarize what they said about X" is specific, and
+    # "what will I learn here?" is broad, so wording alone can't decide (#37).
     result = await llm.generate_json(CLASSIFY_SYSTEM_PROMPT, question)
     return bool(result.get("broad", False))
 
