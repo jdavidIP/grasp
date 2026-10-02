@@ -430,5 +430,29 @@
     "question": "Walk me through the conversation.",
     "kind": "broad",
     "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-keyword-1",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "What was the main point of the Washington Consensus section?",
+    "answer": "The Washington Consensus was adopted by institutions like the World Bank and the IMF as a condition for giving loans to developing countries, spreading neoliberal policies globally.",
+    "note": "Worded with a broad keyword but scoped to one topic; same span as BDqvzFY72mg-22. Tests the chat router (#37).",
+    "span": [
+      2112.6,
+      2154.7
+    ],
+    "excerpt": "And when it's translated into a set of recommendations or requirements for countries in the developing world, it was called the Washington Consensus, was essentially adopted by the World Bank by the IMF as a condition for giving loans to developing countries and it, was essentially taking\nneoliberalism global. And so the, post communist era is marked by, this massive confidence in, the the capacity of unregulated"
+  },
+  {
+    "id": "qiP1E6iAVS8-keyword-1",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "Summarize what they said about James Randi.",
+    "answer": "James Randi focused on individuals heralded by others as psychics to test the validity of their claims.",
+    "note": "Worded with a broad keyword but scoped to one topic; same span as qiP1E6iAVS8-09. Tests the chat router (#37).",
+    "span": [
+      9593.0,
+      9634.5
+    ],
+    "excerpt": "interesting thing about him so it's disappointing so if there is psychic power i'm just very disappointed in it well that lady yeah well she was heralded by others and what else you do you can go to someone who's who has who's not heralded you go to the best who they claim yeah i think most of the ones that claim to be psychic are full of [ __ ] i'm not discounting the possibility of psychic phenomena that's what the amazing randy did he he bypassed everyone who everyone else said was full of [ __ ] they said go to her go to her that's what he did what else you want him to do yeah no i mean look i've never seen any evidence that psychic ability is real"
   }
 ]
