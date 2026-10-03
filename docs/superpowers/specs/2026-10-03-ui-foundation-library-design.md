@@ -93,7 +93,7 @@ Follows handoff §2. `LibraryPage.css` holds the screen's layout.
 
 ### Helpers — `web/src/lib/time.ts`
 - `formatTime(seconds)` gains hours. Under an hour it's `m:ss` as today; from an hour up it's `h:mm:ss`. This also fixes every existing timestamp past an hour, e.g. the 3-hour podcast's "182:45".
-- `formatRelative(iso, now = new Date())` uses `Intl.RelativeTimeFormat('en', { numeric: 'auto' })`. It picks the largest fitting unit from seconds up to years, giving "just now", "5 minutes ago", "yesterday", and so on. No date library.
+- `formatRelative(iso, now = new Date())` uses `Intl.RelativeTimeFormat('en', { numeric: 'auto' })`. It picks the largest fitting unit from seconds up to years, giving "now", "5 minutes ago", "yesterday", and so on. No date library.
 
 ## Testing
 
