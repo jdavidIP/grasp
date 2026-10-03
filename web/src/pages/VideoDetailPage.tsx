@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { AppHeader } from '../components/AppHeader'
 import { ChatPanel } from '../components/ChatPanel'
@@ -9,7 +9,7 @@ import { QuizAttemptHistory } from '../components/QuizAttemptHistory'
 import { QuizConfigModal } from '../components/QuizConfigModal'
 import { QuizList } from '../components/QuizList'
 import { QuizTake } from '../components/QuizTake'
-import { YouTubePlayer } from '../components/YouTubePlayer'
+import { YouTubePlayer, type SeekRequest } from '../components/YouTubePlayer'
 import { useReprocessVideo, useVideoQuery } from '../hooks/useVideos'
 import { formatTime } from '../lib/time'
 
@@ -17,7 +17,10 @@ export function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: video, isLoading, error } = useVideoQuery(id!)
   const reprocess = useReprocessVideo(id!)
-  const [seekSeconds, setSeekSeconds] = useState<number | null>(null)
+  const [seekRequest, setSeekRequest] = useState<SeekRequest | null>(null)
+  const seek = useCallback((seconds: number) => {
+    setSeekRequest((previous) => ({ seconds, id: (previous?.id ?? 0) + 1 }))
+  }, [])
   const [reviewingDeckId, setReviewingDeckId] = useState<string | null>(null)
   const [activeQuiz, setActiveQuiz] = useState<{ id: string; mode: 'take' | 'history' } | null>(
     null,
@@ -50,7 +53,7 @@ export function VideoDetailPage() {
             {reprocess.isError && <p role="alert">{reprocess.error.message}</p>}
 
             {video.status === 'ready' && (
-              <YouTubePlayer videoId={video.youtube_id} seekSeconds={seekSeconds} />
+              <YouTubePlayer videoId={video.youtube_id} seek={seekRequest} />
             )}
 
             <h2>Topics</h2>
@@ -70,7 +73,7 @@ export function VideoDetailPage() {
               </ul>
             )}
 
-            {video.status === 'ready' && <ChatPanel videoId={video.id} onSeek={setSeekSeconds} />}
+            {video.status === 'ready' && <ChatPanel videoId={video.id} onSeek={seek} />}
 
             {video.status === 'ready' && (
               <section>
@@ -91,7 +94,7 @@ export function VideoDetailPage() {
                   <FlashcardReview
                     key={reviewingDeckId}
                     deckId={reviewingDeckId}
-                    onSeek={setSeekSeconds}
+                    onSeek={seek}
                     onClose={() => setReviewingDeckId(null)}
                   />
                 )}
@@ -119,7 +122,7 @@ export function VideoDetailPage() {
                     key={activeQuiz.id}
                     videoId={video.id}
                     quizId={activeQuiz.id}
-                    onSeek={setSeekSeconds}
+                    onSeek={seek}
                     onClose={() => setActiveQuiz(null)}
                   />
                 )}
@@ -127,7 +130,7 @@ export function VideoDetailPage() {
                   <QuizAttemptHistory
                     key={activeQuiz.id}
                     quizId={activeQuiz.id}
-                    onSeek={setSeekSeconds}
+                    onSeek={seek}
                     onClose={() => setActiveQuiz(null)}
                   />
                 )}

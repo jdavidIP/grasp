@@ -3,9 +3,9 @@ import { afterEach, expect, it, vi } from 'vitest'
 
 import { YouTubePlayer } from './YouTubePlayer'
 
-// YouTubePlayer caches its API-loading promise at module level, and this doesn't reset
-// it. Fine with one test per file (Vitest gives each file fresh modules); a second test
-// here needs vi.resetModules() and a dynamic import of the component.
+// YouTubePlayer caches its API-loading promise at module level. Each test sets window.YT
+// before rendering, and the cached promise only reads window.YT when it resolves, so
+// tests in this file can share it.
 afterEach(() => {
   delete window.YT
 })
@@ -23,7 +23,7 @@ it('survives being unmounted after the IFrame API replaces its target (#25)', as
   // As on the video page: the parent stays mounted while the player is swapped out
   // (Reprocess flips the video from ready to processing).
   const page = (ready: boolean) => (
-    <div>{ready ? <YouTubePlayer videoId="abc" seekSeconds={null} /> : <p>Processing</p>}</div>
+    <div>{ready ? <YouTubePlayer videoId="abc" seek={null} /> : <p>Processing</p>}</div>
   )
   const { rerender, container } = render(page(true))
   await waitFor(() => expect(Player).toHaveBeenCalled())
@@ -31,4 +31,23 @@ it('survives being unmounted after the IFrame API replaces its target (#25)', as
 
   expect(() => rerender(page(false))).not.toThrow()
   expect(container.textContent).toBe('Processing')
+})
+
+it('seeks every time it is asked, even to the same time twice', async () => {
+  const seekTo = vi.fn()
+  const playVideo = vi.fn()
+  const Player = vi.fn(function () {
+    return { seekTo, playVideo, destroy: vi.fn() }
+  })
+  window.YT = { Player } as unknown as NonNullable<Window['YT']>
+
+  const { rerender } = render(<YouTubePlayer videoId="abc" seek={null} />)
+  await waitFor(() => expect(Player).toHaveBeenCalled())
+
+  rerender(<YouTubePlayer videoId="abc" seek={{ seconds: 30, id: 1 }} />)
+  rerender(<YouTubePlayer videoId="abc" seek={{ seconds: 30, id: 2 }} />)
+
+  expect(seekTo).toHaveBeenCalledTimes(2)
+  expect(seekTo).toHaveBeenLastCalledWith(30, true)
+  expect(playVideo).toHaveBeenCalledTimes(2)
 })
