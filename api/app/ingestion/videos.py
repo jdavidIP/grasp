@@ -214,6 +214,11 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             # Analyze before deleting: if an LLM call fails, the old segments, chunks,
             # and the flashcard/quiz links to them must survive for a retry.
             segment_dicts, chunk_dicts = await _analyze_transcript(video.transcript)
+            # A chat reply in flight holds a key-share lock on the video row (its
+            # foreign key) with its question uncommitted, invisible to the chat delete
+            # below. Locking the row waits for that reply to commit so the delete
+            # catches it; replies that start later wait until this run commits.
+            await session.refresh(video, with_for_update=True)
             await session.execute(
                 delete(TranscriptSegment).where(TranscriptSegment.video_id == video.id)
             )

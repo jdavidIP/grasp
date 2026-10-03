@@ -487,3 +487,23 @@ async def test_failed_reprocess_keeps_the_chat(monkeypatch):
         await client.post(f"/api/videos/{video['id']}/reprocess")
 
     assert await _chat_count(video["id"]) == 1
+
+
+async def test_reprocess_waits_for_a_chat_reply_in_flight():
+    # A reply still being generated has its question written but not committed. The
+    # reprocess must wait for it and then delete it, or the exchange outlives the
+    # chunks and segments it was answered from.
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+
+    async with async_session() as chat:
+        chat.add(ChatMessage(video_id=uuid.UUID(video["id"]), role="user", content="q"))
+        await chat.flush()
+        reprocess = asyncio.create_task(ingestion.run_reprocessing(uuid.UUID(video["id"])))
+        await asyncio.sleep(0.5)  # long enough for the reprocess to reach its delete
+        await chat.commit()
+    await reprocess
+
+    assert await _chat_count(video["id"]) == 0
