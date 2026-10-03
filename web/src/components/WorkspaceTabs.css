@@ -1,0 +1,45 @@
+.workspace-tabs {
+  display: flex;
+  flex-direction: column;
+  height: min(80vh, 840px);
+  background: var(--color-bg);
+}
+
+.workspace-tablist {
+  display: flex;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.workspace-tab {
+  flex: 1;
+  padding: var(--space-3);
+  border: none;
+  border-right: 1px solid var(--color-divider);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.workspace-tab:last-child {
+  border-right: none;
+}
+
+.workspace-tab[aria-selected='true'] {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.workspace-panel {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-6);
+}
+
+.workspace-panel[hidden] {
+  display: none;
+}
