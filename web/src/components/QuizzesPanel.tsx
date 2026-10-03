@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { useCreateQuiz } from '../hooks/useQuizzes'
-import type { QuizConfig, QuizDraft } from '../types/quiz'
+import { useState, type ReactNode } from 'react'
+import { useCreateQuiz, useQuizQuery } from '../hooks/useQuizzes'
+import type { AttemptResult, QuizConfig, QuizDraft } from '../types/quiz'
 import type { Segment } from '../types/video'
 import { GeneratingStatus } from './GeneratingStatus'
-import { QuizAttemptHistory } from './QuizAttemptHistory'
+import { QuizAttemptDetail, QuizAttemptHistory } from './QuizAttemptHistory'
 import { QuizConfigForm } from './QuizConfigForm'
 import { QuizList } from './QuizList'
+import { QuizResults } from './QuizResults'
 import { QuizTake } from './QuizTake'
 
 const DEFAULT_DRAFT: QuizDraft = {
@@ -37,8 +38,48 @@ function toConfig(draft: QuizDraft): QuizConfig {
 type View =
   | { name: 'list' }
   | { name: 'config' }
-  | { name: 'take'; quizId: string }
+  // `run` changes on every retake, so the take view remounts with no answers.
+  | { name: 'take'; quizId: string; run: number }
+  | { name: 'results'; quizId: string; result: AttemptResult }
   | { name: 'history'; quizId: string }
+  | { name: 'attempt'; quizId: string; attemptId: string }
+
+interface ResultsScreenProps {
+  quizId: string
+  onClose: () => void
+  children: ReactNode
+  actions: ReactNode
+}
+
+function ResultsBody({
+  quizId,
+  result,
+  onSeek,
+}: {
+  quizId: string
+  result: AttemptResult
+  onSeek: (seconds: number) => void
+}) {
+  const { data: quiz } = useQuizQuery(quizId)
+  return quiz ? <QuizResults quiz={quiz} result={result} onSeek={onSeek} /> : null
+}
+
+// The title, Close and footer buttons around a graded attempt.
+function ResultsScreen({ quizId, onClose, children, actions }: ResultsScreenProps) {
+  const { data: quiz } = useQuizQuery(quizId)
+  return (
+    <section className="qz-results-screen">
+      <div className="qz-head">
+        <h3>{quiz?.title ?? 'Results'}</h3>
+        <button type="button" className="btn btn-ghost" onClick={onClose}>
+          Close
+        </button>
+      </div>
+      {children}
+      <div className="form-actions">{actions}</div>
+    </section>
+  )
+}
 
 interface QuizzesPanelProps {
   videoId: string
@@ -53,6 +94,8 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
   const [view, setView] = useState<View>({ name: 'list' })
   const [draft, setDraft] = useState<QuizDraft>(DEFAULT_DRAFT)
   const toList = () => setView({ name: 'list' })
+  const take = (quizId: string) => setView({ name: 'take', quizId, run: Date.now() })
+  const history = (quizId: string) => setView({ name: 'history', quizId })
 
   function openConfig() {
     createQuiz.reset()
@@ -63,17 +106,77 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
     try {
       const quiz = await createQuiz.mutateAsync(toConfig(draft))
       setDraft((previous) => ({ ...previous, title: '', segmentIds: [] }))
-      setView({ name: 'take', quizId: quiz.id })
+      setView({ name: 'take', quizId: quiz.id, run: Date.now() })
     } catch {
       // createQuiz.error renders on the form.
     }
   }
 
   if (view.name === 'take') {
-    return <QuizTake key={view.quizId} videoId={videoId} quizId={view.quizId} onSeek={onSeek} onClose={toList} />
+    const { quizId } = view
+    return (
+      <QuizTake
+        key={`${quizId}-${view.run}`}
+        videoId={videoId}
+        quizId={quizId}
+        onSubmitted={(result) => setView({ name: 'results', quizId, result })}
+        onClose={toList}
+      />
+    )
+  }
+  if (view.name === 'results') {
+    const { quizId, result } = view
+    return (
+      <ResultsScreen
+        quizId={quizId}
+        onClose={toList}
+        actions={
+          <>
+            <button type="button" className="btn btn-primary" onClick={() => take(quizId)}>
+              Retake
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => history(quizId)}>
+              Attempt history
+            </button>
+          </>
+        }
+      >
+        <ResultsBody quizId={quizId} result={result} onSeek={onSeek} />
+      </ResultsScreen>
+    )
+  }
+  if (view.name === 'attempt') {
+    const { quizId, attemptId } = view
+    return (
+      <ResultsScreen
+        quizId={quizId}
+        onClose={toList}
+        actions={
+          <>
+            <button type="button" className="btn btn-secondary" onClick={() => history(quizId)}>
+              ← Attempts
+            </button>
+            <button type="button" className="btn btn-primary" onClick={() => take(quizId)}>
+              Take it again
+            </button>
+          </>
+        }
+      >
+        <QuizAttemptDetail quizId={quizId} attemptId={attemptId} onSeek={onSeek} />
+      </ResultsScreen>
+    )
   }
   if (view.name === 'history') {
-    return <QuizAttemptHistory key={view.quizId} quizId={view.quizId} onSeek={onSeek} onClose={toList} />
+    const { quizId } = view
+    return (
+      <QuizAttemptHistory
+        key={quizId}
+        quizId={quizId}
+        onOpen={(attemptId) => setView({ name: 'attempt', quizId, attemptId })}
+        onTakeAgain={() => take(quizId)}
+        onClose={toList}
+      />
+    )
   }
   if (view.name === 'config') {
     return createQuiz.isPending ? (
@@ -93,8 +196,8 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
     <QuizList
       videoId={videoId}
       onNew={openConfig}
-      onTake={(quizId) => setView({ name: 'take', quizId })}
-      onHistory={(quizId) => setView({ name: 'history', quizId })}
+      onTake={take}
+      onHistory={history}
     />
   )
 }

@@ -117,3 +117,41 @@ it('returns to the list from Cancel', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
   expect(await screen.findByRole('heading', { name: 'Quizzes' })).toBeTruthy()
 })
+
+it('shows the results after submitting, and a retake starts with no answers', async () => {
+  const listItem = { ...newQuiz, question_count: 1, best_score: null, attempt_count: 0 }
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (url: string, init?: RequestInit) => {
+      if (init?.method === 'POST') {
+        return jsonResponse(201, {
+          attempt_id: 'x',
+          score: 1,
+          results: [
+            {
+              question_id: 'qq1',
+              is_correct: true,
+              selected_option_ids: ['o1'],
+              correct_option_ids: ['o1'],
+              explanation: 'Lists use square brackets.',
+              segment_id: null,
+              source_start_time: null,
+            },
+          ],
+        })
+      }
+      if (url.endsWith('/quizzes/q9')) return jsonResponse(200, newQuiz)
+      if (url.endsWith('/videos/v1/quizzes')) return jsonResponse(200, [listItem])
+      return jsonResponse(200, [])
+    }),
+  )
+  renderWithClient(<QuizzesPanel videoId="v1" segments={segments} onSeek={() => {}} />)
+  fireEvent.click(await screen.findByRole('button', { name: 'Take' }))
+  fireEvent.click(await screen.findByRole('radio', { name: 'True' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+  expect(await screen.findByText('100%')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: 'Retake' }))
+  const trueOption = await screen.findByRole('radio', { name: 'True' })
+  expect(trueOption).toHaveProperty('checked', false)
+})
