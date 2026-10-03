@@ -5,6 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.generation import llm
 from app.ingestion.slips import slips_in
+from app.models.chat_message import ChatMessage
+from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
 from app.prompts.chat_answer import (
     BROAD_SYSTEM_PROMPT,
@@ -15,6 +17,71 @@ from app.prompts.chat_answer import (
 from app.prompts.chat_classify import SYSTEM_PROMPT as CLASSIFY_SYSTEM_PROMPT
 from app.retrieval.rerank import rerank
 from app.retrieval.search import hybrid_search
+
+
+def _chunk_source(chunk: TranscriptChunk) -> dict:
+    return {
+        "chunk_id": chunk.id,
+        "segment_label": chunk.segment.label,
+        "start_time": chunk.start_time,
+        "end_time": chunk.end_time,
+        "text": chunk.text,
+    }
+
+
+def _segment_source(segment: TranscriptSegment) -> dict:
+    return {
+        "chunk_id": None,
+        "segment_label": segment.label,
+        "start_time": segment.start_time,
+        "end_time": segment.end_time,
+        "text": segment.summary,
+    }
+
+
+async def load_history(session: AsyncSession, video_id: uuid.UUID) -> list[dict]:
+    """The video's chat, oldest first, each assistant message with the sources it was
+    shown. Rebuilt rather than stored: reprocessing clears the chat, so the cited
+    chunks and the video's segments are still the ones each answer saw."""
+    result = await session.execute(
+        select(ChatMessage).where(ChatMessage.video_id == video_id).order_by(ChatMessage.created_at)
+    )
+    messages = list(result.scalars())
+
+    chunk_ids = {i for m in messages for i in m.cited_chunk_ids or []}
+    chunks: dict[uuid.UUID, TranscriptChunk] = {}
+    if chunk_ids:
+        result = await session.execute(
+            select(TranscriptChunk).where(TranscriptChunk.id.in_(chunk_ids))
+        )
+        chunks = {c.id: c for c in result.scalars()}
+
+    segments: list[TranscriptSegment] = []
+    if any(m.scope == "broad" for m in messages):
+        result = await session.execute(
+            select(TranscriptSegment)
+            .where(TranscriptSegment.video_id == video_id)
+            .order_by(TranscriptSegment.order_index)
+        )
+        segments = list(result.scalars())
+
+    def sources(message: ChatMessage) -> list[dict]:
+        if message.scope == "broad":
+            return [_segment_source(s) for s in segments]
+        # A missing id: an answer that committed after a reprocess replaced its chunks.
+        return [_chunk_source(chunks[i]) for i in message.cited_chunk_ids or [] if i in chunks]
+
+    return [
+        {
+            "id": m.id,
+            "role": m.role,
+            "content": m.content,
+            "created_at": m.created_at,
+            "sources": sources(m),
+            "grounded": m.grounded,
+        }
+        for m in messages
+    ]
 
 
 async def classify_question(question: str) -> bool:
@@ -56,16 +123,7 @@ async def _answer_specific(
         build_specific_user_prompt(question, texts, history, slips),
     )
 
-    sources = [
-        {
-            "chunk_id": chunk.id,
-            "segment_label": chunk.segment.label,
-            "start_time": chunk.start_time,
-            "end_time": chunk.end_time,
-            "text": chunk.text,
-        }
-        for chunk in top_chunks
-    ]
+    sources = [_chunk_source(chunk) for chunk in top_chunks]
     return {
         "answer": _with_slip_notes(result, slips),
         "sources": sources,
@@ -114,16 +172,7 @@ async def _answer_broad(
         build_broad_user_prompt(question, [(s.label, s.summary) for s in segments], history, slips),
     )
 
-    sources = [
-        {
-            "chunk_id": None,
-            "segment_label": segment.label,
-            "start_time": segment.start_time,
-            "end_time": segment.end_time,
-            "text": segment.summary,
-        }
-        for segment in segments
-    ]
+    sources = [_segment_source(segment) for segment in segments]
     return {
         "answer": _with_slip_notes(answer_result, slips),
         "sources": sources,

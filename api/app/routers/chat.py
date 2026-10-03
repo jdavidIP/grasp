@@ -6,7 +6,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_db
-from app.generation.chat import answer_question
+from app.generation.chat import answer_question, load_history
 from app.models.chat_message import ChatMessage
 from app.models.video import Video
 from app.schemas.chat import ChatMessageOut, ChatRequest, ChatResponse
@@ -17,16 +17,10 @@ HISTORY_LIMIT = 10
 
 
 @router.get("/videos/{video_id}/chat", response_model=list[ChatMessageOut])
-async def get_chat_history(
-    video_id: uuid.UUID, db: AsyncSession = Depends(get_db)
-) -> list[ChatMessage]:
+async def get_chat_history(video_id: uuid.UUID, db: AsyncSession = Depends(get_db)) -> list[dict]:
     if await db.get(Video, video_id) is None:
         raise HTTPException(status_code=404, detail="Video not found.")
-
-    result = await db.execute(
-        select(ChatMessage).where(ChatMessage.video_id == video_id).order_by(ChatMessage.created_at)
-    )
-    return list(result.scalars())
+    return await load_history(db, video_id)
 
 
 @router.post("/videos/{video_id}/chat", response_model=ChatResponse)
@@ -65,6 +59,8 @@ async def send_chat_message(
             role="assistant",
             content=result["answer"],
             cited_chunk_ids=cited_chunk_ids or None,
+            scope=result["path"],
+            grounded=result["grounded"],
             created_at=datetime.now(UTC),
         )
     )

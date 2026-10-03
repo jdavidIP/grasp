@@ -1,20 +1,7 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
-
-
-class ChatMessageOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    role: str
-    content: str
-    created_at: datetime
-
-
-class ChatRequest(BaseModel):
-    message: str = Field(min_length=1, max_length=4000)
+from pydantic import BaseModel, Field
 
 
 class ChatSource(BaseModel):
@@ -25,6 +12,20 @@ class ChatSource(BaseModel):
     start_time: float
     end_time: float
     text: str
+
+
+class ChatMessageOut(BaseModel):
+    id: uuid.UUID
+    role: str
+    content: str
+    created_at: datetime
+    # Assistant rows only; empty / null for the user's messages.
+    sources: list[ChatSource] = []
+    grounded: bool | None = None
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=4000)
 
 
 class ChatResponse(BaseModel):
