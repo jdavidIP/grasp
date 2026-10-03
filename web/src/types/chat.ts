@@ -3,6 +3,8 @@ export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
   created_at: string
+  sources: ChatSource[]
+  grounded: boolean | null
 }
 
 export interface ChatSource {

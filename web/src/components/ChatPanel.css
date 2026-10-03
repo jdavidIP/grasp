@@ -1,0 +1,162 @@
+/* The chat tab scrolls its own thread under a pinned composer, so it takes over
+   the tab panel's padding and scrolling. :not([hidden]) keeps this from beating
+   .workspace-panel[hidden] when another tab is active. */
+.workspace-panel:not([hidden]):has(> .chat-panel) {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+.chat-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-6);
+}
+
+.chat-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.chat-user {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.chat-user-label {
+  flex: 0 0 40px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chat-question {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.22;
+}
+
+.chat-assistant,
+.chat-pending {
+  padding-left: calc(40px + var(--space-3));
+}
+
+.chat-assistant {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.chat-answer {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.62;
+  text-wrap: pretty;
+  white-space: pre-line;
+}
+
+.chat-sources {
+  align-self: stretch;
+}
+
+.chat-sources-heading {
+  margin: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.chat-source-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-source {
+  display: flex;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-1);
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-source:hover {
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+}
+
+.chat-source-index {
+  flex: 0 0 16px;
+  font-size: 11px;
+  color: var(--color-accent-700);
+}
+
+.chat-source-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chat-source-text {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
+}
+
+.chat-source-meta {
+  font-size: 11px;
+  color: var(--color-accent-700);
+}
+
+.chat-pending {
+  margin: var(--space-8) 0 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chat-composer {
+  border-top: 1px solid var(--color-divider);
+  padding: var(--space-3);
+}
+
+.chat-composer-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.chat-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-send {
+  padding-inline: var(--space-6);
+}
+
+.chat-clear {
+  font-size: 12.5px;
+}
+
+.chat-error {
+  margin: var(--space-2) 0 0;
+  color: var(--color-accent-800);
+}
