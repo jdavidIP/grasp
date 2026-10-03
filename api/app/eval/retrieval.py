@@ -18,7 +18,7 @@ from sqlalchemy import select
 
 from app.db import async_session
 from app.generation import llm
-from app.generation.chat import answer_question
+from app.generation.chat import answer_question, with_slip_notes
 from app.ingestion.chunking import CHUNK_OVERLAP_RATIO, CHUNK_TARGET_TOKENS
 from app.models.chunk import TranscriptChunk
 from app.models.video import Video
@@ -154,7 +154,8 @@ async def run(label: str | None) -> Path:
                 "id": entry["id"],
                 "question": entry["question"],
                 "declined": not answer["grounded"],
-                "answer": answer["answer"],
+                # What the viewer reads, matching eval/chat.py's records.
+                "answer": with_slip_notes(answer["answer"], answer["slips"]),
             }
         )
 
