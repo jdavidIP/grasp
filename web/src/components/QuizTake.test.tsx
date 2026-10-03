@@ -147,3 +147,27 @@ it('cannot be closed while the attempt is being graded', async () => {
   expect(onClose).not.toHaveBeenCalled()
   expect(confirm).not.toHaveBeenCalled()
 })
+
+it('lets you close again after a submit fails', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url: string, init?: RequestInit) =>
+      init?.method === 'POST'
+        ? jsonResponse(500, { detail: 'Grading failed.' })
+        : jsonResponse(200, quiz),
+    ),
+  )
+  const confirm = vi.fn(() => true)
+  vi.stubGlobal('confirm', confirm)
+  const { onClose } = renderTake()
+  fireEvent.click(await screen.findByRole('radio', { name: 'for' }))
+  fireEvent.click(screen.getByRole('checkbox', { name: 'while' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+  expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Grading failed.')
+  const close = screen.getByRole('button', { name: 'Close' })
+  expect(close).toHaveProperty('disabled', false)
+  fireEvent.click(close)
+  expect(confirm).toHaveBeenCalledWith('Leave this quiz? Your answers so far will be lost.')
+  expect(onClose).toHaveBeenCalledTimes(1)
+})
