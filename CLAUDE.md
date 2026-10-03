@@ -68,6 +68,7 @@ docker compose exec api alembic revision --autogenerate -m "message"
 docker compose exec api pytest
 docker compose exec api ruff check . && docker compose exec api ruff format .
 docker compose exec web npm run typecheck
+docker compose exec web npm test
 ```
 
 ## Conventions
