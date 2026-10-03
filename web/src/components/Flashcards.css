@@ -159,3 +159,117 @@
 .fc-elapsed {
   font-size: 13px;
 }
+
+.fc-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  outline: none;
+}
+
+.fc-position {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fc-position h6 {
+  margin: 0;
+}
+
+.fc-tag {
+  text-transform: uppercase;
+}
+
+.fc-strip {
+  display: flex;
+  gap: 3px;
+}
+
+.fc-cell {
+  flex: 1;
+  height: 4px;
+  border: 1px solid var(--color-divider);
+}
+
+.fc-cell-past {
+  background: var(--color-accent-300);
+}
+
+.fc-cell-current {
+  background: var(--color-accent);
+}
+
+.fc-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 250px;
+  padding: var(--space-8) var(--space-6);
+  cursor: pointer;
+}
+
+.fc-card:hover {
+  background: color-mix(in srgb, var(--color-text) 3%, transparent);
+}
+
+.fc-kicker {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.fc-front {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.fc-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+
+.fc-back {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.fc-note {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Pinned to the bottom of the card. */
+.fc-toggle {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.fc-nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fc-nav .btn {
+  flex: 1;
+}

@@ -63,6 +63,7 @@ export function FlashcardsPanel({ videoId, segments, onSeek }: FlashcardsPanelPr
       <FlashcardReview
         key={view.deckId}
         deckId={view.deckId}
+        segments={segments}
         onSeek={onSeek}
         onClose={() => setView({ name: 'list' })}
       />

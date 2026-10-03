@@ -71,7 +71,7 @@ Not in scope (handoff "Gaps" and `CLAUDE.md`): per-card grading ("got it / needs
   - **Hidden:** `.text-muted` 11px uppercase "Click to reveal answer" pinned to the bottom.
   - The card is a `<div>` (a button can't contain the Jump button); a real `<button aria-expanded>` "Show answer" / "Hide answer" inside it gives keyboard and screen-reader access.
 - **← Previous** / **Next →** `.btn .btn-secondary`, each `flex: 1`, disabled at the ends. Moving hides the answer.
-- **Keyboard:** the review section has `tabIndex={-1}` and is focused when review opens. Its `onKeyDown`: Space/Enter toggle the answer, ArrowLeft/ArrowRight move — ignored when the event's target is a button, link or input, so Enter/Space on a focused button keep their native meaning. Scoped to the section, so it never fires from another tab (all tab panels stay mounted).
+- **Keyboard:** the review section has `tabIndex={-1}` and is focused when review opens. Its `onKeyDown`: Space/Enter toggle the answer, ArrowLeft/ArrowRight move — Space/Enter are ignored when the event's target is a button, link or input, so they keep their native meaning there; the arrows always move (focus often sits on Next after a click). Scoped to the section, so it never fires from another tab (all tab panels stay mounted).
 - A deck with no cards: "This deck has no cards." and Close. Loading: "Loading…".
 - `FlashcardReview` keeps `key={deckId}` from its parent so switching decks resets the position.
 
