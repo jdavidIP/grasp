@@ -33,31 +33,47 @@ function AssistantMessage({
       {message.grounded === false ? (
         <span className="tag tag-outline">Not covered in this video</span>
       ) : (
-        sources.length > 0 && (
-          <details className="chat-sources">
-            <summary className="text-muted chat-sources-heading">Sources ({sources.length})</summary>
-            <ol className="chat-source-list">
-              {sources.map((source, i) => (
-                <li key={i} className="chat-source">
-                  <span className="tabular chat-source-index">{i + 1}.</span>
-                  <div className="chat-source-body">
-                    <button
-                      type="button"
-                      className="tabular chat-source-seek"
-                      onClick={() => onSeek(source.start_time)}
-                    >
-                      {source.segment_label} @ {formatTime(source.start_time)}
-                    </button>
-                    <details className="chat-source-transcript">
-                      <summary className="text-muted">Read transcript</summary>
-                      <p className="chat-source-text">{source.text}</p>
-                    </details>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </details>
-        )
+        <>
+          {message.slips.length > 0 && (
+            <details className="chat-sources">
+              <summary className="text-muted chat-sources-heading">
+                Speaker slips ({message.slips.length})
+              </summary>
+              <ul className="chat-slip-list">
+                {message.slips.map((slip, i) => (
+                  <li key={i}>
+                    The video says “{slip.said}”; the speaker means “{slip.meant}”.
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+          {sources.length > 0 && (
+            <details className="chat-sources">
+              <summary className="text-muted chat-sources-heading">Sources ({sources.length})</summary>
+              <ol className="chat-source-list">
+                {sources.map((source, i) => (
+                  <li key={i} className="chat-source">
+                    <span className="tabular chat-source-index">{i + 1}.</span>
+                    <div className="chat-source-body">
+                      <button
+                        type="button"
+                        className="tabular chat-source-seek"
+                        onClick={() => onSeek(source.start_time)}
+                      >
+                        {source.segment_label} @ {formatTime(source.start_time)}
+                      </button>
+                      <details className="chat-source-transcript">
+                        <summary className="text-muted">Read transcript</summary>
+                        <p className="chat-source-text">{source.text}</p>
+                      </details>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )}
+        </>
       )}
     </div>
   )

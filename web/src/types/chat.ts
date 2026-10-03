@@ -5,6 +5,7 @@ export interface ChatMessage {
   created_at: string
   sources: ChatSource[]
   grounded: boolean | null
+  slips: ChatSlip[]
 }
 
 export interface ChatSource {
@@ -15,8 +16,16 @@ export interface ChatSource {
   text: string
 }
 
+// A known speaker slip the answer relied on: the transcript says `said`, the speaker
+// means `meant`.
+export interface ChatSlip {
+  said: string
+  meant: string
+}
+
 export interface ChatResponse {
   answer: string
   sources: ChatSource[]
   grounded: boolean
+  slips: ChatSlip[]
 }

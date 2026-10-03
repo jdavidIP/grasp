@@ -85,6 +85,17 @@
   text-transform: uppercase;
 }
 
+.chat-slip-list {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-4);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.chat-slip-list li + li {
+  margin-top: var(--space-1);
+}
+
 .chat-source-list {
   list-style: none;
   margin: 0;

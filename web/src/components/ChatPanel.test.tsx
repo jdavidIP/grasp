@@ -18,6 +18,7 @@ function exchange(answer: Partial<ChatMessage>): ChatMessage[] {
       created_at: '2026-10-03T12:00:00Z',
       sources: [],
       grounded: null,
+      slips: [],
     },
     {
       id: 'm2',
@@ -26,6 +27,7 @@ function exchange(answer: Partial<ChatMessage>): ChatMessage[] {
       created_at: '2026-10-03T12:00:01Z',
       sources: [],
       grounded: true,
+      slips: [],
       ...answer,
     },
   ]
@@ -151,4 +153,22 @@ it('sends nothing when Clear is cancelled', async () => {
 
   fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
   expect(fetchMock.mock.calls.some(([, init]) => init?.method === 'DELETE')).toBe(false)
+})
+
+it('folds the speaker slips an answer relied on into their own section', async () => {
+  stubFetch(exchange({ slips: [{ said: 'values from 0 to 3', meant: 'values from 0 to 2' }] }))
+  renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
+
+  const section = (await screen.findByText('Speaker slips (1)')).closest('details')
+  expect(section?.open).toBe(false)
+  expect(section?.textContent).toContain(
+    'The video says “values from 0 to 3”; the speaker means “values from 0 to 2”.',
+  )
+})
+
+it('shows no slips section when the answer relied on none', async () => {
+  stubFetch(exchange({}))
+  renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
+  await screen.findByText('A loop over items.')
+  expect(screen.queryByText(/^Speaker slips/)).toBeNull()
 })
