@@ -25,8 +25,8 @@ function AssistantMessage({
   message: ChatMessage
   onSeek: (seconds: number) => void
 }) {
-  const { sources } = message
-  const broad = sources.length > 0 && sources.every((source) => source.chunk_id === null)
+  // A broad answer's sources are every segment, which the topics list already shows.
+  const sources = message.sources.filter((source) => source.chunk_id !== null)
   return (
     <div className="chat-assistant">
       <p className="chat-answer">{message.content}</p>
@@ -34,31 +34,29 @@ function AssistantMessage({
         <span className="tag tag-outline">Not covered in this video</span>
       ) : (
         sources.length > 0 && (
-          <div className="chat-sources">
-            <h6 className="text-muted chat-sources-heading">
-              {broad ? 'Sources — segment summaries' : 'Sources'}
-            </h6>
+          <details className="chat-sources">
+            <summary className="text-muted chat-sources-heading">Sources ({sources.length})</summary>
             <ol className="chat-source-list">
               {sources.map((source, i) => (
-                <li key={i}>
-                  <button
-                    type="button"
-                    className="chat-source"
-                    onClick={() => onSeek(source.start_time)}
-                  >
-                    <span className="tabular chat-source-index">{i + 1}.</span>
-                    <span className="chat-source-body">
-                      <span className="chat-source-text">“{source.text}”</span>
-                      <span className="tabular chat-source-meta">
-                        {source.segment_label} @ {formatTime(source.start_time)}
-                        {source.chunk_id === null && `–${formatTime(source.end_time)}`}
-                      </span>
-                    </span>
-                  </button>
+                <li key={i} className="chat-source">
+                  <span className="tabular chat-source-index">{i + 1}.</span>
+                  <div className="chat-source-body">
+                    <button
+                      type="button"
+                      className="tabular chat-source-seek"
+                      onClick={() => onSeek(source.start_time)}
+                    >
+                      {source.segment_label} @ {formatTime(source.start_time)}
+                    </button>
+                    <details className="chat-source-transcript">
+                      <summary className="text-muted">Read transcript</summary>
+                      <p className="chat-source-text">{source.text}</p>
+                    </details>
+                  </div>
                 </li>
               ))}
             </ol>
-          </div>
+          </details>
         )
       )}
     </div>

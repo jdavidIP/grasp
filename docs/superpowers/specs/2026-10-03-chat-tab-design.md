@@ -58,13 +58,11 @@ The router stays thin: it calls a new service function in `app/generation/chat.p
 - **Assistant message:** `padding-left: calc(40px + var(--space-3))`, column with `gap: var(--space-4)`.
   - Answer: 15px, `line-height: 1.62`, `text-wrap: pretty`.
   - `grounded === false`: a `.tag .tag-outline` reading "Not covered in this video", and no sources list. Not styled as an error.
-  - Otherwise, when there are sources:
-    - Heading `<h6 class="text-muted">` over a hairline: "Sources", or "Sources — segment summaries" when every `chunk_id` is null.
-    - One `<button type="button">` row per source, full width, 4% hover tint:
-      - index `1.` (16px wide, 11px tabular, `--color-accent-700`);
-      - the text in quotes (12.5px, `line-height: 1.5`, `color: color-mix(in srgb, var(--color-text) 72%, transparent)`);
-      - a meta line beneath (11px tabular, `--color-accent-700`): `{segment_label} @ {mm:ss}`, or `{segment_label} @ {mm:ss}–{mm:ss}` for broad sources.
-    - Clicking a row calls `onSeek(start_time)`.
+  - Otherwise, when a **specific** answer has sources:
+    - The list is a native `<details>`, **closed by default** so the answer reads first. Its `<summary>` reads "Sources ({n})", styled like the design's muted `<h6>` over a hairline.
+    - One row per source: index `1.` (11px tabular, `--color-accent-700`), then a `<button type="button">` reading `{segment_label} @ {mm:ss}` (13px tabular, `--color-accent-700`; hover `--color-accent` + underline) that calls `onSeek(start_time)`, and under it a native `<details>` with a muted 11px uppercase `<summary>` "Read transcript" holding the chunk's full text (12.5px, `line-height: 1.5`, 72% text color). Closed by default; each row opens on its own.
+  - A **broad** answer shows no sources list: its sources are always every segment, which the topics list beside it already shows. The API still returns them.
+  - *Revised after the browser check:* the first version quoted each source's full text inline (handoff §4), and broad answers listed every segment. Specific chunks are ~250 tokens, so five sources ran to ~60 lines and buried the answer.
 - **Empty state:** "Ask anything about this video." (muted).
 - **Loading / error:** "Loading…" muted; a history error with `role="alert"`.
 
@@ -106,7 +104,8 @@ LLM calls are stubbed, as in the existing chat tests. Plus `alembic check` after
 
 **Vitest + RTL:**
 - A specific answer's sources render; clicking a row calls `onSeek` with its `start_time`.
-- A broad answer shows "Sources — segment summaries" and the `mm:ss–mm:ss` span.
+- A broad answer lists no sources.
+- The sources list and each source's transcript sit in closed `<details>` until opened.
 - `grounded: false` shows the tag and no sources list.
 - While sending, the question and "Retrieving…" appear.
 - Clear with the confirm cancelled sends no request.

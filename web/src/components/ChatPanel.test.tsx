@@ -59,12 +59,31 @@ it('shows a reloaded answer with its sources, and a source seeks', async () => {
   renderWithClient(<ChatPanel videoId="v1" onSeek={onSeek} />)
 
   expect(await screen.findByText('A loop over items.')).toBeTruthy()
-  expect(screen.getByRole('heading', { name: 'Sources' })).toBeTruthy()
-  fireEvent.click(screen.getByRole('button', { name: /Loops @ 1:35/ }))
+  fireEvent.click(screen.getByText('Sources (1)'))
+  fireEvent.click(screen.getByRole('button', { name: 'Loops @ 1:35' }))
   expect(onSeek).toHaveBeenCalledWith(95)
 })
 
-it("labels a broad answer's sources as segment summaries with their span", async () => {
+it('folds the sources list away until asked for', async () => {
+  stubFetch(exchange({ sources: [chunkSource] }))
+  renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
+
+  const list = (await screen.findByText('Sources (1)')).closest('details')
+  expect(list?.open).toBe(false)
+  expect(list?.textContent).toContain('Loops @ 1:35')
+})
+
+it("keeps a source's transcript folded away until asked for", async () => {
+  stubFetch(exchange({ sources: [chunkSource] }))
+  renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
+
+  const summary = await screen.findByText('Read transcript')
+  const details = summary.closest('details')
+  expect(details?.open).toBe(false)
+  expect(details?.textContent).toContain('for x in items')
+})
+
+it('lists no sources for a broad answer: the topics list already shows every segment', async () => {
   stubFetch(
     exchange({
       sources: [{ chunk_id: null, segment_label: 'Intro', start_time: 8, end_time: 148, text: 'Opening.' }],
@@ -72,8 +91,9 @@ it("labels a broad answer's sources as segment summaries with their span", async
   )
   renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
 
-  expect(await screen.findByRole('heading', { name: 'Sources — segment summaries' })).toBeTruthy()
-  expect(screen.getByRole('button', { name: /Intro @ 0:08–2:28/ })).toBeTruthy()
+  expect(await screen.findByText('A loop over items.')).toBeTruthy()
+  expect(screen.queryByText(/^Sources/)).toBeNull()
+  expect(screen.queryByText('Opening.')).toBeNull()
 })
 
 it("tags an answer the video doesn't cover and lists no sources", async () => {
@@ -81,7 +101,7 @@ it("tags an answer the video doesn't cover and lists no sources", async () => {
   renderWithClient(<ChatPanel videoId="v1" onSeek={() => {}} />)
 
   expect(await screen.findByText('Not covered in this video')).toBeTruthy()
-  expect(screen.queryByRole('heading', { name: /Sources/ })).toBeNull()
+  expect(screen.queryByText(/^Sources/)).toBeNull()
 })
 
 it('shows the question and "Retrieving…" while the answer is on its way', async () => {
