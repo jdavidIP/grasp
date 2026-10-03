@@ -128,3 +128,9 @@ it('renders the flashcards panel in its tab', async () => {
   fireEvent.click(await screen.findByRole('tab', { name: 'Flashcards' }))
   expect(await screen.findByRole('heading', { name: 'Flashcard decks' })).toBeTruthy()
 })
+
+it('renders the quizzes panel in its tab', async () => {
+  renderPage(video({}))
+  fireEvent.click(await screen.findByRole('tab', { name: 'Quizzes' }))
+  expect(await screen.findByRole('heading', { name: 'Quizzes' })).toBeTruthy()
+})

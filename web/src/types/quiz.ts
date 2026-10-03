@@ -46,6 +46,7 @@ export interface QuizListItem {
   created_at: string
   question_count: number
   best_score: number | null
+  attempt_count: number
 }
 
 export interface AnswerIn {
@@ -80,4 +81,15 @@ export interface AttemptListItem {
   question_count: number
   started_at: string
   completed_at: string | null
+}
+
+// The config form's working state; `QuizzesPanel` turns it into a QuizConfig.
+export interface QuizDraft {
+  count: number
+  scope: QuizScope
+  segmentIds: string[]
+  questionTypes: QuestionType[]
+  optionsPerQuestion: number
+  difficulty: QuizDifficulty
+  title: string
 }

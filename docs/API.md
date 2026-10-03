@@ -145,7 +145,7 @@ Response: the quiz with questions and options. **Never return `is_correct` or `e
 `422` if the generation + validation pipeline yields zero questions. No quiz is persisted in that case.
 
 ### `GET /videos/{id}/quizzes`
-Quizzes for a video, each with `question_count` and `best_score` (fraction 0–1, `null` if never attempted).
+Quizzes for a video, each with `question_count`, `best_score` (fraction 0–1, `null` if never attempted) and `attempt_count`.
 
 ### `GET /quizzes/{id}`
 Questions and options, answers withheld.

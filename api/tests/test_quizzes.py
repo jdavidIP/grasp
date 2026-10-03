@@ -265,3 +265,20 @@ def test_grade_attempt_rejects_foreign_option():
     quiz, question = _in_memory_quiz()
     with pytest.raises(InvalidAttempt):
         grade_attempt(quiz, [(question.id, [uuid.uuid4()])])
+
+
+async def test_quiz_list_counts_attempts():
+    video_id = await _create_ready_video()
+    async with _client() as client:
+        quiz = await _create_quiz(client, video_id)
+        listing = (await client.get(f"/api/videos/{video_id}/quizzes")).json()
+        assert listing[0]["attempt_count"] == 0
+
+        for _ in range(2):
+            response = await client.post(
+                f"/api/quizzes/{quiz['id']}/attempts", json={"answers": []}
+            )
+            assert response.status_code == 201
+
+        listing = (await client.get(f"/api/videos/{video_id}/quizzes")).json()
+        assert listing[0]["attempt_count"] == 2

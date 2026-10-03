@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import './Forms.css'
 
 // Generation is one request with no progress reported, so this says what is happening
 // and how long it has taken rather than ticking invented steps.
-export function FlashcardGenerating() {
+export function GeneratingStatus({ heading, noun }: { heading: string; noun: string }) {
   const [seconds, setSeconds] = useState(0)
 
   useEffect(() => {
@@ -11,14 +12,14 @@ export function FlashcardGenerating() {
   }, [])
 
   return (
-    <section className="fc-generating">
+    <section className="form-generating">
       <div aria-live="polite">
-        <h4>Generating deck…</h4>
+        <h4>{heading}</h4>
         <p className="text-muted">
-          Retrieving passages, drafting cards and checking each one against the transcript.
+          Retrieving passages, drafting {noun} and checking each one against the transcript.
         </p>
       </div>
-      <p className="text-muted tabular fc-elapsed">{seconds}s elapsed</p>
+      <p className="text-muted tabular form-elapsed">{seconds}s elapsed</p>
     </section>
   )
 }
