@@ -45,26 +45,44 @@ def test_group_cues_skips_blank_cues():
     assert [u.text for u in units] == ["Real text."]
 
 
+def _units(n: int, seconds: float = 1.0) -> list[seg.Unit]:
+    return [seg.Unit(i * seconds, (i + 1) * seconds, f"u{i}") for i in range(n)]
+
+
 def test_find_breakpoints_below_minimum_units_returns_none():
     embeddings = [[1.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
-    assert seg._find_breakpoints(embeddings) == []
+    assert seg._find_breakpoints(_units(3), embeddings) == []
 
 
 def test_find_breakpoints_detects_clear_topic_shift(monkeypatch):
     monkeypatch.setattr(seg.settings, "segmentation_breakpoint_percentile", 90.0)
     monkeypatch.setattr(seg.settings, "max_segments_per_video", 40)
+    monkeypatch.setattr(seg.settings, "segmentation_window_seconds", 1.0)
     embeddings = [[1.0, 0.0]] * 3 + [[0.0, 1.0]] * 3
-    assert seg._find_breakpoints(embeddings) == [3]
+    assert seg._find_breakpoints(_units(6), embeddings) == [3]
+
+
+def test_find_breakpoints_ignores_a_lone_filler_unit(monkeypatch):
+    # #38: a short filler unit inside one topic ("what's the word?") points somewhere
+    # unrelated. Unit to unit, both its edges outscore the real topic change (2.0 vs
+    # 1.0); with a window of speech a side, only the real change is picked.
+    monkeypatch.setattr(seg.settings, "segmentation_breakpoint_percentile", 90.0)
+    monkeypatch.setattr(seg.settings, "max_segments_per_video", 2)
+    monkeypatch.setattr(seg.settings, "segmentation_window_seconds", 3.0)
+    topic_a, filler, topic_b = [1.0, 0.0], [-1.0, 0.0], [0.0, 1.0]
+    embeddings = [topic_a] * 4 + [filler] + [topic_a] * 4 + [topic_b] * 6
+    assert seg._find_breakpoints(_units(len(embeddings)), embeddings) == [9]
 
 
 def test_find_breakpoints_respects_max_segments_cap(monkeypatch):
     monkeypatch.setattr(seg.settings, "segmentation_breakpoint_percentile", 1.0)
     monkeypatch.setattr(seg.settings, "max_segments_per_video", 2)
+    monkeypatch.setattr(seg.settings, "segmentation_window_seconds", 1.0)
     # Three evenly-spaced clusters would normally yield 2 breakpoints (3 segments).
     # The second boundary (opposite vectors, max cosine distance) is the stronger
     # break; capping to max_segments_per_video=2 should keep only that one.
     embeddings = [[1.0, 0.0]] * 3 + [[0.0, 1.0]] * 3 + [[0.0, -1.0]] * 3
-    breakpoints = seg._find_breakpoints(embeddings)
+    breakpoints = seg._find_breakpoints(_units(9), embeddings)
     assert breakpoints == [6]
 
 
@@ -116,6 +134,7 @@ async def test_segment_transcript_end_to_end(monkeypatch):
     monkeypatch.setattr(seg.settings, "max_segments_per_video", 40)
     monkeypatch.setattr(seg.settings, "min_segment_duration_seconds", 0)
     monkeypatch.setattr(seg.settings, "min_segment_duration_fraction", 0)
+    monkeypatch.setattr(seg.settings, "segmentation_window_seconds", 1.0)
 
     cues = [_cue(float(i), float(i + 1), f"Sentence {i}.") for i in range(6)]
 

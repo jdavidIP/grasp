@@ -17,11 +17,12 @@ from app.models.video import Video
 VALID_DIFFICULTIES = {"easy", "medium", "hard"}
 
 # ponytail: every segment gets the same 2 excerpts in whole-video context, however
-# long it is. Since the #15 segmentation fix, coverage is 46-100% on the eval videos
-# and the faithfulness eval shows no harm, but a 28-minute podcast topic is only
-# ~15% represented. Upgrade: split a total excerpt budget in proportion to segment
-# length, once an eval shows long-segment items failing. The overgenerate/dedupe
-# constants below are still hand-picked with no tuning data.
+# long it is. A 26-minute podcast topic (22 chunks) is only ~9% represented. After
+# #38, quiz candidates failed at 0.15 / 0.20 / 0.24 on segments of 1-2 / 3-6 / 7+
+# chunks, but the validator absorbs it: shipped items 0.08 / 0.10 / 0.05. Upgrade:
+# split a total excerpt budget in proportion to segment length, once shipped
+# long-segment items fail clearly. The overgenerate/dedupe constants below are
+# still hand-picked with no tuning data.
 CENTRALITY_CHUNKS_PER_SEGMENT = 2
 DEDUPE_SIMILARITY_THRESHOLD = 0.93
 

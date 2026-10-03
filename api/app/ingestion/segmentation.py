@@ -88,15 +88,45 @@ def _cosine_distance(a: list[float], b: list[float]) -> float:
     return 1 - dot / (norm_a * norm_b)
 
 
-def _find_breakpoints(embeddings: list[list[float]]) -> list[int]:
+def _window(units: list[Unit], start: int, step: int) -> list[int]:
+    """Unit indices from `start` walking by `step` (-1 back, +1 forward) until they
+    cover segmentation_window_seconds of speech, or the transcript ends. Always at
+    least one."""
+    indices: list[int] = []
+    covered = 0.0
+    i = start
+    while 0 <= i < len(units) and (not indices or covered < settings.segmentation_window_seconds):
+        indices.append(i)
+        covered += units[i].end - units[i].start
+        i += step
+    return indices
+
+
+def _sum_embeddings(embeddings: list[list[float]], indices: list[int]) -> list[float]:
+    # A sum points the same way as the mean, which is all cosine distance needs.
+    return [sum(column) for column in zip(*(embeddings[i] for i in indices), strict=True)]
+
+
+def _find_breakpoints(units: list[Unit], embeddings: list[list[float]]) -> list[int]:
     """Returns unit indices where a new segment should start, picked from cosine
-    distance between consecutive units at the configured percentile — capped to the
-    strongest breaks so the video never exceeds max_segments_per_video."""
+    distance between the speech just before and just after each gap (a window of
+    segmentation_window_seconds a side) at the configured percentile — capped to the
+    strongest breaks so the video never exceeds max_segments_per_video.
+
+    Comparing windows rather than single units (#38): a lone filler unit has a
+    near-meaningless embedding, so unit-to-unit distance spikes on both sides of it
+    and pulls boundaries onto pauses instead of real topic changes."""
     if len(embeddings) < MIN_UNITS_FOR_BREAKPOINTS:
         return []
 
+    # ponytail: re-sums each window from scratch and runs on the event loop: ~1s for an
+    # 800-unit, 3-hour video. Running prefix sums or asyncio.to_thread if that matters.
     distances = [
-        _cosine_distance(embeddings[i], embeddings[i + 1]) for i in range(len(embeddings) - 1)
+        _cosine_distance(
+            _sum_embeddings(embeddings, _window(units, i, -1)),
+            _sum_embeddings(embeddings, _window(units, i + 1, 1)),
+        )
+        for i in range(len(embeddings) - 1)
     ]
     percentile_index = min(max(int(settings.segmentation_breakpoint_percentile) - 1, 0), 97)
     threshold = statistics.quantiles(distances, n=100, method="inclusive")[percentile_index]
@@ -164,7 +194,7 @@ async def segment_transcript(cues: list[dict]) -> list[dict]:
         return []
 
     embeddings = await llm.embed_texts([unit.text for unit in units])
-    breakpoints = _find_breakpoints(embeddings)
+    breakpoints = _find_breakpoints(units, embeddings)
     segments = _merge_short_segments(_build_segments(units, breakpoints))
 
     labels = await asyncio.gather(
