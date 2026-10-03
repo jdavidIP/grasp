@@ -16,6 +16,8 @@ docker compose exec api alembic upgrade head
 
 The web app runs at http://localhost:5173 and the API at http://localhost:8000/api.
 
+Tests: `docker compose exec api pytest` for the backend, and `docker compose exec web npm test` for the frontend (Vitest and React Testing Library, starting with regression tests for UI bugs fixed by hand, [#27](https://github.com/jdavidIP/grasp/issues/27)). The web container keeps `node_modules` in its own volume, so after the web dependencies or Node version change, rebuild with `docker compose up --build -V` to replace it.
+
 ## Architecture
 
 ```mermaid
