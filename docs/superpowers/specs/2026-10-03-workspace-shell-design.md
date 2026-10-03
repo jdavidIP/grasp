@@ -48,7 +48,7 @@ Fix repeated seeks along the way. The tab *contents* move in as they are; their 
   - The strip has a bottom hairline.
 - **Panels:**
   - Each is a `role="tabpanel"` with `aria-labelledby` pointing at its tab, inside one scroll region: `flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-6)`.
-  - **All three panels stay mounted; inactive ones get the `hidden` attribute.** A half-taken quiz, a typed chat question, the flashcard position and the scroll position all survive switching. (User decision: option A.)
+  - **All three panels stay mounted; inactive ones get the `hidden` attribute.** A half-taken quiz, a typed chat question and the flashcard position all survive switching. (User decision: option A.) Each panel is its own scroll region. Whether a hidden panel keeps its scroll position is up to the browser (`hidden` means `display: none`), so it's checked by hand rather than promised.
 - **Keyboard:** roving tabindex. Only the active tab has `tabIndex=0`. ArrowRight/ArrowLeft move and wrap, Home and End jump to the first and last, and each also activates and focuses the tab.
 - **URL:** the active tab is synced to `?tab=chat|flashcards|quizzes` via `useSearchParams`.
   - A missing or invalid value means `chat`.
@@ -85,7 +85,8 @@ Fix repeated seeks along the way. The tab *contents* move in as they are; their 
 | `web/src/pages/VideoDetailPage.css` | New: `.workspace-*` layout. |
 | `web/src/components/WorkspaceTabs.tsx` + `.css` | New: tablist/tabpanels, keyboard, `?tab=` sync, mounted-but-hidden panels. |
 | `web/src/components/TopicList.tsx` | New: topics header and seek rows. Styles go in `VideoDetailPage.css`, since only that page uses them. |
-| `web/src/components/YouTubePlayer.tsx` | `seek: SeekRequest \| null` replaces `seekSeconds`; the wrapper fills its container. |
+| `web/src/components/YouTubePlayer.tsx` + `.css` | `seek: SeekRequest \| null` replaces `seekSeconds`; the wrapper fills its container. |
+| `web/src/lib/format.ts` | New: `plural(n, word)` ("1 segment" / "2 segments") and `STATUS_TAG` (status → tag class), shared by the Library and the workspace so component files only export components. |
 
 ## Testing
 
