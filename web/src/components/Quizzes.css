@@ -286,7 +286,8 @@
   color: color-mix(in srgb, var(--color-text) 75%, transparent);
 }
 
-.qz-num {
+/* Beats industry.css's `.table th { text-align: left }`. */
+.qz-table .qz-num {
   text-align: right;
 }
 
