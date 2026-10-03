@@ -5,6 +5,7 @@ import './styles/industry.css'
 import './index.css'
 import App from './App.tsx'
 import { ToastProvider } from './components/Toast'
+import { applyTheme, initialTheme } from './lib/theme'
 
 // networkMode 'always' (default is 'online'): this app has no offline story, and the
 // default pauses retries — leaving isLoading false and error null, indefinitely —
@@ -17,6 +18,10 @@ const queryClient = new QueryClient({
     mutations: { networkMode: 'always' },
   },
 })
+
+// index.html's inline script already did this before first paint; this backs it up so the
+// page never renders without a theme applied.
+applyTheme(initialTheme())
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

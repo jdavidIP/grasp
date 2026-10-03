@@ -49,6 +49,12 @@
 :root[data-theme="dark"] body { background: #1d1f20; color: #f2f2f3; }
 :root[data-theme="dark"] input::placeholder { color: color-mix(in srgb, #f2f2f3 45%, transparent); }
 
+/* Outside the verbatim block above: native controls (dialogs, selects, checkboxes,
+   scrollbars) follow the theme. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 body {
   min-height: 100vh;
 }

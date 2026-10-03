@@ -69,3 +69,21 @@ it('still toggles for the session when storage is blocked', () => {
   act(() => result.current[1]())
   expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
 })
+
+it('keeps a toggled theme across pages when storage is blocked', () => {
+  stubSystemDark(false)
+  vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+    throw new Error('blocked')
+  })
+  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    throw new Error('blocked')
+  })
+  const first = renderHook(() => useTheme())
+  act(() => first.result.current[1]())
+  first.unmount()
+
+  // The next page mounts its own header; it must not fall back to the system theme.
+  const next = renderHook(() => useTheme())
+  expect(next.result.current[0]).toBe('dark')
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+})

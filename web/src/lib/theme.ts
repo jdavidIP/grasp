@@ -21,8 +21,15 @@ export function applyTheme(theme: Theme): void {
   else document.documentElement.removeAttribute('data-theme')
 }
 
+// What's on <html> right now: set before first paint (index.html, then main.tsx) and by
+// every toggle. Each page mounts its own header, so reading this instead of re-deriving
+// keeps an in-session toggle across pages even when storage is blocked.
+function appliedTheme(): Theme {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+}
+
 export function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(initialTheme)
+  const [theme, setTheme] = useState<Theme>(appliedTheme)
 
   useEffect(() => {
     applyTheme(theme)

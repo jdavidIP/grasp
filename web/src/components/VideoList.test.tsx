@@ -38,6 +38,7 @@ it('renders a ready video with its tag, duration, channel line and no note', () 
   expect(within(row).getByText(/^Yale Courses · added /)).toBeTruthy()
   expect(within(row).queryByRole('alert')).toBeNull()
   expect(within(row).queryByText(/Processing/)).toBeNull()
+  expect(row.querySelector('img')).not.toBeNull()
 })
 
 it('shows the error as an alert for a failed video', () => {
@@ -57,7 +58,9 @@ it.each(['pending', 'processing'] as const)('shows the generic processing note w
 it('handles a video with no thumbnail, channel or duration', () => {
   renderList([video({ thumbnail_url: null, channel: null, duration_seconds: null })])
   const row = screen.getByRole('listitem')
-  expect(within(row).queryByRole('img')).toBeNull()
+  // Query the DOM directly: an <img alt=""> has no img role, so a role query can't see it.
+  expect(row.querySelector('img')).toBeNull()
+  expect(row.querySelector('.library-duration')).toBeNull()
   expect(within(row).getByText(/^added /)).toBeTruthy()
   expect(row.textContent).not.toContain('null')
 })

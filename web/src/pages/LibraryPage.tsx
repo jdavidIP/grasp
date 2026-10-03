@@ -22,10 +22,12 @@ export function LibraryPage() {
           and then every answer, card and question can point back to a timestamp.
         </p>
         <AddVideoForm />
-        <div className="library-list-header">
-          <h6>{count}</h6>
-          <h6 className="text-muted">Newest first</h6>
-        </div>
+        {videos && (
+          <div className="library-list-header">
+            <h6>{count}</h6>
+            <h6 className="text-muted">Newest first</h6>
+          </div>
+        )}
         {isLoading && <p className="text-muted library-empty">Loading…</p>}
         {error && (
           <p role="alert" className="library-add-error">
