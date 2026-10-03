@@ -115,3 +115,31 @@ LLM calls are stubbed, as in the existing chat tests. Plus `alembic check` after
 Plus `typecheck`, `lint`, `build` and `npm test`.
 
 **Manual browser check** (light and dark, desktop and narrow): ask a specific and a broad question, reload, and confirm both keep their sources and seek; an out-of-scope question shows the tag; the composer stays pinned while the thread scrolls; a typed question survives switching tabs; Reprocess warns and, once done, the chat is empty.
+
+## Addendum: speaker slips section and topic list clamp
+
+Added on the same branch after the first review gate (user request).
+
+### Speaker slips as their own section
+
+**Today:** when an answer relies on a known speaker slip (#34), `_with_slip_notes` appends a sentence to the answer text — *(The video says "values from 0 to 3" here; the speaker means "values from 0 to 2".)* — and that sentence is saved as part of the message content.
+
+**Change:** the slips travel as a separate attribute instead.
+- `answer_question` returns `slips: list[{said, meant}]` — the known slips the model says its answer relies on (`slips_used`), deduplicated, in the order given; empty for a decline (`grounded: false`), as today. The answer text is the model's answer alone.
+- `ChatResponse` and `ChatMessageOut` gain `slips: list[ChatSlip]` (`ChatSlip = {said: str, meant: str}`); empty for user rows and for answers that used none.
+- `chat_messages` gains `slips jsonb NULL` (assistant rows; null when none), so slips survive a reload. No backfill: existing rows were cleared by this branch's first migration, and any chat since has notes in its text.
+- The model's own chat history (`HISTORY_LIMIT` turns) now carries answers without notes.
+- **Why `{said, meant}` and not finished sentences:** the UI owns the wording, and a later timestamp (seek to where it was said) needs `said` to find the chunk.
+- **Not in scope:** timestamps / seeking for slips.
+
+**Chat eval:** the judge marks "the corrected fact with no mention of the discrepancy" as an unsupported silent correction; the appended note was that mention. The eval must judge what the user sees, so `app/eval/chat.py` judges the answer plus its notes, formatted exactly as today's note (`with_slip_notes(answer, slips)` in `app/generation/chat.py`, used only by the eval). The judge's input is then byte-identical to today's, so no paid eval run is needed; a unit test pins the format.
+
+**UI:** under the answer (before Sources), when `grounded !== false` and `slips.length > 0`: a closed `<details>` styled like the sources list, summary "Speaker slips ({n})", holding one line per slip: *The video says "{said}"; the speaker means "{meant}".* Shown for broad and specific answers alike.
+
+### Topic list clamped and scrollable
+
+- **Side by side:** the left column is held to the chat panel's height. `.workspace-columns` becomes a size container (`container-type: inline-size`); under `@container (min-width: 980px)` the columns stretch (`align-items: stretch`), and the topics section takes the remaining height (`flex: 1 1 0; min-height: 160px; contain: size`), so it adds nothing to the row's height and the row takes the panel's `min(80vh, 840px)`. The topic list scrolls inside it; the "Topics / n segments" header stays put.
+- **Stacked** (below the container breakpoint): the topic list gets `max-height: min(80vh, 840px)` and scrolls.
+- The 160px floor keeps the list usable on short screens where the player alone nearly fills 80vh; the left column then runs past the panel.
+- The 980px breakpoint approximates where the columns wrap (520 + 430 + gap); a few pixels' mismatch only applies one layout's clamp to the other, and both scroll.
+- CSS only; checked in the browser (jsdom doesn't load CSS).
