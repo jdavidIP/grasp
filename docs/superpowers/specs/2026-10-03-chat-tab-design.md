@@ -138,8 +138,8 @@ Added on the same branch after the first review gate (user request).
 
 ### Topic list clamped and scrollable
 
-- **Side by side:** the left column is held to the chat panel's height. `.workspace-columns` becomes a size container (`container-type: inline-size`); under `@container (min-width: 980px)` the columns stretch (`align-items: stretch`), and the topics section takes the remaining height (`flex: 1 1 0; min-height: 160px; contain: size`), so it adds nothing to the row's height and the row takes the panel's `min(80vh, 840px)`. The topic list scrolls inside it; the "Topics / n segments" header stays put.
+- **Side by side:** the left column is held to the chat panel's height. `.workspace-columns` becomes a size container (`container-type: inline-size`); under `@container (min-width: 973px)` the left column stretches to the row (`align-self: stretch`; a container query can't style the container itself), and the topics section takes the remaining height (`flex: 1 1 0; min-height: 160px; contain: size`), so it adds nothing to the row's height and the row takes the panel's `min(80vh, 840px)`. The topic list scrolls inside it; the "Topics / n segments" header stays put.
 - **Stacked** (below the container breakpoint): the topic list gets `max-height: min(80vh, 840px)` and scrolls.
 - The 160px floor keeps the list usable on short screens where the player alone nearly fills 80vh; the left column then runs past the panel.
-- The 980px breakpoint approximates where the columns wrap (520 + 430 + gap); a few pixels' mismatch only applies one layout's clamp to the other, and both scroll.
+- The 973px breakpoint is where the columns wrap: 520 + 430 + the gap, about 23px at that width. Checked pixel by pixel across the boundary in the browser; it must move with the columns' flex-basis values.
 - CSS only; checked in the browser (jsdom doesn't load CSS).

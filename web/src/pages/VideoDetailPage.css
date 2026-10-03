@@ -16,7 +16,11 @@
   color: var(--color-accent-800);
 }
 
+/* Side by side, the left column matches the chat panel's height and the topics
+   scroll in what's left; stacked, the topic list is clamped on its own. See the
+   @container rule below. */
 .workspace-columns {
+  container-type: inline-size;
   display: flex;
   flex-wrap: wrap;
   gap: clamp(20px, 2.2vw, 30px);
@@ -90,10 +94,41 @@
   margin-top: var(--space-3);
 }
 
+.workspace-topics {
+  display: flex;
+  flex-direction: column;
+}
+
 .workspace-topic-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: min(80vh, 840px);
+  overflow-y: auto;
+}
+
+/* 973px is where the columns wrap: 520 + 430 + the gap, which is about 23px at that
+   width (clamp(20px, 2.2vw, 30px)). Keep in step with the flex-basis values above. */
+@container (min-width: 973px) {
+  /* A container query can't style the container itself, so the left column
+     stretches itself to the row's height (set by the chat panel). */
+  .workspace-left {
+    align-self: stretch;
+  }
+
+  /* contain: size, so the list adds nothing to the row's height: the row takes the
+     chat panel's height and the topics fill what the title and player leave. */
+  .workspace-topics {
+    flex: 1 1 0;
+    min-height: 160px;
+    contain: size;
+  }
+
+  .workspace-topic-list {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+  }
 }
 
 .workspace-topic {
