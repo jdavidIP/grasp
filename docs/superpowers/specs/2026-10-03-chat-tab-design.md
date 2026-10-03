@@ -51,7 +51,7 @@ The router stays thin: it calls a new service function in `app/generation/chat.p
 
 **`ChatPanel`:** rewritten to render straight from history. The session map that matched answers by text is deleted. Styles go in a new `ChatPanel.css` with `.chat-*` classes and Industry tokens only.
 
-**Layout:** the panel is a flex column filling the tab panel: a scrolling thread above, the composer pinned below. `.workspace-panel:has(> .chat-panel)` drops the outer padding and scrolling for the chat tab only (CSS in `ChatPanel.css`), so `WorkspaceTabs` and the other tabs don't change. The thread keeps `padding: var(--space-6)`.
+**Layout:** the panel is a flex column filling the tab panel: a scrolling thread above, the composer pinned below. `.workspace-panel:not([hidden]):has(> .chat-panel)` drops the outer padding and scrolling for the chat tab only (CSS in `ChatPanel.css`), so `WorkspaceTabs` and the other tabs don't change. The thread keeps `padding: var(--space-6)`.
 
 **Thread** (`display: flex; flex-direction: column; gap: var(--space-8)`):
 - **User message:** a row — a 40px-wide `.text-muted` 11px uppercase "You" label, then the question in Barlow Condensed 600, 20px, `line-height: 1.22`.
