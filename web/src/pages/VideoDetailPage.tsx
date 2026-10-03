@@ -4,10 +4,7 @@ import { AppHeader } from '../components/AppHeader'
 import { ChatPanel } from '../components/ChatPanel'
 import { Corners } from '../components/Corners'
 import { FlashcardsPanel } from '../components/FlashcardsPanel'
-import { QuizAttemptHistory } from '../components/QuizAttemptHistory'
-import { QuizConfigModal } from '../components/QuizConfigModal'
-import { QuizList } from '../components/QuizList'
-import { QuizTake } from '../components/QuizTake'
+import { QuizzesPanel } from '../components/QuizzesPanel'
 import { TopicList } from '../components/TopicList'
 import { WorkspaceTabs } from '../components/WorkspaceTabs'
 import { YouTubePlayer, type SeekRequest } from '../components/YouTubePlayer'
@@ -23,9 +20,6 @@ export function VideoDetailPage() {
   const reprocess = useReprocessVideo(id!)
   const toast = useToast()
   const [seekRequest, setSeekRequest] = useState<SeekRequest | null>(null)
-  const [activeQuiz, setActiveQuiz] = useState<{ id: string; mode: 'take' | 'history' } | null>(
-    null,
-  )
 
   const seek = useCallback(
     (seconds: number) => {
@@ -114,40 +108,7 @@ export function VideoDetailPage() {
                 <WorkspaceTabs
                   chat={<ChatPanel videoId={video.id} onSeek={seek} />}
                   flashcards={<FlashcardsPanel videoId={video.id} segments={video.segments} onSeek={seek} />}
-                  quizzes={
-                    <>
-                      <QuizConfigModal
-                        videoId={video.id}
-                        segments={video.segments}
-                        onCreated={(quizId) => setActiveQuiz({ id: quizId, mode: 'take' })}
-                      />
-                      <QuizList
-                        videoId={video.id}
-                        onTake={(quizId) => setActiveQuiz({ id: quizId, mode: 'take' })}
-                        onHistory={(quizId) => setActiveQuiz({ id: quizId, mode: 'history' })}
-                        onDeleted={(quizId) =>
-                          setActiveQuiz((current) => (current?.id === quizId ? null : current))
-                        }
-                      />
-                      {activeQuiz?.mode === 'take' && (
-                        <QuizTake
-                          key={activeQuiz.id}
-                          videoId={video.id}
-                          quizId={activeQuiz.id}
-                          onSeek={seek}
-                          onClose={() => setActiveQuiz(null)}
-                        />
-                      )}
-                      {activeQuiz?.mode === 'history' && (
-                        <QuizAttemptHistory
-                          key={activeQuiz.id}
-                          quizId={activeQuiz.id}
-                          onSeek={seek}
-                          onClose={() => setActiveQuiz(null)}
-                        />
-                      )}
-                    </>
-                  }
+                  quizzes={<QuizzesPanel videoId={video.id} segments={video.segments} onSeek={seek} />}
                 />
               ) : (
                 <div className="blueprint workspace-unavailable">
