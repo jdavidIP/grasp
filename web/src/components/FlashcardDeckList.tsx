@@ -3,6 +3,7 @@ import { deckConfigSummary, plural } from '../lib/format'
 import { formatRelative } from '../lib/time'
 import { Corners } from './Corners'
 import './Flashcards.css'
+import './Forms.css'
 
 interface FlashcardDeckListProps {
   videoId: string
@@ -29,7 +30,7 @@ export function FlashcardDeckList({ videoId, onNew, onReview }: FlashcardDeckLis
       </div>
       {isLoading && <p className="text-muted">Loading…</p>}
       {error && (
-        <p role="alert" className="fc-error">
+        <p role="alert" className="form-error">
           {error.message}
         </p>
       )}
@@ -50,7 +51,7 @@ export function FlashcardDeckList({ videoId, onNew, onReview }: FlashcardDeckLis
             </button>
             <button
               type="button"
-              className="btn btn-ghost fc-small"
+              className="btn btn-ghost form-small"
               onClick={() => handleDelete(deck.id, deck.title)}
               disabled={deleteDeck.isPending}
             >
@@ -58,7 +59,7 @@ export function FlashcardDeckList({ videoId, onNew, onReview }: FlashcardDeckLis
             </button>
           </div>
           {deleteDeck.isError && deleteDeck.variables === deck.id && (
-            <p role="alert" className="fc-error">
+            <p role="alert" className="form-error">
               {deleteDeck.error.message}
             </p>
           )}

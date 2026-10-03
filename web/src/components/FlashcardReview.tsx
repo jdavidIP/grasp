@@ -4,6 +4,7 @@ import { formatTime } from '../lib/time'
 import type { Segment } from '../types/video'
 import { Corners } from './Corners'
 import './Flashcards.css'
+import './Forms.css'
 
 interface FlashcardReviewProps {
   deckId: string
@@ -81,7 +82,7 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
       </div>
       {isLoading && <p className="text-muted">Loading…</p>}
       {error && (
-        <p role="alert" className="fc-error">
+        <p role="alert" className="form-error">
           {error.message}
         </p>
       )}

@@ -4,8 +4,8 @@ import type { FlashcardConfig, FlashcardDraft } from '../types/flashcard'
 import type { Segment } from '../types/video'
 import { FlashcardConfigForm } from './FlashcardConfigForm'
 import { FlashcardDeckList } from './FlashcardDeckList'
-import { FlashcardGenerating } from './FlashcardGenerating'
 import { FlashcardReview } from './FlashcardReview'
+import { GeneratingStatus } from './GeneratingStatus'
 
 const DEFAULT_DRAFT: FlashcardDraft = {
   count: 12,
@@ -71,7 +71,7 @@ export function FlashcardsPanel({ videoId, segments, onSeek }: FlashcardsPanelPr
   }
   if (view.name === 'config') {
     return createDeck.isPending ? (
-      <FlashcardGenerating />
+      <GeneratingStatus heading="Generating deck…" noun="cards" />
     ) : (
       <FlashcardConfigForm
         draft={draft}

@@ -1,35 +1,8 @@
 import type { FlashcardDifficulty, FlashcardDraft, FlashcardScope, FlashcardStyle } from '../types/flashcard'
 import type { Segment } from '../types/video'
-
-interface SegProps<T extends string> {
-  name: string
-  label: string
-  value: T
-  options: { value: T; label: string }[]
-  onChange: (value: T) => void
-}
-
-function Seg<T extends string>({ name, label, value, options, onChange }: SegProps<T>) {
-  return (
-    <div className="fc-field">
-      <h6 id={`fc-${name}-label`}>{label}</h6>
-      <div className="seg" role="radiogroup" aria-labelledby={`fc-${name}-label`}>
-        {options.map((option) => (
-          <label className="seg-opt" key={option.value}>
-            <input
-              type="radio"
-              name={`fc-${name}`}
-              value={option.value}
-              checked={value === option.value}
-              onChange={() => onChange(option.value)}
-            />
-            {option.label}
-          </label>
-        ))}
-      </div>
-    </div>
-  )
-}
+import { CountSlider } from './CountSlider'
+import { SegmentedControl } from './SegmentedControl'
+import { TopicPicker } from './TopicPicker'
 
 const SCOPES: { value: FlashcardScope; label: string }[] = [
   { value: 'whole_video', label: 'Whole video' },
@@ -80,7 +53,7 @@ export function FlashcardConfigForm({
 
   return (
     <form
-      className="fc-config"
+      className="form"
       onSubmit={(event) => {
         event.preventDefault()
         if (!needsTopic) onSubmit()
@@ -88,61 +61,41 @@ export function FlashcardConfigForm({
     >
       <h3>New deck</h3>
 
-      <div className="fc-field">
-        <h6>Cards</h6>
-        <div className="fc-count">
-          <input
-            type="range"
-            min={5}
-            max={50}
-            step={1}
-            value={draft.count}
-            aria-label="Number of cards"
-            onChange={(event) => set('count', Number(event.target.value))}
-          />
-          <span className="tabular fc-count-value">{draft.count}</span>
-        </div>
-      </div>
+      <CountSlider
+        label="Cards"
+        ariaLabel="Number of cards"
+        min={5}
+        max={50}
+        value={draft.count}
+        onChange={(n) => set('count', n)}
+      />
 
-      <Seg name="scope" label="Scope" value={draft.scope} options={SCOPES} onChange={(v) => set('scope', v)} />
+      <SegmentedControl
+        name="fc-scope"
+        label="Scope"
+        value={draft.scope}
+        options={SCOPES}
+        onChange={(v) => set('scope', v)}
+      />
 
       {draft.scope === 'topics' && (
-        <div className="fc-field">
-          <div className="fc-topics-head">
-            <h6>Topics</h6>
-            <h6 className="text-muted">
-              {draft.segmentIds.length} of {segments.length} selected
-            </h6>
-          </div>
-          {segments.length === 0 ? (
-            <p className="text-muted">No topics available.</p>
-          ) : (
-            <div className="fc-topics">
-              {segments.map((segment) => {
-                const checked = draft.segmentIds.includes(segment.id)
-                return (
-                  <label key={segment.id} className={checked ? 'fc-topic fc-topic-checked' : 'fc-topic'}>
-                    <input type="checkbox" checked={checked} onChange={() => toggleSegment(segment.id)} />
-                    <span aria-hidden="true" className="fc-topic-mark">
-                      {checked ? '■' : '□'}
-                    </span>
-                    {segment.label}
-                  </label>
-                )
-              })}
-            </div>
-          )}
-        </div>
+        <TopicPicker segments={segments} selectedIds={draft.segmentIds} onToggle={toggleSegment} />
       )}
 
-      <Seg
-        name="difficulty"
+      <SegmentedControl
+        name="fc-difficulty"
         label="Difficulty"
         value={draft.difficulty}
         options={DIFFICULTIES}
         onChange={(v) => set('difficulty', v)}
       />
-      <Seg name="style" label="Style" value={draft.style} options={STYLES} onChange={(v) => set('style', v)} />
+      <SegmentedControl
+        name="fc-style"
+        label="Style"
+        value={draft.style}
+        options={STYLES}
+        onChange={(v) => set('style', v)}
+      />
 
       <div className="field">
         <label htmlFor="fc-title">Title (generated if blank)</label>
@@ -155,12 +108,12 @@ export function FlashcardConfigForm({
       </div>
 
       {error && (
-        <p role="alert" className="fc-error">
+        <p role="alert" className="form-error">
           {error}
         </p>
       )}
 
-      <div className="fc-actions">
+      <div className="form-actions">
         <button type="submit" className="btn btn-primary" disabled={needsTopic}>
           {needsTopic ? 'Select at least one topic' : `Generate ${draft.count} cards`}
         </button>
