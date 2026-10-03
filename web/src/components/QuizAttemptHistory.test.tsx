@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 
 import { jsonResponse, renderWithClient } from '../test/render'
@@ -30,8 +30,8 @@ it('shows the error instead of loading forever when the quiz fetch fails', async
   fireEvent.click(await screen.findByRole('button', { name: 'View' }))
 
   // Before the fix, a failed quiz fetch left the detail on "Loading attempt..." for
-  // good, and no error was shown anywhere.
-  const alerts = await screen.findAllByRole('alert')
-  expect(alerts.map((alert) => alert.textContent)).toContain('Quiz lookup failed.')
+  // good, and no error was shown anywhere. Waiting for two copies of the error (the
+  // list's and the detail's) checks the detail itself has settled on it.
+  await waitFor(() => expect(screen.getAllByText('Quiz lookup failed.')).toHaveLength(2))
   expect(screen.queryByText('Loading attempt...')).toBeNull()
 })

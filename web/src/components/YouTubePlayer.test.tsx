@@ -3,6 +3,9 @@ import { afterEach, expect, it, vi } from 'vitest'
 
 import { YouTubePlayer } from './YouTubePlayer'
 
+// YouTubePlayer caches its API-loading promise at module level, and this doesn't reset
+// it. Fine with one test per file (Vitest gives each file fresh modules); a second test
+// here needs vi.resetModules() and a dynamic import of the component.
 afterEach(() => {
   delete window.YT
 })
