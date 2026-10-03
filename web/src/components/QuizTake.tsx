@@ -73,6 +73,8 @@ export function QuizTake({ videoId, quizId, onSubmitted, onClose }: QuizTakeProp
   const answered = questions.filter((q) => (selections[q.id] ?? []).length > 0).length
 
   function close() {
+    // The attempt is already being saved; leaving now would land on its results anyway.
+    if (submitting.current) return
     if (answered > 0 && !window.confirm('Leave this quiz? Your answers so far will be lost.')) return
     onClose()
   }
@@ -109,7 +111,7 @@ export function QuizTake({ videoId, quizId, onSubmitted, onClose }: QuizTakeProp
     <section className="qz-take">
       <div className="qz-head">
         <h3>{quiz?.title ?? 'Quiz'}</h3>
-        <button type="button" className="btn btn-ghost" onClick={close}>
+        <button type="button" className="btn btn-ghost" onClick={close} disabled={submit.isPending}>
           Close
         </button>
       </div>

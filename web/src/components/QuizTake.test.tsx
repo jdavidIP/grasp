@@ -125,3 +125,25 @@ it('asks before closing only when something is selected', async () => {
   expect(confirm).toHaveBeenCalledWith('Leave this quiz? Your answers so far will be lost.')
   expect(onClose).toHaveBeenCalledTimes(1)
 })
+
+it('cannot be closed while the attempt is being graded', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (_url: string, init?: RequestInit) =>
+      init?.method === 'POST' ? new Promise<Response>(() => {}) : jsonResponse(200, quiz),
+    ),
+  )
+  const confirm = vi.fn(() => true)
+  vi.stubGlobal('confirm', confirm)
+  const { onClose } = renderTake()
+  fireEvent.click(await screen.findByRole('radio', { name: 'for' }))
+  fireEvent.click(screen.getByRole('checkbox', { name: 'while' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Submit' }))
+  await screen.findByRole('button', { name: 'Grading…' })
+
+  const close = screen.getByRole('button', { name: 'Close' })
+  expect(close).toHaveProperty('disabled', true)
+  fireEvent.click(close)
+  expect(onClose).not.toHaveBeenCalled()
+  expect(confirm).not.toHaveBeenCalled()
+})

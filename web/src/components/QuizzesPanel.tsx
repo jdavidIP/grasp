@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { useCreateQuiz, useQuizQuery } from '../hooks/useQuizzes'
 import type { AttemptResult, QuizConfig, QuizDraft } from '../types/quiz'
 import type { Segment } from '../types/video'
@@ -6,7 +6,7 @@ import { GeneratingStatus } from './GeneratingStatus'
 import { QuizAttemptDetail, QuizAttemptHistory } from './QuizAttemptHistory'
 import { QuizConfigForm } from './QuizConfigForm'
 import { QuizList } from './QuizList'
-import { QuizResults } from './QuizResults'
+import { QuizResultsFor } from './QuizResults'
 import { QuizTake } from './QuizTake'
 
 const DEFAULT_DRAFT: QuizDraft = {
@@ -38,7 +38,7 @@ function toConfig(draft: QuizDraft): QuizConfig {
 type View =
   | { name: 'list' }
   | { name: 'config' }
-  // `run` changes on every retake, so the take view remounts with no answers.
+  // `run` grows on every take, so the take view remounts with no answers.
   | { name: 'take'; quizId: string; run: number }
   | { name: 'results'; quizId: string; result: AttemptResult }
   | { name: 'history'; quizId: string }
@@ -49,19 +49,6 @@ interface ResultsScreenProps {
   onClose: () => void
   children: ReactNode
   actions: ReactNode
-}
-
-function ResultsBody({
-  quizId,
-  result,
-  onSeek,
-}: {
-  quizId: string
-  result: AttemptResult
-  onSeek: (seconds: number) => void
-}) {
-  const { data: quiz } = useQuizQuery(quizId)
-  return quiz ? <QuizResults quiz={quiz} result={result} onSeek={onSeek} /> : null
 }
 
 // The title, Close and footer buttons around a graded attempt.
@@ -93,8 +80,9 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
   const createQuiz = useCreateQuiz(videoId)
   const [view, setView] = useState<View>({ name: 'list' })
   const [draft, setDraft] = useState<QuizDraft>(DEFAULT_DRAFT)
+  const runs = useRef(0)
   const toList = () => setView({ name: 'list' })
-  const take = (quizId: string) => setView({ name: 'take', quizId, run: Date.now() })
+  const take = (quizId: string) => setView({ name: 'take', quizId, run: ++runs.current })
   const history = (quizId: string) => setView({ name: 'history', quizId })
 
   function openConfig() {
@@ -106,7 +94,7 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
     try {
       const quiz = await createQuiz.mutateAsync(toConfig(draft))
       setDraft((previous) => ({ ...previous, title: '', segmentIds: [] }))
-      setView({ name: 'take', quizId: quiz.id, run: Date.now() })
+      take(quiz.id)
     } catch {
       // createQuiz.error renders on the form.
     }
@@ -141,7 +129,7 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
           </>
         }
       >
-        <ResultsBody quizId={quizId} result={result} onSeek={onSeek} />
+        <QuizResultsFor quizId={quizId} result={result} onSeek={onSeek} />
       </ResultsScreen>
     )
   }

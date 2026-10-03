@@ -1,8 +1,13 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { expect, it, vi } from 'vitest'
+import { afterEach, expect, it, vi } from 'vitest'
 
+import { jsonResponse, renderWithClient } from '../test/render'
 import type { AttemptResult, Quiz } from '../types/quiz'
-import { QuizResults } from './QuizResults'
+import { QuizResults, QuizResultsFor } from './QuizResults'
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 const quiz: Quiz = {
   id: 'q1',
@@ -83,4 +88,10 @@ it('says when a question was skipped and leaves out Jump without a time', () => 
   render(<QuizResults quiz={quiz} result={result} onSeek={() => {}} />)
   expect(screen.getByText('You skipped this question.')).toBeTruthy()
   expect(screen.getAllByRole('button', { name: /Jump to/ })).toHaveLength(1)
+})
+
+it('shows the error, not a blank screen, when the quiz behind a result cannot be fetched', async () => {
+  vi.stubGlobal('fetch', vi.fn(async () => jsonResponse(500, { detail: 'Quiz lookup failed.' })))
+  renderWithClient(<QuizResultsFor quizId="q1" result={result} onSeek={() => {}} />)
+  expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Quiz lookup failed.')
 })

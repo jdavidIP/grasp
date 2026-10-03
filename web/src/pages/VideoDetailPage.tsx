@@ -107,8 +107,8 @@ export function VideoDetailPage() {
               {video.status === 'ready' ? (
                 <WorkspaceTabs
                   chat={<ChatPanel videoId={video.id} onSeek={seek} />}
-                  flashcards={<FlashcardsPanel videoId={video.id} segments={video.segments} onSeek={seek} />}
-                  quizzes={<QuizzesPanel videoId={video.id} segments={video.segments} onSeek={seek} />}
+                  flashcards={<FlashcardsPanel key={video.id} videoId={video.id} segments={video.segments} onSeek={seek} />}
+                  quizzes={<QuizzesPanel key={video.id} videoId={video.id} segments={video.segments} onSeek={seek} />}
                 />
               ) : (
                 <div className="blueprint workspace-unavailable">

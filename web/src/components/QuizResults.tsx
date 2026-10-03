@@ -1,5 +1,7 @@
+import { useQuizQuery } from '../hooks/useQuizzes'
 import { formatTime } from '../lib/time'
 import type { AttemptResult, Quiz } from '../types/quiz'
+import './Forms.css'
 import './Quizzes.css'
 
 interface QuizResultsProps {
@@ -68,4 +70,24 @@ export function QuizResults({ quiz, result, onSeek }: QuizResultsProps) {
       })}
     </div>
   )
+}
+
+interface QuizResultsForProps {
+  quizId: string
+  result: AttemptResult
+  onSeek: (seconds: number) => void
+}
+
+// A fresh submit's result, with the quiz (prompts, options) fetched by id.
+export function QuizResultsFor({ quizId, result, onSeek }: QuizResultsForProps) {
+  const { data: quiz, isLoading, error } = useQuizQuery(quizId)
+  if (error) {
+    return (
+      <p role="alert" className="form-error">
+        {error.message}
+      </p>
+    )
+  }
+  if (isLoading || !quiz) return <p className="text-muted">Loading…</p>
+  return <QuizResults quiz={quiz} result={result} onSeek={onSeek} />
 }
