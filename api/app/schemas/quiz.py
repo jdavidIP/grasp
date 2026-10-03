@@ -64,6 +64,7 @@ class QuizListItem(BaseModel):
     created_at: datetime
     question_count: int
     best_score: float | None
+    attempt_count: int
 
 
 class AnswerIn(BaseModel):

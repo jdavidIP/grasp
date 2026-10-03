@@ -91,12 +91,12 @@ async def list_quizzes(
     )
     quizzes = result.scalars().all()
 
-    best_result = await db.execute(
-        select(QuizAttempt.quiz_id, func.max(QuizAttempt.score))
+    stats_result = await db.execute(
+        select(QuizAttempt.quiz_id, func.max(QuizAttempt.score), func.count(QuizAttempt.id))
         .where(QuizAttempt.quiz_id.in_([q.id for q in quizzes]))
         .group_by(QuizAttempt.quiz_id)
     )
-    best_scores = {quiz_id: float(score) for quiz_id, score in best_result.all()}
+    stats = {quiz_id: (float(best), count) for quiz_id, best, count in stats_result.all()}
 
     return [
         QuizListItem(
@@ -106,7 +106,8 @@ async def list_quizzes(
             config=quiz.config,
             created_at=quiz.created_at,
             question_count=len(quiz.questions),
-            best_score=best_scores.get(quiz.id),
+            best_score=stats[quiz.id][0] if quiz.id in stats else None,
+            attempt_count=stats[quiz.id][1] if quiz.id in stats else 0,
         )
         for quiz in quizzes
     ]
