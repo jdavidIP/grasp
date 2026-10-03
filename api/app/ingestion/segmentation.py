@@ -119,6 +119,8 @@ def _find_breakpoints(units: list[Unit], embeddings: list[list[float]]) -> list[
     if len(embeddings) < MIN_UNITS_FOR_BREAKPOINTS:
         return []
 
+    # ponytail: re-sums each window from scratch and runs on the event loop: ~1s for an
+    # 800-unit, 3-hour video. Running prefix sums or asyncio.to_thread if that matters.
     distances = [
         _cosine_distance(
             _sum_embeddings(embeddings, _window(units, i, -1)),
