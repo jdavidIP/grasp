@@ -27,7 +27,7 @@ function stubDecks(decks: FlashcardDeckListItem[]) {
 it('shows each deck with its card count, date and config summary', async () => {
   stubDecks([deck])
   const onReview = vi.fn()
-  renderWithClient(<FlashcardDeckList videoId="v1" onReview={onReview} />)
+  renderWithClient(<FlashcardDeckList videoId="v1" onNew={() => {}} onReview={onReview} />)
 
   expect(await screen.findByText('Loops')).toBeTruthy()
   expect(screen.getByText(/^12 cards · /)).toBeTruthy()
@@ -39,7 +39,7 @@ it('shows each deck with its card count, date and config summary', async () => {
 it('sends nothing when Delete is cancelled', async () => {
   const fetchMock = stubDecks([deck])
   vi.stubGlobal('confirm', vi.fn(() => false))
-  renderWithClient(<FlashcardDeckList videoId="v1" onReview={() => {}} />)
+  renderWithClient(<FlashcardDeckList videoId="v1" onNew={() => {}} onReview={() => {}} />)
   fireEvent.click(await screen.findByRole('button', { name: 'Delete' }))
 
   expect(fetchMock.mock.calls.some(([, init]) => init?.method === 'DELETE')).toBe(false)
@@ -47,6 +47,6 @@ it('sends nothing when Delete is cancelled', async () => {
 
 it('says when there are no decks yet', async () => {
   stubDecks([])
-  renderWithClient(<FlashcardDeckList videoId="v1" onReview={() => {}} />)
+  renderWithClient(<FlashcardDeckList videoId="v1" onNew={() => {}} onReview={() => {}} />)
   expect(await screen.findByText('No flashcard decks yet.')).toBeTruthy()
 })

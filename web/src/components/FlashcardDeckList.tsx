@@ -6,7 +6,7 @@ import './Flashcards.css'
 
 interface FlashcardDeckListProps {
   videoId: string
-  onNew?: () => void
+  onNew: () => void
   onReview: (deckId: string) => void
 }
 
@@ -23,11 +23,9 @@ export function FlashcardDeckList({ videoId, onNew, onReview }: FlashcardDeckLis
     <section className="fc-list">
       <div className="fc-list-head">
         <h3>Flashcard decks</h3>
-        {onNew && (
-          <button type="button" className="btn btn-primary" onClick={onNew}>
-            New deck
-          </button>
-        )}
+        <button type="button" className="btn btn-primary" onClick={onNew}>
+          New deck
+        </button>
       </div>
       {isLoading && <p className="text-muted">Loading…</p>}
       {error && (

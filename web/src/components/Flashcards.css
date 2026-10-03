@@ -1,7 +1,8 @@
 .fc-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  /* Room for each deck's corner marks, which sit outside its box. */
+  gap: var(--space-6);
 }
 
 .fc-list-head {
@@ -59,4 +60,102 @@
   margin: 0;
   font-size: 13px;
   color: var(--color-accent-800);
+}
+
+.fc-config,
+.fc-generating {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fc-config h3,
+.fc-generating h4 {
+  margin: 0;
+}
+
+.fc-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fc-field h6 {
+  margin: 0;
+}
+
+.fc-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.fc-count input {
+  flex: 1;
+  accent-color: var(--color-accent);
+}
+
+.fc-count-value {
+  min-width: 2ch;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+/* The native inputs are hidden by industry.css and below; show keyboard focus. */
+.fc-config .seg-opt:has(input:focus-visible),
+.fc-topic:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.fc-topics-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.fc-topics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fc-topic {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-divider);
+  cursor: pointer;
+}
+
+.fc-topic-checked {
+  border-color: var(--color-accent);
+  background: var(--color-accent-100);
+}
+
+.fc-topic input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.fc-topic-mark {
+  color: var(--color-accent);
+}
+
+.fc-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fc-generating p {
+  margin: 0;
+}
+
+.fc-elapsed {
+  font-size: 13px;
 }

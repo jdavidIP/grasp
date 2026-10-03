@@ -3,9 +3,7 @@ import { Link, useParams } from 'react-router'
 import { AppHeader } from '../components/AppHeader'
 import { ChatPanel } from '../components/ChatPanel'
 import { Corners } from '../components/Corners'
-import { FlashcardConfigModal } from '../components/FlashcardConfigModal'
-import { FlashcardDeckList } from '../components/FlashcardDeckList'
-import { FlashcardReview } from '../components/FlashcardReview'
+import { FlashcardsPanel } from '../components/FlashcardsPanel'
 import { QuizAttemptHistory } from '../components/QuizAttemptHistory'
 import { QuizConfigModal } from '../components/QuizConfigModal'
 import { QuizList } from '../components/QuizList'
@@ -25,7 +23,6 @@ export function VideoDetailPage() {
   const reprocess = useReprocessVideo(id!)
   const toast = useToast()
   const [seekRequest, setSeekRequest] = useState<SeekRequest | null>(null)
-  const [reviewingDeckId, setReviewingDeckId] = useState<string | null>(null)
   const [activeQuiz, setActiveQuiz] = useState<{ id: string; mode: 'take' | 'history' } | null>(
     null,
   )
@@ -116,24 +113,7 @@ export function VideoDetailPage() {
               {video.status === 'ready' ? (
                 <WorkspaceTabs
                   chat={<ChatPanel videoId={video.id} onSeek={seek} />}
-                  flashcards={
-                    <>
-                      <FlashcardConfigModal
-                        videoId={video.id}
-                        segments={video.segments}
-                        onCreated={setReviewingDeckId}
-                      />
-                      <FlashcardDeckList videoId={video.id} onReview={setReviewingDeckId} />
-                      {reviewingDeckId && (
-                        <FlashcardReview
-                          key={reviewingDeckId}
-                          deckId={reviewingDeckId}
-                          onSeek={seek}
-                          onClose={() => setReviewingDeckId(null)}
-                        />
-                      )}
-                    </>
-                  }
+                  flashcards={<FlashcardsPanel videoId={video.id} segments={video.segments} onSeek={seek} />}
                   quizzes={
                     <>
                       <QuizConfigModal
