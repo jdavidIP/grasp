@@ -102,8 +102,7 @@
   font-size: 20px;
 }
 
-/* The native inputs are hidden by industry.css and below; show keyboard focus. */
-.fc-config .seg-opt:has(input:focus-visible),
+/* The topic checkboxes are visually hidden below; show keyboard focus on the row. */
 .fc-topic:has(input:focus-visible) {
   outline: 2px solid var(--color-accent);
   outline-offset: -2px;

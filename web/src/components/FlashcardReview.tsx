@@ -19,6 +19,8 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const previousRef = useRef<HTMLButtonElement>(null)
+  const nextRef = useRef<HTMLButtonElement>(null)
   const cards = deck?.cards ?? []
   const card = cards[index]
 
@@ -29,6 +31,15 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
 
   function goTo(next: number) {
     if (next < 0 || next >= cards.length) return
+    // Moving hides the answer (removing Jump) and can disable Previous/Next at an end.
+    // If the focused control is about to go, hand focus to the review first, or it
+    // falls to the page and the next arrow press does nothing.
+    const active = document.activeElement
+    const losesFocus =
+      (active instanceof Element && active.closest('.fc-answer') !== null) ||
+      (next === 0 && active === previousRef.current) ||
+      (next === cards.length - 1 && active === nextRef.current)
+    if (losesFocus) sectionRef.current?.focus({ preventScroll: true })
     setIndex(next)
     setRevealed(false)
   }
@@ -36,7 +47,8 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
   // Scoped to this section, so it never fires from another tab's input. Space/Enter
   // defer to a focused control (Jump, Next…); the arrows always move.
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (!card) return
+    // Alt+Arrow is the browser's Back/Forward; leave every modified key alone.
+    if (!card || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
     const onControl = (event.target as HTMLElement).closest('button, a, input, textarea, select')
     if ((event.key === ' ' || event.key === 'Enter') && !onControl) {
       event.preventDefault()
@@ -121,11 +133,12 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
                 setRevealed((r) => !r)
               }}
             >
-              {revealed ? 'Hide answer' : 'Click to reveal answer'}
+              {revealed ? 'Hide answer' : 'Show answer'}
             </button>
           </div>
           <div className="fc-nav">
             <button
+              ref={previousRef}
               type="button"
               className="btn btn-secondary"
               onClick={() => goTo(index - 1)}
@@ -134,6 +147,7 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
               ← Previous
             </button>
             <button
+              ref={nextRef}
               type="button"
               className="btn btn-secondary"
               onClick={() => goTo(index + 1)}

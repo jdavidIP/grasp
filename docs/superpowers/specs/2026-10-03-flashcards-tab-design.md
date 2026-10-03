@@ -68,7 +68,7 @@ Not in scope (handoff "Gaps" and `CLAUDE.md`): per-card grading ("got it / needs
   - `.fc-kicker` (10px, `letter-spacing: 0.1em`, uppercase, `--color-accent`): the source segment's label, looked up in the video's `segments` by `segment_id`; omitted when null or not found.
   - Front: Barlow Condensed 600 26px, `line-height: 1.16`, `overflow-wrap: anywhere`.
   - **Revealed**, in a hairline-topped block: the back (15px, `line-height: 1.6`); the card's `note` when present (`.text-muted` 13px); **Jump to {mm:ss}** `.btn .btn-ghost` when `source_start_time` isn't null, whose click calls `onSeek` and does not toggle the card.
-  - **Hidden:** `.text-muted` 11px uppercase "Click to reveal answer" pinned to the bottom.
+  - Pinned to the bottom: a muted 11px uppercase toggle button reading "Show answer" / "Hide answer" (`aria-expanded`). *Revised from the handoff's "Click to reveal answer": a mouse-only instruction read to keyboard and screen-reader users.*
   - The card is a `<div>` (a button can't contain the Jump button); a real `<button aria-expanded>` "Show answer" / "Hide answer" inside it gives keyboard and screen-reader access.
 - **← Previous** / **Next →** `.btn .btn-secondary`, each `flex: 1`, disabled at the ends. Moving hides the answer.
 - **Keyboard:** the review section has `tabIndex={-1}` and is focused when review opens. Its `onKeyDown`: Space/Enter toggle the answer, ArrowLeft/ArrowRight move — Space/Enter are ignored when the event's target is a button, link or input, so they keep their native meaning there; the arrows always move (focus often sits on Next after a click). Scoped to the section, so it never fires from another tab (all tab panels stay mounted).

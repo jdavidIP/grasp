@@ -92,8 +92,45 @@ it('leaves out Jump and the topic when a card has neither, and disables the ends
   expect(await screen.findByRole('button', { name: '← Previous' })).toHaveProperty('disabled', true)
   fireEvent.click(screen.getByRole('button', { name: 'Next →' }))
   expect(screen.getByRole('button', { name: 'Next →' })).toHaveProperty('disabled', true)
-  fireEvent.click(screen.getByRole('button', { name: 'Click to reveal answer' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Show answer' }))
   expect(screen.getByText('Back two')).toBeTruthy()
   expect(screen.queryByRole('button', { name: /Jump to/ })).toBeNull()
   expect(screen.queryByText('Loops')).toBeNull()
+})
+
+it('keeps focus in the review when a move removes the focused Jump button', async () => {
+  renderDeck(twoCards)
+  const section = await screen.findByRole('region', { name: 'Flashcard review' })
+  fireEvent.click(await screen.findByText('Front one'))
+  const jump = screen.getByRole('button', { name: 'Jump to 1:35' })
+  jump.focus()
+
+  fireEvent.keyDown(jump, { key: 'ArrowRight' })
+  expect(screen.getByText('Front two')).toBeTruthy()
+  // Jump is gone with the answer; focus must not fall out of the review.
+  expect(document.activeElement).toBe(section)
+})
+
+it('keeps focus in the review when Next reaches the last card and is disabled', async () => {
+  renderDeck(twoCards)
+  const section = await screen.findByRole('region', { name: 'Flashcard review' })
+  const next = await screen.findByRole('button', { name: 'Next →' })
+  next.focus()
+
+  fireEvent.click(next)
+  expect(next).toHaveProperty('disabled', true)
+  expect(document.activeElement).toBe(section)
+})
+
+it('ignores shortcuts pressed with a modifier key', async () => {
+  renderDeck(twoCards)
+  const section = await screen.findByRole('region', { name: 'Flashcard review' })
+  await screen.findByText('Front one')
+
+  // Alt+Right is the browser's Forward; Ctrl/Shift+Space are not ours either.
+  fireEvent.keyDown(section, { key: 'ArrowRight', altKey: true })
+  fireEvent.keyDown(section, { key: ' ', ctrlKey: true })
+  fireEvent.keyDown(section, { key: ' ', shiftKey: true })
+  expect(screen.getByText('Card 1 of 2')).toBeTruthy()
+  expect(screen.queryByText('Back one')).toBeNull()
 })
