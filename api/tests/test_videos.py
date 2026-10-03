@@ -11,6 +11,7 @@ from sqlalchemy.exc import ProgrammingError
 from app.db import async_session
 from app.ingestion import videos as ingestion
 from app.main import app, lifespan
+from app.models.chat_message import ChatMessage
 from app.models.chunk import TranscriptChunk
 from app.models.video import Video
 
@@ -444,3 +445,45 @@ async def test_video_no_transcript_fails(monkeypatch):
     detail = get_response.json()
     assert detail["status"] == "failed"
     assert detail["error_message"]
+
+
+async def _add_chat(video_id: str) -> None:
+    async with async_session() as session:
+        session.add(ChatMessage(video_id=uuid.UUID(video_id), role="user", content="q"))
+        await session.commit()
+
+
+async def _chat_count(video_id: str) -> int:
+    async with async_session() as session:
+        return await session.scalar(
+            select(func.count())
+            .select_from(ChatMessage)
+            .where(ChatMessage.video_id == uuid.UUID(video_id))
+        )
+
+
+async def test_reprocess_clears_the_chat():
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        await _add_chat(video["id"])
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+
+    assert await _chat_count(video["id"]) == 0
+
+
+async def test_failed_reprocess_keeps_the_chat(monkeypatch):
+    url = f"https://www.youtube.com/watch?v=test-{uuid.uuid4().hex[:8]}"
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        video = (await client.post("/api/videos", json={"url": url})).json()
+        await _add_chat(video["id"])
+        monkeypatch.setattr(
+            ingestion.segmentation,
+            "segment_transcript",
+            AsyncMock(side_effect=ingestion.llm.LLMError("Hit an OpenAI rate limit or quota.")),
+        )
+        await client.post(f"/api/videos/{video['id']}/reprocess")
+
+    assert await _chat_count(video["id"]) == 1

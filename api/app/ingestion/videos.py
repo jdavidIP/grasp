@@ -23,6 +23,7 @@ from app.config import settings
 from app.db import async_session
 from app.generation import llm
 from app.ingestion import chunking, segmentation
+from app.models.chat_message import ChatMessage
 from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
 from app.models.video import Video
@@ -216,6 +217,10 @@ async def run_reprocessing(video_id: uuid.UUID) -> None:
             await session.execute(
                 delete(TranscriptSegment).where(TranscriptSegment.video_id == video.id)
             )
+            # Chat answers cite the old chunks and segments, so they go with them —
+            # in this transaction, so a failed reprocess keeps the chat too. The
+            # Reprocess button warns about this (docs/DATA_MODEL.md).
+            await session.execute(delete(ChatMessage).where(ChatMessage.video_id == video.id))
             await _store_segments_and_chunks(session, video, segment_dicts, chunk_dicts)
             video.status = "ready"
             video.error_message = None  # a previous failed attempt's message is stale now
