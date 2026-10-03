@@ -51,3 +51,19 @@ it('seeks every time it is asked, even to the same time twice', async () => {
   expect(seekTo).toHaveBeenLastCalledWith(30, true)
   expect(playVideo).toHaveBeenCalledTimes(2)
 })
+
+it('leaves only the current player in its frame when the video changes', async () => {
+  const Player = vi.fn(function (element: HTMLElement) {
+    element.replaceWith(document.createElement('iframe'))
+    return { seekTo: vi.fn(), playVideo: vi.fn(), destroy: vi.fn() }
+  })
+  window.YT = { Player } as unknown as NonNullable<Window['YT']>
+
+  const { container, rerender } = render(<YouTubePlayer videoId="abc" seek={null} />)
+  await waitFor(() => expect(Player).toHaveBeenCalledTimes(1))
+  rerender(<YouTubePlayer videoId="def" seek={null} />)
+  await waitFor(() => expect(Player).toHaveBeenCalledTimes(2))
+
+  // Each run's cleanup must take its own target (or the iframe that replaced it) with it.
+  expect(container.querySelector('.youtube-player')?.children).toHaveLength(1)
+})

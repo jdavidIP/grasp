@@ -76,8 +76,9 @@ export function YouTubePlayer({ videoId, seek }: YouTubePlayerProps) {
     // JSX, never reconciled). React only ever owns the wrapper, whose children it
     // never inspects, so removing it on unmount is always safe regardless of what
     // the YouTube API did to its insides.
+    const wrapper = wrapperRef.current
     const target = document.createElement('div')
-    wrapperRef.current?.appendChild(target)
+    wrapper?.appendChild(target)
 
     loadYouTubeApi().then(() => {
       if (cancelled || !window.YT) return
@@ -92,6 +93,10 @@ export function YouTubePlayer({ videoId, seek }: YouTubePlayerProps) {
       cancelled = true
       playerRef.current?.destroy()
       playerRef.current = null
+      // Remove whatever this run left in the wrapper (the target, or the iframe the API
+      // swapped in for it), so a re-run or a new video doesn't stack a second player.
+      // React renders no children into the wrapper, so emptying it is safe.
+      wrapper?.replaceChildren()
     }
   }, [videoId])
 
