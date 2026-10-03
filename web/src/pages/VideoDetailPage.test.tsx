@@ -122,3 +122,9 @@ it('reprocesses once the warning is confirmed', async () => {
   // The mutation calls fetch on a later tick.
   await waitFor(() => expect(reprocessCalls()).toHaveLength(1))
 })
+
+it('renders the flashcards panel in its tab', async () => {
+  renderPage(video({}))
+  fireEvent.click(await screen.findByRole('tab', { name: 'Flashcards' }))
+  expect(await screen.findByRole('heading', { name: 'Flashcard decks' })).toBeTruthy()
+})

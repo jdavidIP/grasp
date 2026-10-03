@@ -1,0 +1,274 @@
+.fc-list {
+  display: flex;
+  flex-direction: column;
+  /* Room for each deck's corner marks, which sit outside its box. */
+  gap: var(--space-6);
+}
+
+.fc-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.fc-list-head h3 {
+  margin: 0;
+}
+
+.fc-deck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.fc-deck-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.fc-deck-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.fc-deck-meta {
+  font-size: 12px;
+}
+
+.fc-deck-summary {
+  font-size: 12.5px;
+}
+
+.fc-deck-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.fc-small {
+  font-size: 12.5px;
+}
+
+.fc-error {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-accent-800);
+}
+
+.fc-config,
+.fc-generating {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fc-config h3,
+.fc-generating h4 {
+  margin: 0;
+}
+
+.fc-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.fc-field h6 {
+  margin: 0;
+}
+
+.fc-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.fc-count input {
+  flex: 1;
+  accent-color: var(--color-accent);
+}
+
+.fc-count-value {
+  min-width: 2ch;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+/* The topic checkboxes are visually hidden below; show keyboard focus on the row. */
+.fc-topic:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.fc-topics-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.fc-topics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fc-topic {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-divider);
+  cursor: pointer;
+}
+
+.fc-topic-checked {
+  border-color: var(--color-accent);
+  background: var(--color-accent-100);
+}
+
+.fc-topic input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.fc-topic-mark {
+  color: var(--color-accent);
+}
+
+.fc-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fc-generating p {
+  margin: 0;
+}
+
+.fc-elapsed {
+  font-size: 13px;
+}
+
+.fc-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  outline: none;
+}
+
+.fc-position {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fc-position h6 {
+  margin: 0;
+}
+
+.fc-tag {
+  text-transform: uppercase;
+}
+
+.fc-strip {
+  display: flex;
+  gap: 3px;
+}
+
+.fc-cell {
+  flex: 1;
+  height: 4px;
+  border: 1px solid var(--color-divider);
+}
+
+.fc-cell-past {
+  background: var(--color-accent-300);
+}
+
+.fc-cell-current {
+  background: var(--color-accent);
+}
+
+.fc-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 250px;
+  padding: var(--space-8) var(--space-6);
+  cursor: pointer;
+}
+
+.fc-card:hover {
+  background: color-mix(in srgb, var(--color-text) 3%, transparent);
+}
+
+.fc-kicker {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.fc-front {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.fc-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+
+.fc-back {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.fc-note {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Pinned to the bottom of the card. */
+.fc-toggle {
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.fc-nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.fc-nav .btn {
+  flex: 1;
+}
