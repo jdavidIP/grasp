@@ -18,10 +18,11 @@ VALID_DIFFICULTIES = {"easy", "medium", "hard"}
 
 # ponytail: every segment gets the same 2 excerpts in whole-video context, however
 # long it is. A 26-minute podcast topic (22 chunks) is only ~9% represented. After
-# #38, shipped quiz items failed at 0.08 / 0.10 / 0.05 on segments of 1-2 / 3-6 / 7+
-# chunks: no length trend to act on. Upgrade: split a total excerpt budget in proportion
-# to segment length, once an eval shows long-segment items failing clearly. The
-# overgenerate/dedupe constants below are still hand-picked with no tuning data.
+# #38, quiz candidates failed at 0.15 / 0.20 / 0.24 on segments of 1-2 / 3-6 / 7+
+# chunks, but the validator absorbs it: shipped items 0.08 / 0.10 / 0.05. Upgrade:
+# split a total excerpt budget in proportion to segment length, once shipped
+# long-segment items fail clearly. The overgenerate/dedupe constants below are
+# still hand-picked with no tuning data.
 CENTRALITY_CHUNKS_PER_SEGMENT = 2
 DEDUPE_SIMILARITY_THRESHOLD = 0.93
 
