@@ -86,6 +86,7 @@ Per-video conversation history.
 | cited_chunk_ids | uuid[] | a specific answer's sources, in display order |
 | scope | text, check `ck_chat_messages_scope` | assistant rows only: `broad` or `specific` |
 | grounded | boolean | assistant rows only: whether the video covered the question |
+| slips | jsonb | assistant rows only: `[{said, meant}]`, the known speaker slips the answer relied on; null when none |
 | created_at | timestamptz not null default now() | |
 
 **Sources are rebuilt, not stored.** History rebuilds a specific answer's sources from `cited_chunk_ids` and a broad answer's from the video's segments (a broad answer always cites all of them). Reprocessing replaces segments and chunks with new ids, so it deletes the chat in the same transaction instead of leaving ids that point at nothing. It locks the video row first (`FOR UPDATE`), so a chat reply still being generated (its question written but not committed) is waited for and deleted too, and a reply that starts later only sees the new segments. The alternative, a jsonb snapshot of each answer's sources, survives a reprocess but copies chunk text into every message. Reprocessing is user-triggered and warned about, so losing chat there was judged acceptable (#24).

@@ -14,6 +14,13 @@ class ChatSource(BaseModel):
     text: str
 
 
+class ChatSlip(BaseModel):
+    # A known speaker slip the answer relied on: the transcript says `said`, the
+    # speaker means `meant` (see #34).
+    said: str
+    meant: str
+
+
 class ChatMessageOut(BaseModel):
     id: uuid.UUID
     role: str
@@ -22,6 +29,7 @@ class ChatMessageOut(BaseModel):
     # Assistant rows only; empty / null for the user's messages.
     sources: list[ChatSource] = []
     grounded: bool | None = None
+    slips: list[ChatSlip] = []
 
 
 class ChatRequest(BaseModel):
@@ -32,3 +40,4 @@ class ChatResponse(BaseModel):
     answer: str
     sources: list[ChatSource]
     grounded: bool
+    slips: list[ChatSlip]

@@ -57,7 +57,7 @@ async def _create_video_with_chunks() -> tuple[uuid.UUID, list[uuid.UUID]]:
         return video.id, chunk_ids
 
 
-def _fake_answer(sources=None, grounded=True, path="specific"):
+def _fake_answer(sources=None, grounded=True, path="specific", slips=None):
     return {
         "answer": "The answer.",
         "sources": sources
@@ -73,6 +73,7 @@ def _fake_answer(sources=None, grounded=True, path="specific"):
         ],
         "grounded": grounded,
         "path": path,
+        "slips": slips or [],
     }
 
 
@@ -289,3 +290,19 @@ async def test_history_skips_a_cited_chunk_that_no_longer_exists(monkeypatch):
 
     assert response.status_code == 200
     assert [s["segment_label"] for s in response.json()[1]["sources"]] == ["Intro"]
+
+
+async def test_history_returns_the_slips_an_answer_relied_on(monkeypatch):
+    slips = [{"said": "values from 0 to 3", "meant": "values from 0 to 2"}]
+    video_id = await _create_ready_video()
+    monkeypatch.setattr(
+        chat_router, "answer_question", AsyncMock(return_value=_fake_answer([], slips=slips))
+    )
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url=BASE_URL) as client:
+        posted = (await client.post(f"/api/videos/{video_id}/chat", json={"message": "q"})).json()
+        user, assistant = (await client.get(f"/api/videos/{video_id}/chat")).json()
+
+    assert posted["slips"] == slips
+    assert assistant["slips"] == slips
+    assert user["slips"] == []

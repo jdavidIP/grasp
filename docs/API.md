@@ -29,12 +29,12 @@ Re-runs segmentation and embedding on the stored transcript without re-fetching.
 ## Chat
 
 ### `GET /videos/{id}/chat`
-Message history, oldest first. Each assistant message carries the `sources` and `grounded` it was answered with (same shape as the `POST` response); user messages have `sources: []` and `grounded: null`.
+Message history, oldest first. Each assistant message carries the `sources`, `grounded` and `slips` it was answered with (same shape as the `POST` response); user messages have `sources: []`, `grounded: null` and `slips: []`.
 
 ```json
 [
-  { "id": "…", "role": "user", "content": "What did they say about attention heads?", "created_at": "…", "sources": [], "grounded": null },
-  { "id": "…", "role": "assistant", "content": "They describe attention heads as...", "created_at": "…", "sources": [ { "chunk_id": "…", "segment_label": "Transformer internals", "start_time": 842.5, "end_time": 901.0, "text": "…" } ], "grounded": true }
+  { "id": "…", "role": "user", "content": "What did they say about attention heads?", "created_at": "…", "sources": [], "grounded": null, "slips": [] },
+  { "id": "…", "role": "assistant", "content": "They describe attention heads as...", "created_at": "…", "sources": [ { "chunk_id": "…", "segment_label": "Transformer internals", "start_time": 842.5, "end_time": 901.0, "text": "…" } ], "grounded": true, "slips": [] }
 ]
 ```
 
@@ -56,9 +56,14 @@ Response:
       "text": "…"
     }
   ],
-  "grounded": true
+  "grounded": true,
+  "slips": [
+    { "said": "the Soviet Union invaded Ukraine", "meant": "Russia invaded Ukraine" }
+  ]
 }
 ```
+
+`slips` lists the known speaker slips (detected at ingestion, #34) the answer relies on: the transcript says `said`, the speaker means `meant`. The answer states the intended fact; the UI shows the slips beside it so the viewer isn't confused when the video says something else. Empty when none, and always empty when `grounded` is `false`.
 
 `grounded` is `false` when retrieval found nothing relevant and the model declined to answer. The UI should render that case differently — it is a feature, not an error.
 

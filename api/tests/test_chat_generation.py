@@ -115,22 +115,50 @@ async def test_answer_specific_tells_the_model_the_slips_in_its_excerpts(monkeyp
     assert "Latin America" not in user_prompt
 
 
-def test_with_slip_notes_appends_a_note_per_slip_the_model_used():
-    slips = [{"said": "angle brackets", "meant": "square brackets"}, {"said": "a", "meant": "b"}]
-    note = '(The video says "angle brackets" here; the speaker means "square brackets".)'
+def test_slips_used_returns_each_slip_the_model_relied_on():
+    slips = [
+        {"said": "angle brackets", "meant": "square brackets", "reason": "r"},
+        {"said": "a", "meant": "b", "reason": "r"},
+    ]
 
-    def answer(used: object, grounded: bool = True) -> str:
-        return chat._with_slip_notes(
-            {"answer": "A.", "grounded": grounded, "slips_used": used}, slips
-        )
+    def used(indexes: object, grounded: bool = True) -> list[dict]:
+        return chat._slips_used({"grounded": grounded, "slips_used": indexes}, slips)
 
-    assert answer([0, 0]) == f"A. {note}"
+    assert used([0, 0]) == [{"said": "angle brackets", "meant": "square brackets"}]
     # Out-of-range, non-int, and bool indexes from the model are ignored.
-    assert answer([5, "0", True]) == "A."
-    assert answer([]) == "A."
-    assert answer(None) == "A."
-    # A decline gets no note even if the model still lists a slip (#34).
-    assert answer([0], grounded=False) == "A."
+    assert used([5, "0", True]) == []
+    assert used(None) == []
+    # A decline relies on no slip even if the model still lists one (#34).
+    assert used([0], grounded=False) == []
+
+
+def test_with_slip_notes_formats_what_the_user_sees():
+    # The chat eval judges this text, so it must match the note the answer used to carry.
+    slips = [{"said": "angle brackets", "meant": "square brackets"}]
+    assert chat.with_slip_notes("A.", slips) == (
+        'A. (The video says "angle brackets" here; the speaker means "square brackets".)'
+    )
+    assert chat.with_slip_notes("A.", []) == "A."
+
+
+async def test_answer_specific_returns_slips_apart_from_the_answer(monkeypatch):
+    slip = {"said": "values from 0 to 3", "meant": "values from 0 to 2", "reason": "r"}
+    chunks = [_chunk("values from 0 to 3", "Loops", slips=[slip])]
+    monkeypatch.setattr(chat.llm, "embed_texts", AsyncMock(return_value=[[0.1] * 1536]))
+    monkeypatch.setattr(chat, "hybrid_search", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(chat, "rerank", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(
+        chat.llm,
+        "generate_json",
+        AsyncMock(
+            return_value={"answer": "It prints 0 to 2.", "grounded": True, "slips_used": [0]}
+        ),
+    )
+
+    result = await chat._answer_specific(None, uuid.uuid4(), "what does range(3) give?", [])
+
+    assert result["answer"] == "It prints 0 to 2."
+    assert result["slips"] == [{"said": "values from 0 to 3", "meant": "values from 0 to 2"}]
 
 
 async def test_answer_specific_adds_no_slip_block_when_there_are_none(monkeypatch):

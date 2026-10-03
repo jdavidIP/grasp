@@ -17,7 +17,7 @@ from app.db import async_session
 from app.eval.faithfulness import print_usage
 from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, load_eval_videos
 from app.generation import llm
-from app.generation.chat import answer_question
+from app.generation.chat import answer_question, with_slip_notes
 from app.prompts.chat_judge import (
     ANSWER_SYSTEM_PROMPT,
     DECLINE_SYSTEM_PROMPT,
@@ -71,7 +71,10 @@ async def _judge(kind: str, question: str, answer: dict) -> dict | None:
     system_prompt = DECLINE_SYSTEM_PROMPT if kind == "out_of_scope" else ANSWER_SYSTEM_PROMPT
     result = await llm.generate_json(
         system_prompt,
-        build_user_prompt(question, answer["sources"], answer["answer"]),
+        # The judge must see what the viewer reads: the answer plus its slip notes.
+        build_user_prompt(
+            question, answer["sources"], with_slip_notes(answer["answer"], answer["slips"])
+        ),
         model=llm.EVAL_MODEL,
     )
     return parse_judgment(result, kind)
@@ -102,7 +105,7 @@ async def run(label: str | None) -> None:
                 "question": entry["question"],
                 "path": answer["path"],
                 "grounded": answer["grounded"],
-                "answer": answer["answer"],
+                "answer": with_slip_notes(answer["answer"], answer["slips"]),
                 "sources": [
                     {k: s[k] for k in ("segment_label", "start_time", "end_time")} for s in sources
                 ],

@@ -61,6 +61,7 @@ async def send_chat_message(
             cited_chunk_ids=cited_chunk_ids or None,
             scope=result["path"],
             grounded=result["grounded"],
+            slips=result["slips"] or None,
             created_at=datetime.now(UTC),
         )
     )
