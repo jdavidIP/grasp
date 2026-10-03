@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { AppHeader } from '../components/AppHeader'
 import { ChatPanel } from '../components/ChatPanel'
+import { Corners } from '../components/Corners'
 import { FlashcardConfigModal } from '../components/FlashcardConfigModal'
 import { FlashcardDeckList } from '../components/FlashcardDeckList'
 import { FlashcardReview } from '../components/FlashcardReview'
@@ -17,17 +18,6 @@ import { STATUS_TAG, plural } from '../lib/format'
 import { formatTime } from '../lib/time'
 import { useToast } from '../lib/toast'
 import './VideoDetailPage.css'
-
-function Corners() {
-  return (
-    <>
-      <i className="corner tl" />
-      <i className="corner tr" />
-      <i className="corner bl" />
-      <i className="corner br" />
-    </>
-  )
-}
 
 export function VideoDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -133,13 +123,7 @@ export function VideoDetailPage() {
                         segments={video.segments}
                         onCreated={setReviewingDeckId}
                       />
-                      <FlashcardDeckList
-                        videoId={video.id}
-                        onReview={setReviewingDeckId}
-                        onDeleted={(deckId) =>
-                          setReviewingDeckId((current) => (current === deckId ? null : current))
-                        }
-                      />
+                      <FlashcardDeckList videoId={video.id} onReview={setReviewingDeckId} />
                       {reviewingDeckId && (
                         <FlashcardReview
                           key={reviewingDeckId}
