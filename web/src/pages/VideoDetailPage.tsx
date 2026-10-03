@@ -86,7 +86,14 @@ export function VideoDetailPage() {
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      onClick={() => reprocess.mutate()}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Reprocessing rebuilds this video's topics and deletes its chat history. Continue?",
+                          )
+                        )
+                          reprocess.mutate()
+                      }}
                       disabled={reprocess.isPending}
                     >
                       Reprocess

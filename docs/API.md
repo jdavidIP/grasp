@@ -22,14 +22,21 @@ Full detail including `segments` (id, label, summary, start_time, end_time) once
 Cascades to segments, chunks, chat, decks, quizzes, attempts. Returns `204`.
 
 ### `POST /videos/{id}/reprocess`
-Re-runs segmentation and embedding on the stored transcript without re-fetching. Useful while tuning segmentation parameters. A video with no stored transcript (its first ingestion failed or was interrupted before fetching one) gets the full ingestion instead. Leaves decks and quizzes intact but nulls their `segment_id` references. If it fails, the video is marked `failed` with an `error_message`, but its previous segments and chunks are kept (every LLM call runs before anything is deleted), so a retry starts from intact data. Returns `409` while the video is `pending` or `processing`: two overlapping runs would each delete and rewrite its segments. The check and the status change are one conditional `UPDATE`, so simultaneous requests can't both start a run. Deleting a video mid-run is safe; the run ends without saving anything. Runs are in-process background tasks, so a restart kills them: at startup the API marks any video still `pending` or `processing` as `failed` ("interrupted by a server restart"), which makes it retryable instead of stuck.
+Re-runs segmentation and embedding on the stored transcript without re-fetching. Useful while tuning segmentation parameters. A video with no stored transcript (its first ingestion failed or was interrupted before fetching one) gets the full ingestion instead. Leaves decks and quizzes intact but nulls their `segment_id` references. Deletes the video's chat history once the new topics are stored, since answers cite the old chunks and segments (see `DATA_MODEL.md`). If it fails, the video is marked `failed` with an `error_message`, but its previous segments, chunks and chat are kept (every LLM call runs before anything is deleted), so a retry starts from intact data. Returns `409` while the video is `pending` or `processing`: two overlapping runs would each delete and rewrite its segments. The check and the status change are one conditional `UPDATE`, so simultaneous requests can't both start a run. Deleting a video mid-run is safe; the run ends without saving anything. Runs are in-process background tasks, so a restart kills them: at startup the API marks any video still `pending` or `processing` as `failed` ("interrupted by a server restart"), which makes it retryable instead of stuck.
 
 ---
 
 ## Chat
 
 ### `GET /videos/{id}/chat`
-Message history, oldest first.
+Message history, oldest first. Each assistant message carries the `sources`, `grounded` and `slips` it was answered with (same shape as the `POST` response); user messages have `sources: []`, `grounded: null` and `slips: []`.
+
+```json
+[
+  { "id": "…", "role": "user", "content": "What did they say about attention heads?", "created_at": "…", "sources": [], "grounded": null, "slips": [] },
+  { "id": "…", "role": "assistant", "content": "They describe attention heads as...", "created_at": "…", "sources": [ { "chunk_id": "…", "segment_label": "Transformer internals", "start_time": 842.5, "end_time": 901.0, "text": "…" } ], "grounded": true, "slips": [] }
+]
+```
 
 ### `POST /videos/{id}/chat`
 ```json
@@ -49,9 +56,14 @@ Response:
       "text": "…"
     }
   ],
-  "grounded": true
+  "grounded": true,
+  "slips": [
+    { "said": "the Soviet Union invaded Ukraine", "meant": "Russia invaded Ukraine" }
+  ]
 }
 ```
+
+`slips` lists the known speaker slips (detected at ingestion, #34) the answer relies on: the transcript says `said`, the speaker means `meant`. The answer states the intended fact; the UI shows the slips beside it so the viewer isn't confused when the video says something else. Empty when none, and always empty when `grounded` is `false`.
 
 `grounded` is `false` when retrieval found nothing relevant and the model declined to answer. The UI should render that case differently — it is a feature, not an error.
 

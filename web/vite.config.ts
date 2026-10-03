@@ -10,5 +10,6 @@ export default defineConfig({
     // Lets React Testing Library find afterEach and unmount between tests. Tests
     // still import describe/it/expect from 'vitest' explicitly.
     globals: true,
+    setupFiles: ['./src/test/setup.ts'],
   },
 })

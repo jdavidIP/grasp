@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, expect, it, vi } from 'vitest'
 
@@ -95,4 +95,30 @@ it('shows the failure, the error and Reprocess for a failed video', async () => 
   expect(screen.getByRole('alert').textContent).toBe('No transcript available.')
   expect(screen.getByRole('button', { name: 'Reprocess' })).toBeTruthy()
   expect(screen.queryByRole('tablist')).toBeNull()
+})
+
+function reprocessCalls() {
+  return vi
+    .mocked(fetch)
+    .mock.calls.filter(([url]) => String(url).endsWith('/reprocess'))
+}
+
+it('does not reprocess when the warning is cancelled', async () => {
+  renderPage(video({}))
+  vi.stubGlobal('confirm', vi.fn(() => false))
+  fireEvent.click(await screen.findByRole('button', { name: 'Reprocess' }))
+
+  expect(window.confirm).toHaveBeenCalledWith(
+    "Reprocessing rebuilds this video's topics and deletes its chat history. Continue?",
+  )
+  expect(reprocessCalls()).toHaveLength(0)
+})
+
+it('reprocesses once the warning is confirmed', async () => {
+  renderPage(video({}))
+  vi.stubGlobal('confirm', vi.fn(() => true))
+  fireEvent.click(await screen.findByRole('button', { name: 'Reprocess' }))
+
+  // The mutation calls fetch on a later tick.
+  await waitFor(() => expect(reprocessCalls()).toHaveLength(1))
 })

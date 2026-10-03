@@ -1,20 +1,7 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
-
-
-class ChatMessageOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    role: str
-    content: str
-    created_at: datetime
-
-
-class ChatRequest(BaseModel):
-    message: str = Field(min_length=1, max_length=4000)
+from pydantic import BaseModel, Field
 
 
 class ChatSource(BaseModel):
@@ -27,7 +14,30 @@ class ChatSource(BaseModel):
     text: str
 
 
+class ChatSlip(BaseModel):
+    # A known speaker slip the answer relied on: the transcript says `said`, the
+    # speaker means `meant` (see #34).
+    said: str
+    meant: str
+
+
+class ChatMessageOut(BaseModel):
+    id: uuid.UUID
+    role: str
+    content: str
+    created_at: datetime
+    # Assistant rows only; empty / null for the user's messages.
+    sources: list[ChatSource] = []
+    grounded: bool | None = None
+    slips: list[ChatSlip] = []
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=4000)
+
+
 class ChatResponse(BaseModel):
     answer: str
     sources: list[ChatSource]
     grounded: bool
+    slips: list[ChatSlip]

@@ -1,16 +1,82 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useChatHistoryQuery, useClearChat, useSendChatMessage } from '../hooks/useChat'
 import { formatTime } from '../lib/time'
-import type { ChatSource } from '../types/chat'
+import type { ChatMessage } from '../types/chat'
+import './ChatPanel.css'
 
 interface ChatPanelProps {
   videoId: string
   onSeek: (seconds: number) => void
 }
 
-interface AnswerMeta {
-  sources: ChatSource[]
-  grounded: boolean
+function UserMessage({ text }: { text: string }) {
+  return (
+    <div className="chat-user">
+      <span className="text-muted chat-user-label">You</span>
+      <p className="chat-question">{text}</p>
+    </div>
+  )
+}
+
+function AssistantMessage({
+  message,
+  onSeek,
+}: {
+  message: ChatMessage
+  onSeek: (seconds: number) => void
+}) {
+  // A broad answer's sources are every segment, which the topics list already shows.
+  const sources = message.sources.filter((source) => source.chunk_id !== null)
+  return (
+    <div className="chat-assistant">
+      <p className="chat-answer">{message.content}</p>
+      {message.grounded === false ? (
+        <span className="tag tag-outline">Not covered in this video</span>
+      ) : (
+        <>
+          {message.slips.length > 0 && (
+            <details className="chat-sources">
+              <summary className="text-muted chat-sources-heading">
+                Speaker slips ({message.slips.length})
+              </summary>
+              <ul className="chat-slip-list">
+                {message.slips.map((slip, i) => (
+                  <li key={i}>
+                    The video says “{slip.said}”; the speaker means “{slip.meant}”.
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+          {sources.length > 0 && (
+            <details className="chat-sources">
+              <summary className="text-muted chat-sources-heading">Sources ({sources.length})</summary>
+              <ol className="chat-source-list">
+                {sources.map((source, i) => (
+                  <li key={i} className="chat-source">
+                    <span className="tabular chat-source-index">{i + 1}.</span>
+                    <div className="chat-source-body">
+                      <button
+                        type="button"
+                        className="tabular chat-source-seek"
+                        onClick={() => onSeek(source.start_time)}
+                      >
+                        {source.segment_label} @ {formatTime(source.start_time)}
+                      </button>
+                      <details className="chat-source-transcript">
+                        <summary className="text-muted">Read transcript</summary>
+                        <p className="chat-source-text">{source.text}</p>
+                      </details>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )}
+        </>
+      )}
+    </div>
+  )
 }
 
 export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
@@ -18,24 +84,23 @@ export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
   const sendMessage = useSendChatMessage(videoId)
   const clearChat = useClearChat(videoId)
   const [draft, setDraft] = useState('')
-  // GET /videos/{id}/chat doesn't return sources (see docs/API.md — only the raw
-  // message is persisted), so chips only show for answers sent this session,
-  // matched back to their history row by exact answer text.
-  const [metaByAnswer, setMetaByAnswer] = useState<Map<string, AnswerMeta>>(new Map())
+  const endRef = useRef<HTMLDivElement>(null)
+  // Shown until the refetched history (which includes it) arrives: the mutation
+  // stays pending while its onSuccess invalidation runs.
+  const pendingQuestion = sendMessage.isPending ? sendMessage.variables : null
+  const count = history?.length ?? 0
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: 'end' })
+  }, [count, pendingQuestion])
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     const question = draft.trim()
     if (!question) return
     try {
-      const response = await sendMessage.mutateAsync(question)
+      await sendMessage.mutateAsync(question)
       setDraft('')
-      setMetaByAnswer((prev) =>
-        new Map(prev).set(response.answer, {
-          sources: response.sources,
-          grounded: response.grounded,
-        }),
-      )
     } catch {
       // Left in the input for the person to retry; sendMessage.error renders below.
     }
@@ -45,57 +110,76 @@ export function ChatPanel({ videoId, onSeek }: ChatPanelProps) {
     if (!window.confirm('Clear the chat history for this video? This cannot be undone.')) return
     try {
       await clearChat.mutateAsync()
-      setMetaByAnswer(new Map())
     } catch {
       // clearChat.error renders below.
     }
   }
 
   return (
-    <section>
-      <h2>Chat</h2>
-      {isLoading && <p>Loading...</p>}
-      {historyError && <p role="alert">{historyError.message}</p>}
+    <section className="chat-panel" aria-label="Chat">
+      <div className="chat-scroll">
+        {isLoading && <p className="text-muted">Loading…</p>}
+        {historyError && (
+          <p role="alert" className="chat-error">
+            {historyError.message}
+          </p>
+        )}
+        {history?.length === 0 && !pendingQuestion && (
+          <p className="text-muted">Ask anything about this video.</p>
+        )}
+        <div className="chat-thread">
+          {history?.map((message) =>
+            message.role === 'user' ? (
+              <UserMessage key={message.id} text={message.content} />
+            ) : (
+              <AssistantMessage key={message.id} message={message} onSeek={onSeek} />
+            ),
+          )}
+          {pendingQuestion && <UserMessage text={pendingQuestion} />}
+        </div>
+        <div aria-live="polite">
+          {pendingQuestion && <p className="text-muted chat-pending">Retrieving…</p>}
+        </div>
+        <div ref={endRef} />
+      </div>
 
-      <ul>
-        {history?.map((message) => {
-          const meta = message.role === 'assistant' ? metaByAnswer.get(message.content) : undefined
-          return (
-            <li key={message.id}>
-              <strong>{message.role}:</strong> {message.content}
-              {meta && !meta.grounded && <span className="status-failed"> (not covered)</span>}
-              {meta && meta.sources.length > 0 && (
-                <div>
-                  {meta.sources.map((source, j) => (
-                    <button key={j} type="button" onClick={() => onSeek(source.start_time)}>
-                      {source.segment_label} @ {formatTime(source.start_time)}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </li>
-          )
-        })}
-      </ul>
-      {sendMessage.isPending && <p aria-live="polite">Generating answer...</p>}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          placeholder="Ask about this video..."
-          disabled={sendMessage.isPending}
-        />
-        <button type="submit" disabled={sendMessage.isPending}>
-          Send
-        </button>
-      </form>
-      {sendMessage.isError && <p role="alert">{sendMessage.error.message}</p>}
-
-      <button type="button" onClick={handleClear} disabled={clearChat.isPending}>
-        Clear chat
-      </button>
-      {clearChat.isError && <p role="alert">{clearChat.error.message}</p>}
+      <div className="chat-composer">
+        <form className="chat-composer-row" onSubmit={handleSubmit}>
+          <input
+            className="input chat-input"
+            aria-label="Ask about this video"
+            placeholder="Ask about this video…"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            disabled={sendMessage.isPending}
+          />
+          <button
+            type="submit"
+            className="btn btn-primary chat-send"
+            disabled={sendMessage.isPending || !draft.trim()}
+          >
+            Send
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost chat-clear"
+            onClick={handleClear}
+            disabled={clearChat.isPending || count === 0}
+          >
+            Clear
+          </button>
+        </form>
+        {sendMessage.isError && (
+          <p role="alert" className="chat-error">
+            {sendMessage.error.message}
+          </p>
+        )}
+        {clearChat.isError && (
+          <p role="alert" className="chat-error">
+            {clearChat.error.message}
+          </p>
+        )}
+      </div>
     </section>
   )
 }
