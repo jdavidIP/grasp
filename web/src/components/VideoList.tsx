@@ -1,18 +1,12 @@
 import { Link } from 'react-router'
 import { useDeleteVideo } from '../hooks/useVideos'
+import { STATUS_TAG } from '../lib/format'
 import { formatRelative, formatTime } from '../lib/time'
 import type { VideoListItem } from '../types/video'
 import { useToast } from '../lib/toast'
 
 interface VideoListProps {
   videos: VideoListItem[]
-}
-
-const TAG_CLASS: Record<VideoListItem['status'], string> = {
-  ready: 'tag-accent',
-  failed: 'tag-outline',
-  pending: 'tag-neutral',
-  processing: 'tag-neutral',
 }
 
 export function VideoList({ videos }: VideoListProps) {
@@ -63,7 +57,7 @@ export function VideoList({ videos }: VideoListProps) {
             </span>
           </Link>
           <span className="library-actions">
-            <span className={`tag ${TAG_CLASS[video.status]} library-tag`}>{video.status}</span>
+            <span className={`tag ${STATUS_TAG[video.status]} library-tag`}>{video.status}</span>
             <button
               type="button"
               className="btn btn-ghost library-delete"

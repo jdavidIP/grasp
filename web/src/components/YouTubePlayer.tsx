@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import './YouTubePlayer.css'
 
 interface YouTubePlayerInstance {
   seekTo(seconds: number, allowSeekAhead: boolean): void
@@ -9,7 +10,12 @@ interface YouTubePlayerInstance {
 interface YouTubeIframeApi {
   Player: new (
     element: HTMLElement,
-    options: { videoId: string; playerVars?: Record<string, number> },
+    options: {
+      videoId: string
+      width?: string
+      height?: string
+      playerVars?: Record<string, number>
+    },
   ) => YouTubePlayerInstance
 }
 
@@ -41,13 +47,19 @@ function loadYouTubeApi(): Promise<void> {
   return apiLoadPromise
 }
 
-interface YouTubePlayerProps {
-  videoId: string
-  // null means "no citation clicked yet" — distinct from a real 0:00 timestamp.
-  seekSeconds: number | null
+// A new object per click, so seeking to the same time twice still seeks.
+export interface SeekRequest {
+  seconds: number
+  id: number
 }
 
-export function YouTubePlayer({ videoId, seekSeconds }: YouTubePlayerProps) {
+interface YouTubePlayerProps {
+  videoId: string
+  // null means "nothing sought yet", distinct from a real 0:00 timestamp.
+  seek: SeekRequest | null
+}
+
+export function YouTubePlayer({ videoId, seek }: YouTubePlayerProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<YouTubePlayerInstance | null>(null)
 
@@ -64,13 +76,16 @@ export function YouTubePlayer({ videoId, seekSeconds }: YouTubePlayerProps) {
     // JSX, never reconciled). React only ever owns the wrapper, whose children it
     // never inspects, so removing it on unmount is always safe regardless of what
     // the YouTube API did to its insides.
+    const wrapper = wrapperRef.current
     const target = document.createElement('div')
-    wrapperRef.current?.appendChild(target)
+    wrapper?.appendChild(target)
 
     loadYouTubeApi().then(() => {
       if (cancelled || !window.YT) return
       playerRef.current = new window.YT.Player(target, {
         videoId,
+        width: '100%',
+        height: '100%',
         playerVars: { autoplay: 1 },
       })
     })
@@ -78,14 +93,18 @@ export function YouTubePlayer({ videoId, seekSeconds }: YouTubePlayerProps) {
       cancelled = true
       playerRef.current?.destroy()
       playerRef.current = null
+      // Remove whatever this run left in the wrapper (the target, or the iframe the API
+      // swapped in for it), so a re-run or a new video doesn't stack a second player.
+      // React renders no children into the wrapper, so emptying it is safe.
+      wrapper?.replaceChildren()
     }
   }, [videoId])
 
   useEffect(() => {
-    if (seekSeconds === null) return
-    playerRef.current?.seekTo(seekSeconds, true)
+    if (seek === null) return
+    playerRef.current?.seekTo(seek.seconds, true)
     playerRef.current?.playVideo()
-  }, [seekSeconds])
+  }, [seek])
 
-  return <div ref={wrapperRef} />
+  return <div ref={wrapperRef} className="youtube-player" />
 }
