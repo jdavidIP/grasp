@@ -2,15 +2,12 @@ import { AddVideoForm } from '../components/AddVideoForm'
 import { AppHeader } from '../components/AppHeader'
 import { VideoList } from '../components/VideoList'
 import { useVideosQuery } from '../hooks/useVideos'
+import { plural } from '../lib/format'
 import './LibraryPage.css'
-
-function countLabel(n: number): string {
-  return `${n} ${n === 1 ? 'video' : 'videos'}`
-}
 
 export function LibraryPage() {
   const { data: videos, isLoading, error } = useVideosQuery()
-  const count = countLabel(videos?.length ?? 0)
+  const count = plural(videos?.length ?? 0, 'video')
 
   return (
     <>
