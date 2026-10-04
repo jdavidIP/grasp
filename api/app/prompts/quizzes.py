@@ -12,9 +12,11 @@ TYPE_GUIDE = {
         "statement must restate something the video explicitly says. A false statement "
         "must be a plausible distortion that the video explicitly contradicts (a changed "
         "name, number, cause, or outcome), so someone who watched can point to the line "
-        "that makes it false. Never make a statement whose truth the video simply doesn't "
-        "address, and never judge what a speaker believes, thinks, or considers serious "
-        "unless they say it in so many words."
+        "that makes it false. Change a fact, never a degree: don't turn a true statement "
+        'false by adding a qualifier ("only", "just", "always", "never", "all", "a short '
+        "time\") the video merely doesn't endorse. Never make a statement whose truth the "
+        "video simply doesn't address, and never judge what a speaker believes, thinks, "
+        "or considers serious unless they say it in so many words."
     ),
 }
 
@@ -65,11 +67,17 @@ VALIDATION_SYSTEM_PROMPT = (
     "from the transcript with no explanation of why is not valid; "
     "(2) no option marked incorrect is a correct answer to the question — none is "
     "correct, partially correct, or arguably correct under a reasonable reading, and "
-    "for multi_select the correct set is exactly the set of correct options; "
+    "for multi_select the correct set is exactly the set of correct options; an option "
+    'is also invalid if it is wrong only because of a qualifier word ("only", "always", '
+    '"never", "all") or a judgment of degree, not because the video says otherwise; '
     "(3) the question is unambiguous and answerable from the video alone; "
     "(4) for true_false, a true statement restates something said, and a false one is "
-    "contradicted by something said — reject statements the video doesn't address, and "
-    "statements about a speaker's beliefs or attitudes they never stated. When in doubt, "
+    "contradicted by something said — reject statements the video doesn't address, "
+    "statements about a speaker's beliefs or attitudes they never stated, and any "
+    'statement whose truth hinges on a qualifier word ("only", "just", "always", '
+    '"never", "all", "a short time") or a judgment of degree rather than a stated '
+    'fact: if the facts it names match the video and only the qualifier makes it "false", '
+    "reject it. When in doubt, "
     "reject: a missing question costs less than a wrong answer key. Respond with "
     'a JSON object: {"valid_question_indices": [int, ...]} listing the numbers of every '
     "valid question."
