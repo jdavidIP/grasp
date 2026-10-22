@@ -139,7 +139,7 @@ async def _answer_specific(
 def _answer_text(result: dict) -> str:
     """The model's answer as text. JSON mode guarantees JSON, not types: a step-by-step
     question can come back as a list of paragraphs, which is joined; any other shape
-    is a model error (502) rather than a failed insert (500) that loses the message."""
+    is a model error (502, "try again") rather than a failed insert (500)."""
     answer = result.get("answer")
     if isinstance(answer, list) and all(isinstance(part, str) for part in answer):
         answer = "\n\n".join(answer)

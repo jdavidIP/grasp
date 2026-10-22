@@ -237,17 +237,18 @@ async def test_answer_broad_no_segments_skips_llm_call(monkeypatch):
         await session.commit()
 
 
-def test_user_prompts_put_the_current_question_after_history_and_sources():
-    # Placed right after the history, the model often re-answered the previous
-    # question instead (#48).
+def test_user_prompts_mark_history_as_answered_and_ask_before_the_sources():
+    # Unmarked history made the model re-answer the previous question (#48); a
+    # question placed after the sources made it decline answerable ones.
     history = [{"role": "user", "content": "OLD Q"}, {"role": "assistant", "content": "OLD A"}]
     prompts = [
         build_specific_user_prompt("NEW Q", ["EXCERPT"], history, []),
         build_broad_user_prompt("NEW Q", [("Label", "SUMMARY")], history, []),
     ]
     for prompt, source in zip(prompts, ["EXCERPT", "SUMMARY"], strict=True):
-        assert prompt.index("OLD A") < prompt.index(source) < prompt.index("NEW Q")
-        assert prompt.rstrip().endswith("NEW Q")
+        assert prompt.index("already answered") < prompt.index("OLD A")
+        assert prompt.index("OLD A") < prompt.index("NEW Q") < prompt.index(source)
+        assert "Current question (answer this one): NEW Q" in prompt
 
 
 def test_answer_text_joins_a_list_and_rejects_other_shapes():

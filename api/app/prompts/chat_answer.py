@@ -63,9 +63,9 @@ def _history_block(history: list[dict]) -> str:
 
 
 def _question_block(question: str) -> str:
-    # Last, after the history and sources: placed right after the history, the model
-    # often answered the previous turn's question again (#48).
-    return f"\n\nCurrent question (answer this one): {question}"
+    # Before the sources: asked after them, the model declined answerable questions
+    # whose excerpts only partly state the answer (#48).
+    return f"Current question (answer this one): {question}\n\n"
 
 
 def build_specific_user_prompt(
@@ -73,8 +73,8 @@ def build_specific_user_prompt(
 ) -> str:
     excerpts = "\n\n".join(f"[{i}] {text}" for i, text in enumerate(texts))
     return (
-        f"{_history_block(history)}Transcript excerpts:\n\n{excerpts}"
-        f"{_slips_block(slips)}{_question_block(question)}"
+        f"{_history_block(history)}{_question_block(question)}Transcript excerpts:\n\n"
+        f"{excerpts}{_slips_block(slips)}"
     )
 
 
@@ -83,6 +83,6 @@ def build_broad_user_prompt(
 ) -> str:
     summaries = "\n\n".join(f"[{label}] {summary}" for label, summary in segments)
     return (
-        f"{_history_block(history)}Video topic summaries:\n\n{summaries}"
-        f"{_slips_block(slips)}{_question_block(question)}"
+        f"{_history_block(history)}{_question_block(question)}Video topic summaries:\n\n"
+        f"{summaries}{_slips_block(slips)}"
     )
