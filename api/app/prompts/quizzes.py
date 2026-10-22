@@ -77,7 +77,8 @@ VALIDATION_SYSTEM_PROMPT = (
     'statement whose truth hinges on a qualifier word ("only", "just", "always", '
     '"never", "all", "a short time") or a judgment of degree rather than a stated '
     'fact: if the facts it names match the video and only the qualifier makes it "false", '
-    "reject it. When in doubt, "
+    "reject it, unless the video itself contradicts the qualifier (it says "
+    '"not always", "not only", or similar). When in doubt, '
     "reject: a missing question costs less than a wrong answer key. Respond with "
     'a JSON object: {"valid_question_indices": [int, ...]} listing the numbers of every '
     "valid question."
