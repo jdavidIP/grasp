@@ -119,7 +119,7 @@ Storing `segment_id` on the chunk is what lets you filter retrieval to selected 
 2. Vector search over that video's chunks, `k = 8` initially.
 3. Optionally add keyword search (Postgres full-text) and fuse results — hybrid retrieval measurably helps when the question contains names or jargon the embedding flattens.
 4. Rerank the candidates down to 4–5 (a cross-encoder, or an LLM scoring pass) before generation.
-5. Generate the answer with a prompt that requires grounding and permits "not covered in this video."
+5. Generate the answer with a prompt that requires grounding and permits "not covered in this video." Excerpts on a related topic are not an answer: a question about something they never mention is `grounded: false`, and the UI shows "Not covered in this video" instead of sources. This fixed most bridging from a neighbouring chunk to an uncovered question, not all of it; a question naming something absent, attached to a covered topic, still gets a wrong flag some of the time ([#41](https://github.com/jdavidIP/grasp/issues/41), see the README's known limitations).
 6. Return the answer plus the source chunks with their timestamps.
 
 **Conversation memory:** send recent turns, but re-retrieve on every question. Do not rely on prior context to answer a new question — that is how ungrounded answers creep in.
