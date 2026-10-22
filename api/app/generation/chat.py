@@ -129,11 +129,28 @@ async def _answer_specific(
 
     sources = [_chunk_source(chunk) for chunk in top_chunks]
     return {
-        "answer": result.get("answer", ""),
+        "answer": _answer_text(result),
         "sources": sources,
-        "grounded": bool(result.get("grounded", False)),
+        "grounded": _grounded(result),
         "slips": _slips_used(result, slips),
     }
+
+
+def _answer_text(result: dict) -> str:
+    """The model's answer as text. JSON mode guarantees JSON, not types: a step-by-step
+    question can come back as a list of paragraphs, which is joined; any other shape
+    is a model error (502, "try again") rather than a failed insert (500)."""
+    answer = result.get("answer")
+    if isinstance(answer, list) and all(isinstance(part, str) for part in answer):
+        answer = "\n\n".join(answer)
+    if not isinstance(answer, str) or not answer.strip():
+        raise llm.LLMError("The model returned an unusable answer. Try asking again.")
+    return answer
+
+
+def _grounded(result: dict) -> bool:
+    # Only a real `true`: bool("false") would show a decline as covered.
+    return result.get("grounded") is True
 
 
 def _slips_used(result: dict, slips: list[dict]) -> list[dict]:
@@ -142,7 +159,7 @@ def _slips_used(result: dict, slips: list[dict]) -> list[dict]:
     them: asked to write the note itself, it silently corrected instead (#34). A
     decline relies on none, even when the model lists one."""
     used = result.get("slips_used")
-    if not result.get("grounded") or not isinstance(used, list):
+    if not _grounded(result) or not isinstance(used, list):
         return []
     indexes = [i for i in used if type(i) is int and 0 <= i < len(slips)]
     return [{"said": slips[i]["said"], "meant": slips[i]["meant"]} for i in dict.fromkeys(indexes)]
@@ -184,8 +201,8 @@ async def _answer_broad(
 
     sources = [_segment_source(segment) for segment in segments]
     return {
-        "answer": answer_result.get("answer", ""),
+        "answer": _answer_text(answer_result),
         "sources": sources,
-        "grounded": bool(answer_result.get("grounded", False)),
+        "grounded": _grounded(answer_result),
         "slips": _slips_used(answer_result, slips),
     }

@@ -8,6 +8,7 @@ from app.generation import chat
 from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
 from app.models.video import Video
+from app.prompts.chat_answer import build_broad_user_prompt, build_specific_user_prompt
 
 
 def _chunk(text: str, label: str, slips: list[dict] | None = None) -> TranscriptChunk:
@@ -234,3 +235,33 @@ async def test_answer_broad_no_segments_skips_llm_call(monkeypatch):
 
         await session.delete(video)
         await session.commit()
+
+
+def test_user_prompts_mark_history_as_answered_and_ask_before_the_sources():
+    # Unmarked history made the model re-answer the previous question (#48); a
+    # question placed after the sources made it decline answerable ones.
+    history = [{"role": "user", "content": "OLD Q"}, {"role": "assistant", "content": "OLD A"}]
+    prompts = [
+        build_specific_user_prompt("NEW Q", ["EXCERPT"], history, []),
+        build_broad_user_prompt("NEW Q", [("Label", "SUMMARY")], history, []),
+    ]
+    for prompt, source in zip(prompts, ["EXCERPT", "SUMMARY"], strict=True):
+        assert prompt.index("already answered") < prompt.index("OLD A")
+        assert prompt.index("OLD A") < prompt.index("NEW Q") < prompt.index(source)
+        assert "Current question (answer this one): NEW Q" in prompt
+
+
+def test_answer_text_joins_a_list_and_rejects_other_shapes():
+    # JSON mode guarantees JSON, not types: a list answer used to crash the insert
+    # and roll back the user's message with a 500.
+    assert chat._answer_text({"answer": "One."}) == "One."
+    assert chat._answer_text({"answer": ["One.", "Two."]}) == "One.\n\nTwo."
+    for bad in ({}, {"answer": ""}, {"answer": "  "}, {"answer": ["a", 1]}, {"answer": {"x": 1}}):
+        with pytest.raises(chat.llm.LLMError):
+            chat._answer_text(bad)
+
+
+def test_grounded_needs_a_real_true():
+    assert chat._grounded({"grounded": True}) is True
+    for value in ("false", "true", 1, None):
+        assert chat._grounded({"grounded": value}) is False
