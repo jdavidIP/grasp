@@ -23,6 +23,7 @@ class Flashcard(Base):
         UUID(as_uuid=True), ForeignKey("transcript_segments.id", ondelete="SET NULL")
     )
     source_start_time: Mapped[float | None] = mapped_column(Numeric)
+    source_end_time: Mapped[float | None] = mapped_column(Numeric)
     difficulty: Mapped[str | None] = mapped_column(Text)
     order_index: Mapped[int] = mapped_column(nullable=False)
     # Set when the card's front/back states the corrected fact instead of a speaker

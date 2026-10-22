@@ -29,6 +29,7 @@ def _fake_cards(n: int = 2) -> list[dict]:
             "back": f"A{i}",
             "segment_id": None,
             "source_start_time": float(i),
+            "source_end_time": float(i) + 30,
             "difficulty": "easy",
             "order_index": i,
         }
@@ -82,6 +83,9 @@ async def test_flashcard_deck_lifecycle():
         get_response = await client.get(f"/api/flashcard-decks/{deck_id}")
         assert get_response.status_code == 200
         assert len(get_response.json()["cards"]) == 2
+        # The chunk span round-trips through the database and the response schema.
+        first = get_response.json()["cards"][0]
+        assert (first["source_start_time"], first["source_end_time"]) == (0.0, 30.0)
 
         delete_response = await client.delete(f"/api/flashcard-decks/{deck_id}")
         assert delete_response.status_code == 204

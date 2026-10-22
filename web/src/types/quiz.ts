@@ -66,6 +66,8 @@ export interface QuestionResult {
   explanation: string
   segment_id: string | null
   source_start_time: number | null
+  // End of the source chunk; null on questions generated before it was stored (#50).
+  source_end_time: number | null
 }
 
 export interface AttemptResult {

@@ -33,6 +33,7 @@ def _fake_question(order_index: int, question_type: str, correct: set[int], n_op
         "explanation": f"Because {order_index}.",
         "segment_id": None,
         "source_start_time": float(order_index * 10),
+        "source_end_time": float(order_index * 10) + 30,
         "difficulty": "easy",
         "order_index": order_index,
         "options": [
@@ -121,6 +122,7 @@ async def test_attempt_is_graded_from_the_stored_answer_key():
         assert by_question[qid[1]]["selected_option_ids"] == [q1[0]]
         assert by_question[qid[1]]["explanation"] == "Because 1."
         assert by_question[qid[2]]["source_start_time"] == 20.0
+        assert by_question[qid[2]]["source_end_time"] == 50.0
 
         listing = (await client.get(f"/api/videos/{video_id}/quizzes")).json()
         assert listing[0]["best_score"] == pytest.approx(2 / 3)

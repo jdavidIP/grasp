@@ -28,6 +28,7 @@ const newDeck: FlashcardDeck = {
       back: '0, 1 and 2.',
       segment_id: 's2',
       source_start_time: 95,
+      source_end_time: null,
       difficulty: 'easy',
       order_index: 0,
       note: null,

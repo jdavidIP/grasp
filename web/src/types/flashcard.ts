@@ -17,6 +17,8 @@ export interface Flashcard {
   back: string
   segment_id: string | null
   source_start_time: number | null
+  // End of the source chunk; null on cards generated before it was stored (#50).
+  source_end_time: number | null
   difficulty: string | null
   order_index: number
   // Set when the card states the corrected fact for an apparent speaker slip (#18).

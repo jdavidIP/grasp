@@ -112,7 +112,8 @@ Storing `config` as jsonb means you can show the user how a deck was generated a
 | front | text not null | |
 | back | text not null | |
 | segment_id | uuid FK → transcript_segments on delete set null | |
-| source_start_time | numeric | for the jump-to-timestamp link |
+| source_start_time | numeric | start of the chunk that states the card's fact (#50); the jump-to-timestamp target |
+| source_end_time | numeric | end of that chunk, shown as a range; null on cards generated before it existed |
 | difficulty | text | `easy`, `medium`, `hard` |
 | order_index | int not null | |
 | note | text | set when front/back state the corrected fact for a speaker slip the transcript contains (see below) |
@@ -140,7 +141,8 @@ Storing `config` as jsonb means you can show the user how a deck was generated a
 | prompt | text not null | |
 | explanation | text not null | why the correct answer is correct |
 | segment_id | uuid FK → transcript_segments on delete set null | |
-| source_start_time | numeric | |
+| source_start_time | numeric | as for flashcards |
+| source_end_time | numeric | as for flashcards |
 | difficulty | text | |
 
 ### quiz_options

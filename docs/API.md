@@ -101,7 +101,7 @@ Config payload from the form:
 
 Synchronous is acceptable here (a few seconds). If generation exceeds ~20s for whole-video requests on long content, switch to the same background-task-plus-polling pattern as ingestion.
 
-Response: the created deck with its cards, each carrying `front`, `back`, `segment_id`, `source_start_time`, `difficulty`, `note` (null unless the card corrects a speaker slip in the transcript — see `DATA_MODEL.md`).
+Response: the created deck with its cards, each carrying `front`, `back`, `segment_id`, `source_start_time`, `source_end_time` (the span of the chunk that states the card's fact), `difficulty`, `note` (null unless the card corrects a speaker slip in the transcript — see `DATA_MODEL.md`).
 
 `422` if the generation + validation pipeline (see ARCHITECTURE.md) yields zero cards — e.g. the model's output failed every grounding check. No deck is persisted in that case.
 
@@ -177,7 +177,8 @@ Response:
       "correct_option_ids": ["…"],
       "explanation": "…",
       "segment_id": "…",
-      "source_start_time": 412.0
+      "source_start_time": 412.0,
+      "source_end_time": 497.5
     }
   ]
 }

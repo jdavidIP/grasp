@@ -1,5 +1,5 @@
 import { useQuizQuery } from '../hooks/useQuizzes'
-import { formatTime } from '../lib/time'
+import { formatSpan } from '../lib/time'
 import type { AttemptResult, Quiz } from '../types/quiz'
 import './Forms.css'
 import './Quizzes.css'
@@ -62,7 +62,7 @@ export function QuizResults({ quiz, result, onSeek }: QuizResultsProps) {
             <p className="qz-explanation">{questionResult.explanation}</p>
             {start !== null && (
               <button type="button" className="btn btn-ghost" onClick={() => onSeek(start)}>
-                Jump to {formatTime(start)}
+                Jump to {formatSpan(start, questionResult.source_end_time)}
               </button>
             )}
           </article>

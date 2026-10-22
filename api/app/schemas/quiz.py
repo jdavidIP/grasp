@@ -84,6 +84,7 @@ class QuestionResult(BaseModel):
     explanation: str
     segment_id: uuid.UUID | None
     source_start_time: float | None
+    source_end_time: float | None
 
 
 class AttemptResult(BaseModel):

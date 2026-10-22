@@ -28,6 +28,7 @@ class FlashcardOut(BaseModel):
     back: str
     segment_id: uuid.UUID | None
     source_start_time: float | None
+    source_end_time: float | None
     difficulty: str | None
     order_index: int
     note: str | None

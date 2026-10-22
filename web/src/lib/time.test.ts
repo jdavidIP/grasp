@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 
-import { formatRelative, formatTime } from './time'
+import { formatRelative, formatSpan, formatTime } from './time'
 
 it('formats minutes under an hour and h:mm:ss from an hour up', () => {
   expect(formatTime(0)).toBe('0:00')
@@ -9,6 +9,11 @@ it('formats minutes under an hour and h:mm:ss from an hour up', () => {
   expect(formatTime(3599)).toBe('59:59')
   expect(formatTime(3600)).toBe('1:00:00')
   expect(formatTime(10965)).toBe('3:02:45')
+})
+
+it('formats a span, or just the start when the end is unknown', () => {
+  expect(formatSpan(298, 381)).toBe('4:58–6:21')
+  expect(formatSpan(298, null)).toBe('4:58')
 })
 
 it('formats a past time relative to now in the largest fitting unit', () => {

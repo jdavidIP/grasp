@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChatHistoryQuery, useClearChat, useSendChatMessage } from '../hooks/useChat'
-import { formatTime } from '../lib/time'
+import { formatSpan } from '../lib/time'
 import type { ChatMessage } from '../types/chat'
 import './ChatPanel.css'
 
@@ -61,7 +61,7 @@ function AssistantMessage({
                         className="tabular chat-source-seek"
                         onClick={() => onSeek(source.start_time)}
                       >
-                        {source.segment_label} @ {formatTime(source.start_time)}
+                        {source.segment_label} · {formatSpan(source.start_time, source.end_time)}
                       </button>
                       <details className="chat-source-transcript">
                         <summary className="text-muted">Read transcript</summary>

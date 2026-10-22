@@ -1,8 +1,11 @@
 import uuid
 from unittest.mock import AsyncMock
 
+from app.db import async_session
 from app.generation import common
 from app.models.chunk import TranscriptChunk
+from app.models.segment import TranscriptSegment
+from app.models.video import Video
 
 
 def _embedding(*nonzero_indices: int) -> list[float]:
@@ -80,3 +83,60 @@ async def test_audit_by_segment_with_no_items_makes_no_calls(monkeypatch):
     monkeypatch.setattr(common.llm, "generate_json", mock)
     assert await common.audit_by_segment([], [], "system", lambda t, g: t, "accepted") == []
     mock.assert_not_called()
+
+
+async def test_item_source_spans_picks_nearest_chunk_and_falls_back_to_segment_span(monkeypatch):
+    # The item about "later" text matches the later chunk, not the segment start; a
+    # segment with no embedded chunks falls back to its own start.
+    monkeypatch.setattr(
+        common.llm, "embed_texts", AsyncMock(return_value=[_embedding(1), _embedding(0)])
+    )
+    async with async_session() as session:
+        video = Video(youtube_id=f"test-{uuid.uuid4().hex[:8]}", title="t", status="ready")
+        session.add(video)
+        await session.flush()
+        with_chunks = TranscriptSegment(
+            video_id=video.id, order_index=0, label="a", summary="a", start_time=5.0, end_time=60.0
+        )
+        without_chunks = TranscriptSegment(
+            video_id=video.id, order_index=1, label="b", summary="b", start_time=60.0, end_time=90.0
+        )
+        session.add_all([with_chunks, without_chunks])
+        await session.flush()
+        session.add_all(
+            [
+                TranscriptChunk(
+                    video_id=video.id,
+                    segment_id=with_chunks.id,
+                    text="early",
+                    start_time=5.0,
+                    end_time=20.0,
+                    embedding=_embedding(0),
+                ),
+                TranscriptChunk(
+                    video_id=video.id,
+                    segment_id=with_chunks.id,
+                    text="later",
+                    start_time=40.0,
+                    end_time=55.0,
+                    embedding=_embedding(1),
+                ),
+            ]
+        )
+        await session.commit()
+
+        spans = await common.item_source_spans(
+            session, [with_chunks, without_chunks], [(0, "later"), (1, "anything")]
+        )
+
+        assert [(float(s), float(e)) for s, e in spans] == [(40.0, 55.0), (60.0, 90.0)]
+
+        await session.delete(video)
+        await session.commit()
+
+
+async def test_item_source_spans_no_items_skips_embedding(monkeypatch):
+    embed = AsyncMock()
+    monkeypatch.setattr(common.llm, "embed_texts", embed)
+    assert await common.item_source_spans(None, [], []) == []
+    embed.assert_not_called()

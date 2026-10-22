@@ -55,6 +55,7 @@ const result: AttemptResult = {
       explanation: 'for and while are loops.',
       segment_id: 's2',
       source_start_time: 298,
+      source_end_time: null,
     },
     {
       question_id: 'c',
@@ -64,6 +65,7 @@ const result: AttemptResult = {
       explanation: 'Square brackets make a list.',
       segment_id: null,
       source_start_time: null,
+      source_end_time: null,
     },
   ],
 }

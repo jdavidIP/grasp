@@ -304,6 +304,7 @@ async def test_generate_flashcards_happy_path_maps_segment_and_timestamp(monkeyp
         assert "unrelated later remark" not in grounding_prompt
         assert cards[0]["segment_id"] == segment.id
         assert float(cards[0]["source_start_time"]) == 5.0
+        assert float(cards[0]["source_end_time"]) == 10.0
         assert cards[0]["order_index"] == 0
 
         await session.delete(video)

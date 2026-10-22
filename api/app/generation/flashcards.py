@@ -9,6 +9,7 @@ from app.generation.common import (
     audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
+    item_source_spans,
     overgenerate_count,
     segment_transcripts,
     select_segments,
@@ -101,7 +102,7 @@ async def generate_flashcards(
     trace: dict | None = None,
 ) -> list[dict]:
     """Returns up to `count` validated cards, each with `front`, `back`,
-    `segment_id`, `source_start_time`, `difficulty`, `order_index`, `note` (set only
+    `segment_id`, `source_start_time`, `source_end_time`, `difficulty`, `order_index`, `note` (set only
     when front/back state the corrected fact for an apparent speaker slip — #18). May
     return fewer than `count` if generation and validation don't yield enough —
     ponytail: no regeneration retry loop yet, add one if yield is a problem.
@@ -123,15 +124,20 @@ async def generate_flashcards(
             segments=segments, candidates=candidates, validated=grounded, kept=deduped[:count]
         )
 
+    kept = deduped[:count]
+    spans = await item_source_spans(
+        session, segments, [(c["topic_index"], f"{c['front']} {c['back']}") for c in kept]
+    )
     cards = []
-    for order_index, card in enumerate(deduped[:count]):
+    for order_index, (card, (start_time, end_time)) in enumerate(zip(kept, spans, strict=True)):
         segment = segments[card["topic_index"]]
         cards.append(
             {
                 "front": card["front"],
                 "back": card["back"],
                 "segment_id": segment.id,
-                "source_start_time": segment.start_time,
+                "source_start_time": start_time,
+                "source_end_time": end_time,
                 "difficulty": card["difficulty"],
                 "order_index": order_index,
                 "note": card["note"],

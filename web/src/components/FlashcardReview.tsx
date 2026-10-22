@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useFlashcardDeckQuery } from '../hooks/useFlashcards'
-import { formatTime } from '../lib/time'
+import { formatSpan } from '../lib/time'
 import type { Segment } from '../types/video'
 import { Corners } from './Corners'
 import './Flashcards.css'
@@ -120,7 +120,7 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
                       onSeek(start)
                     }}
                   >
-                    Jump to {formatTime(start)}
+                    Jump to {formatSpan(start, card.source_end_time)}
                   </button>
                 )}
               </div>
