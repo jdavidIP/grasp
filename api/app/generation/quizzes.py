@@ -10,6 +10,7 @@ from app.generation.common import (
     audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
+    item_start_times,
     overgenerate_count,
     segment_transcripts,
     select_segments,
@@ -175,6 +176,16 @@ def _ordered_options(question: dict) -> list[dict]:
     return [{**o, "order_index": i} for i, o in enumerate(options)]
 
 
+def _match_text(question: dict) -> str:
+    """What a question is about, for matching it to the chunk that says it (#50): the
+    prompt, the correct option(s) unless they're just True/False, and the explanation."""
+    parts = [question["prompt"]]
+    if question["question_type"] != "true_false":
+        parts += [o["text"] for o in question["options"] if o["is_correct"]]
+    parts.append(question["explanation"])
+    return " ".join(parts)
+
+
 async def generate_quiz(
     session: AsyncSession,
     video_id: uuid.UUID,
@@ -231,8 +242,12 @@ async def generate_quiz(
             segments=segments, candidates=candidates, validated=valid, kept=deduped[:count]
         )
 
+    kept = deduped[:count]
+    start_times = await item_start_times(
+        session, segments, [(q["topic_index"], _match_text(q)) for q in kept]
+    )
     questions = []
-    for order_index, question in enumerate(deduped[:count]):
+    for order_index, (question, start_time) in enumerate(zip(kept, start_times, strict=True)):
         segment = segments[question["topic_index"]]
         questions.append(
             {
@@ -240,7 +255,7 @@ async def generate_quiz(
                 "prompt": question["prompt"],
                 "explanation": question["explanation"],
                 "segment_id": segment.id,
-                "source_start_time": segment.start_time,
+                "source_start_time": start_time,
                 "difficulty": question["difficulty"],
                 "order_index": order_index,
                 "options": _ordered_options(question),

@@ -9,6 +9,7 @@ from app.generation.common import (
     audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
+    item_start_times,
     overgenerate_count,
     segment_transcripts,
     select_segments,
@@ -123,15 +124,19 @@ async def generate_flashcards(
             segments=segments, candidates=candidates, validated=grounded, kept=deduped[:count]
         )
 
+    kept = deduped[:count]
+    start_times = await item_start_times(
+        session, segments, [(c["topic_index"], f"{c['front']} {c['back']}") for c in kept]
+    )
     cards = []
-    for order_index, card in enumerate(deduped[:count]):
+    for order_index, (card, start_time) in enumerate(zip(kept, start_times, strict=True)):
         segment = segments[card["topic_index"]]
         cards.append(
             {
                 "front": card["front"],
                 "back": card["back"],
                 "segment_id": segment.id,
-                "source_start_time": segment.start_time,
+                "source_start_time": start_time,
                 "difficulty": card["difficulty"],
                 "order_index": order_index,
                 "note": card["note"],
