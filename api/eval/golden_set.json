@@ -418,6 +418,18 @@
     "span": null
   },
   {
+    "id": "fWjsdhR3z3c-oos-adj-1",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "How do you raise your own custom exception in Python?",
+    "span": null
+  },
+  {
+    "id": "fWjsdhR3z3c-oos-adj-2",
+    "youtube_id": "fWjsdhR3z3c",
+    "question": "How do you define a class and create objects from it in Python?",
+    "span": null
+  },
+  {
     "id": "qiP1E6iAVS8-broad-3",
     "youtube_id": "qiP1E6iAVS8",
     "question": "What subjects come up in this episode?",
@@ -444,6 +456,18 @@
     "excerpt": "And when it's translated into a set of recommendations or requirements for countries in the developing world, it was called the Washington Consensus, was essentially adopted by the World Bank by the IMF as a condition for giving loans to developing countries and it, was essentially taking\nneoliberalism global. And so the, post communist era is marked by, this massive confidence in, the the capacity of unregulated"
   },
   {
+    "id": "BDqvzFY72mg-oos-adj-1",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "What role did Mikhail Gorbachev's reforms play in the end of Soviet control over Eastern Europe?",
+    "span": null
+  },
+  {
+    "id": "BDqvzFY72mg-oos-adj-2",
+    "youtube_id": "BDqvzFY72mg",
+    "question": "How did the Maastricht Treaty shape the European Union's expansion after the Cold War?",
+    "span": null
+  },
+  {
     "id": "qiP1E6iAVS8-keyword-1",
     "youtube_id": "qiP1E6iAVS8",
     "question": "Summarize what they said about James Randi.",
@@ -454,5 +478,17 @@
       9634.5
     ],
     "excerpt": "interesting thing about him so it's disappointing so if there is psychic power i'm just very disappointed in it well that lady yeah well she was heralded by others and what else you do you can go to someone who's who has who's not heralded you go to the best who they claim yeah i think most of the ones that claim to be psychic are full of [ __ ] i'm not discounting the possibility of psychic phenomena that's what the amazing randy did he he bypassed everyone who everyone else said was full of [ __ ] they said go to her go to her that's what he did what else you want him to do yeah no i mean look i've never seen any evidence that psychic ability is real"
+  },
+  {
+    "id": "qiP1E6iAVS8-oos-adj-1",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "Is a vegan diet healthier than eating meat?",
+    "span": null
+  },
+  {
+    "id": "qiP1E6iAVS8-oos-adj-2",
+    "youtube_id": "qiP1E6iAVS8",
+    "question": "How do self-driving cars detect pedestrians and obstacles?",
+    "span": null
   }
 ]
