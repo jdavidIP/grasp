@@ -16,7 +16,15 @@ SPECIFIC_SYSTEM_PROMPT = (
     "of the numbers of the known slips your answer relies on; empty when none). If "
     'the excerpts don\'t contain the answer, set "grounded" to false and write an '
     "answer that plainly says the video doesn't cover this — never invent "
-    f"information that isn't in the excerpts.\n\n{_SPEAKER_SLIPS}"
+    "information that isn't in the excerpts.\n\n"
+    'Excerpts on a related topic are not an answer. "grounded" is true only when the '
+    "excerpts state the answer to what was actually asked. If the question is about "
+    "something the excerpts never mention (a person, event, technique, or use case), "
+    "or the excerpts cover a neighbouring subject without answering the question, set "
+    '"grounded" to false: say the video doesn\'t cover it, and you may briefly say what '
+    "the video does cover instead, but never draw a connection between that material "
+    "and the question that the excerpts don't make themselves.\n\n"
+    f"{_SPEAKER_SLIPS}"
 )
 
 BROAD_SYSTEM_PROMPT = (
