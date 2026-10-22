@@ -6,6 +6,11 @@ export function formatTime(seconds: number): string {
   return hours > 0 ? `${hours}:${mins.toString().padStart(2, '0')}:${secs}` : `${mins}:${secs}`
 }
 
+// A chunk's span: "4:58–6:21", or just the start for rows stored before the end was (#50).
+export function formatSpan(start: number, end: number | null): string {
+  return end === null ? formatTime(start) : `${formatTime(start)}–${formatTime(end)}`
+}
+
 const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ['year', 365 * 86400],
   ['month', 30 * 86400],

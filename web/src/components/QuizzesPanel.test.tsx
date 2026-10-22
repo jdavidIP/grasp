@@ -136,6 +136,7 @@ it('shows the results after submitting, and a retake starts with no answers', as
               explanation: 'Lists use square brackets.',
               segment_id: null,
               source_start_time: null,
+              source_end_time: null,
             },
           ],
         })

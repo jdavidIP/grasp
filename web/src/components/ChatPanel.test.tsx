@@ -62,7 +62,7 @@ it('shows a reloaded answer with its sources, and a source seeks', async () => {
 
   expect(await screen.findByText('A loop over items.')).toBeTruthy()
   fireEvent.click(screen.getByText('Sources (1)'))
-  fireEvent.click(screen.getByRole('button', { name: 'Loops @ 1:35' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Loops · 1:35–2:00' }))
   expect(onSeek).toHaveBeenCalledWith(95)
 })
 
@@ -72,7 +72,7 @@ it('folds the sources list away until asked for', async () => {
 
   const list = (await screen.findByText('Sources (1)')).closest('details')
   expect(list?.open).toBe(false)
-  expect(list?.textContent).toContain('Loops @ 1:35')
+  expect(list?.textContent).toContain('Loops · 1:35–2:00')
 })
 
 it("keeps a source's transcript folded away until asked for", async () => {

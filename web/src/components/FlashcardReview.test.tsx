@@ -19,6 +19,7 @@ function card(overrides: Partial<Flashcard>): Flashcard {
     back: 'Back one',
     segment_id: 's2',
     source_start_time: 95,
+    source_end_time: 150,
     difficulty: 'easy',
     order_index: 0,
     note: null,
@@ -45,6 +46,7 @@ const twoCards = [
     back: 'Back two',
     segment_id: null,
     source_start_time: null,
+    source_end_time: null,
     difficulty: null,
   }),
 ]
@@ -82,7 +84,7 @@ it('still moves with the arrows when a button has focus', async () => {
 it('seeks from Jump without hiding the answer', async () => {
   const onSeek = renderDeck(twoCards)
   fireEvent.click(await screen.findByText('Front one'))
-  fireEvent.click(screen.getByRole('button', { name: 'Jump to 1:35' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Jump to 1:35–2:30' }))
   expect(onSeek).toHaveBeenCalledWith(95)
   expect(screen.getByText('Back one')).toBeTruthy()
 })
@@ -102,7 +104,7 @@ it('keeps focus in the review when a move removes the focused Jump button', asyn
   renderDeck(twoCards)
   const section = await screen.findByRole('region', { name: 'Flashcard review' })
   fireEvent.click(await screen.findByText('Front one'))
-  const jump = screen.getByRole('button', { name: 'Jump to 1:35' })
+  const jump = screen.getByRole('button', { name: 'Jump to 1:35–2:30' })
   jump.focus()
 
   fireEvent.keyDown(jump, { key: 'ArrowRight' })
