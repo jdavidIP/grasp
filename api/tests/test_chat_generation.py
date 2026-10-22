@@ -248,3 +248,19 @@ def test_user_prompts_put_the_current_question_after_history_and_sources():
     for prompt, source in zip(prompts, ["EXCERPT", "SUMMARY"], strict=True):
         assert prompt.index("OLD A") < prompt.index(source) < prompt.index("NEW Q")
         assert prompt.rstrip().endswith("NEW Q")
+
+
+def test_answer_text_joins_a_list_and_rejects_other_shapes():
+    # JSON mode guarantees JSON, not types: a list answer used to crash the insert
+    # and roll back the user's message with a 500.
+    assert chat._answer_text({"answer": "One."}) == "One."
+    assert chat._answer_text({"answer": ["One.", "Two."]}) == "One.\n\nTwo."
+    for bad in ({}, {"answer": ""}, {"answer": "  "}, {"answer": ["a", 1]}, {"answer": {"x": 1}}):
+        with pytest.raises(chat.llm.LLMError):
+            chat._answer_text(bad)
+
+
+def test_grounded_needs_a_real_true():
+    assert chat._grounded({"grounded": True}) is True
+    for value in ("false", "true", 1, None):
+        assert chat._grounded({"grounded": value}) is False
