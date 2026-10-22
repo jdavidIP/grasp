@@ -8,6 +8,7 @@ from app.generation import chat
 from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
 from app.models.video import Video
+from app.prompts.chat_answer import build_broad_user_prompt, build_specific_user_prompt
 
 
 def _chunk(text: str, label: str, slips: list[dict] | None = None) -> TranscriptChunk:
@@ -234,3 +235,16 @@ async def test_answer_broad_no_segments_skips_llm_call(monkeypatch):
 
         await session.delete(video)
         await session.commit()
+
+
+def test_user_prompts_put_the_current_question_after_history_and_sources():
+    # Placed right after the history, the model often re-answered the previous
+    # question instead (#48).
+    history = [{"role": "user", "content": "OLD Q"}, {"role": "assistant", "content": "OLD A"}]
+    prompts = [
+        build_specific_user_prompt("NEW Q", ["EXCERPT"], history, []),
+        build_broad_user_prompt("NEW Q", [("Label", "SUMMARY")], history, []),
+    ]
+    for prompt, source in zip(prompts, ["EXCERPT", "SUMMARY"], strict=True):
+        assert prompt.index("OLD A") < prompt.index(source) < prompt.index("NEW Q")
+        assert prompt.rstrip().endswith("NEW Q")
