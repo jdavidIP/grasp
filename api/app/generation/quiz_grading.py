@@ -54,6 +54,7 @@ def grade_attempt(
                 "explanation": question.explanation,
                 "segment_id": question.segment_id,
                 "source_start_time": question.source_start_time,
+                "source_end_time": question.source_end_time,
             }
         )
     score = sum(r["is_correct"] for r in results) / len(results) if results else 0.0

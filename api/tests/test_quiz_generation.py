@@ -282,6 +282,7 @@ async def test_generate_quiz_happy_path_keeps_key_and_feeds_other_segments_as_di
         question = result[0]
         assert question["segment_id"] == selected.id
         assert float(question["source_start_time"]) == 5.0
+        assert float(question["source_end_time"]) == 10.0
         assert question["order_index"] == 0
         assert [o["text"] for o in question["options"] if o["is_correct"]] == ["opt 0"]
         # The unselected segment reaches the generation prompt as distractor material.

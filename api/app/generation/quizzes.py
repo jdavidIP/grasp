@@ -10,7 +10,7 @@ from app.generation.common import (
     audit_by_segment,
     build_topic_contexts,
     cosine_similarity,
-    item_start_times,
+    item_source_spans,
     overgenerate_count,
     segment_transcripts,
     select_segments,
@@ -198,7 +198,7 @@ async def generate_quiz(
     trace: dict | None = None,
 ) -> list[dict]:
     """Returns up to `count` validated questions, each with `question_type`, `prompt`,
-    `explanation`, `segment_id`, `source_start_time`, `difficulty`, `order_index`, and
+    `explanation`, `segment_id`, `source_start_time`, `source_end_time`, `difficulty`, `order_index`, and
     `options` (each `text`, `is_correct`, `order_index`). The answer key comes from
     generation, so grading needs no LLM call. May return fewer than `count` if
     generation and validation still don't yield enough after TOP_UP_ROUNDS.
@@ -243,11 +243,11 @@ async def generate_quiz(
         )
 
     kept = deduped[:count]
-    start_times = await item_start_times(
+    spans = await item_source_spans(
         session, segments, [(q["topic_index"], _match_text(q)) for q in kept]
     )
     questions = []
-    for order_index, (question, start_time) in enumerate(zip(kept, start_times, strict=True)):
+    for order_index, (question, (start_time, end_time)) in enumerate(zip(kept, spans, strict=True)):
         segment = segments[question["topic_index"]]
         questions.append(
             {
@@ -256,6 +256,7 @@ async def generate_quiz(
                 "explanation": question["explanation"],
                 "segment_id": segment.id,
                 "source_start_time": start_time,
+                "source_end_time": end_time,
                 "difficulty": question["difficulty"],
                 "order_index": order_index,
                 "options": _ordered_options(question),

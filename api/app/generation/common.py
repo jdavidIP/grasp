@@ -151,14 +151,14 @@ def overgenerate_count(count: int) -> int:
     return count + max(3, round(count * 0.3))
 
 
-async def item_start_times(
+async def item_source_spans(
     session: AsyncSession, segments: list[TranscriptSegment], items: list[tuple[int, str]]
-) -> list[float]:
-    """For each (topic_index, text) item, the start time of the chunk in its cited
+) -> list[tuple[float, float]]:
+    """For each (topic_index, text) item, the (start, end) of the chunk in its cited
     segment whose embedding is closest to the item's text — so a card or question
-    jumps to where its fact is said, not to the topic start (#50). Generation only
+    points at where its fact is said, not at the whole topic (#50). Generation only
     returns a topic, so this matches after the fact instead of changing the prompts.
-    Falls back to the segment start when the segment has no embedded chunks."""
+    Falls back to the segment's own span when it has no embedded chunks."""
     if not items:
         return []
     cited = {segments[t].id for t, _ in items}
@@ -172,13 +172,13 @@ async def item_start_times(
         chunks_by_segment.setdefault(chunk.segment_id, []).append(chunk)
 
     embeddings = await llm.embed_texts([text for _, text in items])
-    times = []
+    spans = []
     for (topic_index, _), embedding in zip(items, embeddings, strict=True):
         segment = segments[topic_index]
         chunks = chunks_by_segment.get(segment.id)
         if not chunks:
-            times.append(segment.start_time)
+            spans.append((segment.start_time, segment.end_time))
             continue
         best = max(chunks, key=lambda c: cosine_similarity(c.embedding, embedding))
-        times.append(best.start_time)
-    return times
+        spans.append((best.start_time, best.end_time))
+    return spans

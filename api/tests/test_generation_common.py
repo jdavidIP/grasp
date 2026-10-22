@@ -85,7 +85,7 @@ async def test_audit_by_segment_with_no_items_makes_no_calls(monkeypatch):
     mock.assert_not_called()
 
 
-async def test_item_start_times_picks_nearest_chunk_and_falls_back_to_segment_start(monkeypatch):
+async def test_item_source_spans_picks_nearest_chunk_and_falls_back_to_segment_span(monkeypatch):
     # The item about "later" text matches the later chunk, not the segment start; a
     # segment with no embedded chunks falls back to its own start.
     monkeypatch.setattr(
@@ -125,18 +125,18 @@ async def test_item_start_times_picks_nearest_chunk_and_falls_back_to_segment_st
         )
         await session.commit()
 
-        times = await common.item_start_times(
+        spans = await common.item_source_spans(
             session, [with_chunks, without_chunks], [(0, "later"), (1, "anything")]
         )
 
-        assert [float(t) for t in times] == [40.0, 60.0]
+        assert [(float(s), float(e)) for s, e in spans] == [(40.0, 55.0), (60.0, 90.0)]
 
         await session.delete(video)
         await session.commit()
 
 
-async def test_item_start_times_no_items_skips_embedding(monkeypatch):
+async def test_item_source_spans_no_items_skips_embedding(monkeypatch):
     embed = AsyncMock()
     monkeypatch.setattr(common.llm, "embed_texts", embed)
-    assert await common.item_start_times(None, [], []) == []
+    assert await common.item_source_spans(None, [], []) == []
     embed.assert_not_called()
