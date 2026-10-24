@@ -156,3 +156,31 @@ it('shows the results after submitting, and a retake starts with no answers', as
   const trueOption = await screen.findByRole('radio', { name: 'True' })
   expect(trueOption).toHaveProperty('checked', false)
 })
+
+it('scrolls the tab panel back to the top when the results replace the take view', async () => {
+  const listItem = { ...newQuiz, question_count: 1, best_score: null, attempt_count: 0 }
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (url: string, init?: RequestInit) => {
+      if (init?.method === 'POST') {
+        return jsonResponse(201, { attempt_id: 'x', score: 1, results: [] })
+      }
+      if (url.endsWith('/quizzes/q9')) return jsonResponse(200, newQuiz)
+      if (url.endsWith('/videos/v1/quizzes')) return jsonResponse(200, [listItem])
+      return jsonResponse(200, [])
+    }),
+  )
+  renderWithClient(
+    <div role="tabpanel" data-testid="panel">
+      <QuizzesPanel videoId="v1" segments={segments} onSeek={() => {}} />
+    </div>,
+  )
+  fireEvent.click(await screen.findByRole('button', { name: 'Take' }))
+  fireEvent.click(await screen.findByRole('radio', { name: 'True' }))
+  const panel = screen.getByTestId('panel')
+  panel.scrollTop = 500
+  fireEvent.click(screen.getByRole('button', { name: 'Submit' }))
+
+  expect(await screen.findByText('100%')).toBeTruthy()
+  expect(panel.scrollTop).toBe(0)
+})
