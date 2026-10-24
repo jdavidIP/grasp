@@ -78,6 +78,16 @@ async def test_audit_by_segment_drops_only_the_group_with_a_malformed_response(m
     assert kept == [items[1]]
 
 
+async def test_audit_by_segment_uses_the_validation_model(monkeypatch):
+    mock = AsyncMock(return_value={"accepted": [0]})
+    monkeypatch.setattr(common.llm, "generate_json", mock)
+    monkeypatch.setattr(common.llm, "VALIDATION_MODEL", "validator-under-test")
+    await common.audit_by_segment(
+        [{"topic_index": 0}], ["transcript"], "system", lambda t, g: t, "accepted"
+    )
+    assert mock.call_args.kwargs["model"] == "validator-under-test"
+
+
 async def test_audit_by_segment_with_no_items_makes_no_calls(monkeypatch):
     mock = AsyncMock()
     monkeypatch.setattr(common.llm, "generate_json", mock)

@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 WHISPER_MODEL = "whisper-1"
 EMBEDDING_MODEL = "text-embedding-3-small"
 GENERATION_MODEL = "gpt-4o-mini"
+# Read at call time (`llm.VALIDATION_MODEL`) so the faithfulness eval can swap it per run.
+VALIDATION_MODEL = "gpt-4o-mini"
 EVAL_MODEL = "gpt-4o"
 SLIP_CHECK_MODEL = "gpt-4o"
 

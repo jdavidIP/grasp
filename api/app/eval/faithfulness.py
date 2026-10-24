@@ -167,6 +167,7 @@ async def run(label: str | None) -> None:
         "label": label,
         "judge_model": llm.EVAL_MODEL,
         "generation_model": llm.GENERATION_MODEL,
+        "validation_model": llm.VALIDATION_MODEL,
         "config": {"flashcards": FLASHCARD_CONFIG, "quizzes": QUIZ_CONFIG},
         "videos": youtube_ids,
         "summary": summarize(records),
@@ -212,5 +213,9 @@ def _print_table(summary: dict) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--label", help="suffix for the results file, e.g. 'prompt-v2'")
+    parser.add_argument(
+        "--validator-model", default=llm.VALIDATION_MODEL, help="model for the validation pass"
+    )
     args = parser.parse_args()
+    llm.VALIDATION_MODEL = args.validator_model
     asyncio.run(run(args.label))

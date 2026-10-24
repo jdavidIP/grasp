@@ -136,6 +136,7 @@ async def audit_by_segment(
         result = await llm.generate_json(
             system_prompt,
             build_user_prompt(transcripts[topic_index], [items[i] for i in indices]),
+            model=llm.VALIDATION_MODEL,
         )
         accepted = result.get(result_key)
         if not isinstance(accepted, list):
