@@ -1,4 +1,4 @@
-import { apiFetch } from './client'
+import { apiFetch, GENERATION_TIMEOUT_MS } from './client'
 import type {
   AttemptIn,
   AttemptListItem,
@@ -17,7 +17,7 @@ export function createQuiz(videoId: string, config: QuizConfig): Promise<Quiz> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(config),
-  })
+  }, GENERATION_TIMEOUT_MS)
 }
 
 export function getQuiz(quizId: string): Promise<Quiz> {
