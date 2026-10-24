@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { useCreateQuiz, useQuizQuery } from '../hooks/useQuizzes'
 import type { AttemptResult, QuizConfig, QuizDraft } from '../types/quiz'
 import type { Segment } from '../types/video'
@@ -74,13 +74,25 @@ interface QuizzesPanelProps {
   onSeek: (seconds: number) => void
 }
 
+interface QuizzesViewsProps extends QuizzesPanelProps {
+  rootRef: RefObject<HTMLElement | null>
+}
+
 // "Generating" is the config view while the create request is pending, so a failure
 // lands back on the form with its error and the draft intact.
-export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
+function QuizzesViews({ videoId, segments, onSeek, rootRef }: QuizzesViewsProps) {
   const createQuiz = useCreateQuiz(videoId)
   const [view, setView] = useState<View>({ name: 'list' })
   const [draft, setDraft] = useState<QuizDraft>(DEFAULT_DRAFT)
   const runs = useRef(0)
+
+  // The tab panel keeps its scroll offset when the view swaps, so a quiz submitted from
+  // the bottom would open its results below the score. Only the panel is reset, not the page.
+  useEffect(() => {
+    const panel = rootRef.current?.closest('[role="tabpanel"]')
+    if (panel) panel.scrollTop = 0
+  }, [view, rootRef])
+
   const toList = () => setView({ name: 'list' })
   const take = (quizId: string) => setView({ name: 'take', quizId, run: ++runs.current })
   const history = (quizId: string) => setView({ name: 'history', quizId })
@@ -187,5 +199,14 @@ export function QuizzesPanel({ videoId, segments, onSeek }: QuizzesPanelProps) {
       onTake={take}
       onHistory={history}
     />
+  )
+}
+
+export function QuizzesPanel(props: QuizzesPanelProps) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  return (
+    <div ref={rootRef}>
+      <QuizzesViews {...props} rootRef={rootRef} />
+    </div>
   )
 }
