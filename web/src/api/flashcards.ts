@@ -1,4 +1,4 @@
-import { apiFetch } from './client'
+import { apiFetch, GENERATION_TIMEOUT_MS } from './client'
 import type { FlashcardConfig, FlashcardDeck, FlashcardDeckListItem } from '../types/flashcard'
 
 export function listFlashcardDecks(videoId: string): Promise<FlashcardDeckListItem[]> {
@@ -13,7 +13,7 @@ export function createFlashcardDeck(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(config),
-  })
+  }, GENERATION_TIMEOUT_MS)
 }
 
 export function getFlashcardDeck(deckId: string): Promise<FlashcardDeck> {

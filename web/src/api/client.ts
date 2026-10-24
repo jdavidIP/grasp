@@ -41,16 +41,40 @@ export async function handleResponse<T>(response: Response): Promise<T> {
   return response.json()
 }
 
-// The single place every api/*.ts call goes through: resolves the URL, and turns a
-// network-level failure (API unreachable, DNS, CORS — fetch() itself rejects, never
-// producing a Response) into a message as readable as an HTTP error's, instead of the
-// browser's bare "Failed to fetch".
-export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+export const DEFAULT_TIMEOUT_MS = 30_000
+// Chat answers and deck/quiz generation make several LLM calls, each allowed 120s with
+// retries server-side (app/generation/llm.py), so they get a far longer budget.
+export const GENERATION_TIMEOUT_MS = 300_000
+
+const TIMEOUT_MESSAGE = 'The server took too long to answer. Try again.'
+
+// Matched by name, not `instanceof DOMException`: the abort reason can come from another
+// realm's DOMException (jsdom's, in tests).
+function isTimeout(cause: unknown): boolean {
+  return typeof cause === 'object' && cause !== null && (cause as { name?: unknown }).name === 'TimeoutError'
+}
+
+// The single place every api/*.ts call goes through: resolves the URL, aborts a request
+// the server never answers, and turns a network-level failure (API unreachable, DNS,
+// CORS — fetch() itself rejects, never producing a Response) into a message as readable
+// as an HTTP error's, instead of the browser's bare "Failed to fetch".
+export async function apiFetch<T>(
+  path: string,
+  init?: RequestInit,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
+): Promise<T> {
   let response: Response
   try {
-    response = await fetch(`${API_URL}${path}`, init)
+    response = await fetch(`${API_URL}${path}`, { ...init, signal: AbortSignal.timeout(timeoutMs) })
   } catch (cause) {
+    if (isTimeout(cause)) throw new Error(TIMEOUT_MESSAGE, { cause })
     throw new Error('Could not reach the API server. Check that it is running.', { cause })
   }
-  return handleResponse<T>(response)
+  // The signal also covers reading the body, which can stall after the headers arrive.
+  try {
+    return await handleResponse<T>(response)
+  } catch (cause) {
+    if (isTimeout(cause)) throw new Error(TIMEOUT_MESSAGE, { cause })
+    throw cause
+  }
 }

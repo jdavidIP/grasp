@@ -1,4 +1,4 @@
-import { apiFetch } from './client'
+import { apiFetch, GENERATION_TIMEOUT_MS } from './client'
 import type { ChatMessage, ChatResponse } from '../types/chat'
 
 export function getChatHistory(videoId: string): Promise<ChatMessage[]> {
@@ -10,7 +10,7 @@ export function sendChatMessage(videoId: string, message: string): Promise<ChatR
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message }),
-  })
+  }, GENERATION_TIMEOUT_MS)
 }
 
 export function clearChatHistory(videoId: string): Promise<void> {
