@@ -116,3 +116,19 @@ it('returns to the list from Cancel', async () => {
   fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
   expect(await screen.findByRole('heading', { name: 'Flashcard decks' })).toBeTruthy()
 })
+
+it('scrolls the tab panel back to the top when Cancel returns to the list', async () => {
+  stubApi(async () => jsonResponse(201, newDeck))
+  renderWithClient(
+    <div role="tabpanel" data-testid="panel">
+      <FlashcardsPanel videoId="v1" segments={segments} onSeek={() => {}} />
+    </div>,
+  )
+  fireEvent.click(await screen.findByRole('button', { name: 'New deck' }))
+  const panel = screen.getByTestId('panel')
+  panel.scrollTop = 200
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+
+  expect(await screen.findByRole('heading', { name: 'Flashcard decks' })).toBeTruthy()
+  expect(panel.scrollTop).toBe(0)
+})

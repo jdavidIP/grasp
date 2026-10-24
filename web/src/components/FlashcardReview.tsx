@@ -27,7 +27,7 @@ export function FlashcardReview({ deckId, segments, onSeek, onClose }: Flashcard
 
   // Focus the review once the deck is in, so the shortcuts work straight away.
   useEffect(() => {
-    if (deck) sectionRef.current?.focus()
+    if (deck) sectionRef.current?.focus({ preventScroll: true })
   }, [deck])
 
   function goTo(next: number) {

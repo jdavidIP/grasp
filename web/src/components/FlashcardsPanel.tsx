@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState, type RefObject } from 'react'
 import { useCreateFlashcardDeck } from '../hooks/useFlashcards'
 import type { FlashcardConfig, FlashcardDraft } from '../types/flashcard'
 import type { Segment } from '../types/video'
@@ -36,12 +36,23 @@ interface FlashcardsPanelProps {
   onSeek: (seconds: number) => void
 }
 
+interface FlashcardsViewsProps extends FlashcardsPanelProps {
+  rootRef: RefObject<HTMLElement | null>
+}
+
 // "Generating" is the config view while the create request is pending, so a failure
 // lands back on the form with its error and the draft intact.
-export function FlashcardsPanel({ videoId, segments, onSeek }: FlashcardsPanelProps) {
+function FlashcardsViews({ videoId, segments, onSeek, rootRef }: FlashcardsViewsProps) {
   const createDeck = useCreateFlashcardDeck(videoId)
   const [view, setView] = useState<View>({ name: 'list' })
   const [draft, setDraft] = useState<FlashcardDraft>(DEFAULT_DRAFT)
+
+  // The tab panel keeps its scroll offset when the view swaps, so a view could open
+  // part-way down. Only the panel is reset, not the page.
+  useEffect(() => {
+    const panel = rootRef.current?.closest('[role="tabpanel"]')
+    if (panel) panel.scrollTop = 0
+  }, [view, rootRef])
 
   function openConfig() {
     createDeck.reset()
@@ -89,5 +100,14 @@ export function FlashcardsPanel({ videoId, segments, onSeek }: FlashcardsPanelPr
       onNew={openConfig}
       onReview={(deckId) => setView({ name: 'review', deckId })}
     />
+  )
+}
+
+export function FlashcardsPanel(props: FlashcardsPanelProps) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  return (
+    <div ref={rootRef}>
+      <FlashcardsViews {...props} rootRef={rootRef} />
+    </div>
   )
 }
