@@ -1,32 +1,40 @@
-# React + TypeScript + Vite
+# Grasp web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The React + TypeScript (Vite) frontend for Grasp. See the [root README](../README.md) for what the project is and how to run it; the app is normally run through Docker Compose with the API and database.
 
-Currently, two official plugins are available:
+## Layout
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+src/
+  pages/        LibraryPage, VideoDetailPage (one per route)
+  components/   grouped by feature:
+    chat/ flashcards/ quizzes/   the three workspace tabs
+    library/                     adding and listing videos
+    video/                       player, topic list, workspace tabs
+    layout/                      header, toasts
+    ui/                          shared form pieces and decoration
+  hooks/        TanStack Query hooks; data fetching lives here, not in components
+  api/          typed fetch client, one file per resource
+  types/        API payload types, mirroring the backend's Pydantic schemas
+  lib/          formatting, time and theme helpers
+  styles/       design tokens (industry.css)
+  test/         test setup and render helpers
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Tests sit next to the file they test (`QuizTake.test.tsx` beside `QuizTake.tsx`).
+
+## Scripts
+
+Run inside the container, e.g. `docker compose exec web npm test`:
+
+| Script | |
+|---|---|
+| `npm run dev` | Vite dev server (the container runs this) |
+| `npm test` | Vitest + React Testing Library |
+| `npm run typecheck` | `tsc` in strict mode |
+| `npm run lint` | oxlint |
+| `npm run build` | type-check and production build |
+
+## Configuration
+
+`VITE_API_URL` points the client at the API (default `http://localhost:8000/api`, see `.env.example`).
