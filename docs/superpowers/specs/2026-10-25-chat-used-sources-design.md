@@ -1,6 +1,6 @@
 # Chat used sources — design
 
-For [#47](https://github.com/jdavidIP/grasp/issues/47). Replaces the inline-citation design (`2026-10-24-chat-inline-citations-design.md`), which was dropped after calibration; see "Why not inline markers".
+For [#47](https://github.com/jdavidIP/grasp/issues/47). Replaces the inline-citation design (`2026-10-24-chat-inline-citations-design.md`, removed from the tree; read it at commit `2d9847b`), which was dropped after calibration; see "Why not inline markers".
 
 ## Why
 
