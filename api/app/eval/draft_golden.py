@@ -19,7 +19,7 @@ from app.db import async_session
 from app.eval.retrieval import EVAL_DIR
 from app.generation import llm
 from app.models.video import Video
-from app.prompts.golden_draft import (
+from app.prompts.eval.golden_draft import (
     OUT_OF_SCOPE_SYSTEM_PROMPT,
     QUESTION_SYSTEM_PROMPT,
     build_out_of_scope_user_prompt,

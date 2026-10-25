@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './styles/industry.css'
 import './index.css'
 import App from './App.tsx'
-import { ToastProvider } from './components/Toast'
+import { ToastProvider } from './components/layout/Toast'
 import { applyTheme, initialTheme } from './lib/theme'
 
 // networkMode 'always' (default is 'online'): this app has no offline story, and the

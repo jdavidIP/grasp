@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, expect, it, vi } from 'vitest'
 
-import { ToastProvider } from '../components/Toast'
+import { ToastProvider } from '../components/layout/Toast'
 import { jsonResponse, renderWithClient } from '../test/render'
 import type { VideoDetail } from '../types/video'
 import { VideoDetailPage } from './VideoDetailPage'

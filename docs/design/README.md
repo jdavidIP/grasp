@@ -322,4 +322,4 @@ Everything else — statuses, field names, config payloads, grading semantics, t
 | `design/industry.css` | The Industry design system — tokens and component classes. **Copy this into the web client.** |
 | `design/support.js` | Prototype runtime only. **Do not port.** |
 
-Source references in the repo: `docs/DATA_MODEL.md`, `docs/API.md`, `docs/ARCHITECTURE.md`, and `web/src/` (`pages/VideoDetailPage.tsx`, `components/ChatPanel.tsx`, `components/FlashcardReview.tsx`, `components/QuizTake.tsx`, `components/QuizResults.tsx`, `components/VideoList.tsx`, `lib/time.ts`).
+Source references in the repo: `docs/DATA_MODEL.md`, `docs/API.md`, `docs/ARCHITECTURE.md`, and `web/src/` (`pages/VideoDetailPage.tsx`, `components/chat/ChatPanel.tsx`, `components/flashcards/FlashcardReview.tsx`, `components/quizzes/QuizTake.tsx`, `components/quizzes/QuizResults.tsx`, `components/library/VideoList.tsx`, `lib/time.ts`).

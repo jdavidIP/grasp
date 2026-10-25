@@ -13,7 +13,7 @@ from app.eval.faithfulness import (
 )
 from app.eval.retrieval import first_hit_rank, span_coverage, summarize, unready_videos
 from app.generation.common import segment_text
-from app.prompts.faithfulness_judge import build_flashcard_user_prompt
+from app.prompts.eval.faithfulness_judge import build_flashcard_user_prompt
 
 
 def test_first_hit_rank_is_one_based_and_ignores_touching_edges():

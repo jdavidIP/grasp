@@ -18,7 +18,7 @@ from app.eval.faithfulness import print_usage
 from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, first_hit_rank, load_eval_videos
 from app.generation import llm
 from app.generation.chat import answer_question, with_slip_notes
-from app.prompts.chat_judge import (
+from app.prompts.eval.chat_judge import (
     ANSWER_SYSTEM_PROMPT,
     DECLINE_SYSTEM_PROMPT,
     build_user_prompt,
