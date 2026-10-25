@@ -8,6 +8,8 @@ A study companion built on a RAG pipeline over YouTube transcripts. Add a video 
 
 Every answer, card and question traces back to a moment in the video, and "this video doesn't cover that" is a real answer. The point of the project is **retrieval and generation quality**, and it is measured rather than asserted: hybrid search with an LLM rerank finds the answer's passage first in 93–96% of golden questions, chat answers score 1.00 supported by their sources, and shipped quiz answer keys 0.97–1.00 correct, each over two runs. See [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
+![Opening a video, asking the chat a question and jumping to its source, revealing flashcards, and answering quiz questions](docs/assets/demo.gif)
+
 ```mermaid
 flowchart TD
     A["Add video by URL"] --> B["Fetch transcript<br/>captions, or yt-dlp + Whisper fallback"]
