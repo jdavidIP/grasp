@@ -57,7 +57,7 @@ Tests: `docker compose exec api pytest` for the backend and `docker compose exec
 - **Segmentation is checked by hand, not scored.** Some topic boundaries still land on filler, and whole-video generation gives every topic the same 2 excerpts, so a long topic is thinly represented.
 - **Speaker slips are handled, not perfectly.** Generation won't state a misspoken fact as true, but under whole-video scope it sometimes corrects one without writing the note that names it, and a false true/false statement can still exaggerate a speaker's view.
 - **The eval set is small, and its judge is an LLM.** Three videos, 28 span-pinned questions and about 30 judged items per group give directional numbers, not precise ones.
-- **Single local user, by design.** No accounts, spaced repetition, custom player, deployment setup, sharing or second datastore (see [`CLAUDE.md`](CLAUDE.md)'s scope guardrails).
+- **Single local user, by design.** No accounts, spaced repetition, custom player, deployment setup, sharing or second datastore (why each is out: [`docs/ARCHITECTURE.md` §8](docs/ARCHITECTURE.md#8-whats-deliberately-out-of-scope)).
 
 Each is measured and discussed in [`docs/EVALUATION.md`](docs/EVALUATION.md#known-limitations).
 

@@ -37,4 +37,4 @@ Run inside the container, e.g. `docker compose exec web npm test`:
 
 ## Configuration
 
-`VITE_API_URL` points the client at the API (default `http://localhost:8000/api`, see `.env.example`).
+`VITE_API_URL` points the client at the API. Compose sets it to `http://localhost:8000/api`, and `.env.example` has the same value for running Vite outside Docker; the client has no fallback, so it must be set.
