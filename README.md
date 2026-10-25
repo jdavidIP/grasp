@@ -62,3 +62,7 @@ Each is measured and discussed in [`docs/EVALUATION.md`](docs/EVALUATION.md#know
 - [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md): schema and pgvector setup.
 - [`docs/API.md`](docs/API.md): endpoint contracts.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md): build order.
+
+## License
+
+[MIT](LICENSE)
