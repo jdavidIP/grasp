@@ -98,9 +98,13 @@ async def answer_question(
     session: AsyncSession, video_id: uuid.UUID, question: str, history: list[dict]
 ) -> dict:
     """Returns {"answer": str, "sources": list[dict], "grounded": bool, "slips":
-    list[dict], "path": str}, where slips are the known speaker slips the answer
-    relies on ([{said, meant}]) and path is "broad" or "specific". The API response
-    drops `path`."""
+    list[dict], "path": str, "context": list[dict], "model_grounded": bool,
+    "sources_fallback": bool}. Slips are the known speaker slips the answer relies on
+    ([{said, meant}]) and path is "broad" or "specific". A specific answer's sources
+    are the excerpts it says it used, and it is grounded only if it used one (#47).
+    The rest is for the evals, and the API response drops it: `context` is what the
+    model was shown, `model_grounded` its own verdict, and `sources_fallback` whether
+    it named no usable list, so every excerpt it saw was returned."""
     if await classify_question(question):
         return await _answer_broad(session, video_id, question, history) | {"path": "broad"}
     return await _answer_specific(session, video_id, question, history) | {"path": "specific"}
@@ -117,6 +121,9 @@ async def _answer_specific(
             "sources": [],
             "grounded": False,
             "slips": [],
+            "context": [],
+            "model_grounded": False,
+            "sources_fallback": False,
         }
 
     top_chunks = await rerank(question, candidates)
@@ -127,13 +134,34 @@ async def _answer_specific(
         build_specific_user_prompt(question, texts, history, slips),
     )
 
-    sources = [_chunk_source(chunk) for chunk in top_chunks]
+    used, fallback = _used_chunks(result, top_chunks)
+    # No source means not verified: nothing the viewer could check the answer against.
+    grounded = _grounded(result) and bool(used)
     return {
         "answer": _answer_text(result),
-        "sources": sources,
-        "grounded": _grounded(result),
-        "slips": _slips_used(result, slips),
+        "sources": [_chunk_source(chunk) for chunk in used],
+        "grounded": grounded,
+        "slips": _slips_used(result, slips) if grounded else [],
+        "context": [_chunk_source(chunk) for chunk in top_chunks],
+        "model_grounded": _grounded(result),
+        "sources_fallback": fallback,
     }
+
+
+def _used_chunks(
+    result: dict, top_chunks: list[TranscriptChunk]
+) -> tuple[list[TranscriptChunk], bool]:
+    """The excerpts the model says its answer used, in rerank order, and whether it
+    gave no list at all. Then every excerpt is returned, as before #47: a format slip
+    shouldn't tag a correct answer as not covered. A decline uses none."""
+    if not _grounded(result):
+        return [], False
+    used = result.get("used_excerpts")
+    if not isinstance(used, list):
+        return top_chunks, True
+    # type() over isinstance: True is an int, and must not pick excerpt 1.
+    indexes = {i for i in used if type(i) is int and 0 <= i < len(top_chunks)}
+    return [chunk for i, chunk in enumerate(top_chunks) if i in indexes], False
 
 
 def _answer_text(result: dict) -> str:
@@ -189,6 +217,9 @@ async def _answer_broad(
             "sources": [],
             "grounded": False,
             "slips": [],
+            "context": [],
+            "model_grounded": False,
+            "sources_fallback": False,
         }
 
     slips = slips_in(
@@ -205,4 +236,7 @@ async def _answer_broad(
         "sources": sources,
         "grounded": _grounded(answer_result),
         "slips": _slips_used(answer_result, slips),
+        "context": sources,
+        "model_grounded": _grounded(answer_result),
+        "sources_fallback": False,
     }

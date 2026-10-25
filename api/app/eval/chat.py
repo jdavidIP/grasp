@@ -4,8 +4,8 @@ Run inside the api container:  python -m app.eval.chat [--label NAME]
 
 Runs every golden-set question (specific, broad, and out-of-scope) through the
 production chat path, then has gpt-4o (not the gpt-4o-mini answer model) judge each
-answer against the sources that path returned: the chunks or segment summaries the
-answer model actually saw.
+answer against what the answer model actually saw: the reranked chunks or the segment
+summaries, not the narrower list of excerpts it says it used (#47).
 """
 
 import argparse
@@ -15,7 +15,7 @@ from datetime import UTC, datetime
 
 from app.db import async_session
 from app.eval.faithfulness import print_usage
-from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, load_eval_videos
+from app.eval.retrieval import GOLDEN_SET_PATH, RESULTS_DIR, first_hit_rank, load_eval_videos
 from app.generation import llm
 from app.generation.chat import answer_question, with_slip_notes
 from app.prompts.chat_judge import (
@@ -46,7 +46,12 @@ def parse_judgment(result: dict, kind: str) -> dict | None:
 
 def summarize(records: list[dict]) -> dict:
     """Per question kind: pass rate for each check, `faithful` (every check passed),
-    the answer model's own `grounded` rate, and the share routed to the broad path.
+    the final `grounded` rate, the share routed to the broad path, sources per answer
+    and how often the model gave no used-excerpts list (`fallbacks`). `flipped` counts
+    answers the model called grounded that used no excerpt, so they show as not
+    covered; for answerable kinds, `false_alarms` are the flipped ones the judge found
+    supported. For specific questions, `span_kept` is the share of those whose
+    retrieved excerpts overlapped the golden span where the used excerpts still do.
     Check rates are over judged records; judge failures are counted as `unjudged`."""
     summary: dict = {}
     for kind, checks in CHECKS.items():
@@ -63,8 +68,25 @@ def summarize(records: list[dict]) -> dict:
         stats["speaker_slips"] = sum(j["speaker_slip"] for j in judged)
         stats["grounded"] = sum(r["grounded"] for r in subset) / len(subset)
         stats["routed_broad"] = sum(r["path"] == "broad" for r in subset) / len(subset)
+        stats["mean_sources"] = sum(r["n_sources"] for r in subset) / len(subset)
+        stats["fallbacks"] = sum(r["sources_fallback"] for r in subset)
+        flipped = [r for r in subset if r["model_grounded"] and not r["grounded"]]
+        stats["flipped"] = len(flipped)
+        if kind != "out_of_scope":
+            stats["false_alarms"] = sum(
+                r["judgment"] is not None and r["judgment"]["supported"] for r in flipped
+            )
+        if kind == "specific":
+            retrieved = [r for r in subset if r["span_in_context"]]
+            stats["span_kept"] = (
+                sum(r["span_in_sources"] for r in retrieved) / len(retrieved) if retrieved else None
+            )
         summary[kind] = stats
     return summary
+
+
+def _overlaps(sources: list[dict], span: tuple[float, float]) -> bool:
+    return first_hit_rank([(s["start_time"], s["end_time"]) for s in sources], span) is not None
 
 
 async def _judge(kind: str, question: str, answer: dict) -> dict | None:
@@ -73,7 +95,7 @@ async def _judge(kind: str, question: str, answer: dict) -> dict | None:
         system_prompt,
         # The judge must see what the viewer reads: the answer plus its slip notes.
         build_user_prompt(
-            question, answer["sources"], with_slip_notes(answer["answer"], answer["slips"])
+            question, answer["context"], with_slip_notes(answer["answer"], answer["slips"])
         ),
         model=llm.EVAL_MODEL,
     )
@@ -98,6 +120,7 @@ async def run(label: str | None) -> None:
         with llm.track_usage(usage["judge"]):
             judgment = await _judge(kind, entry["question"], answer)
         sources = answer["sources"]
+        span = tuple(entry["span"]) if kind == "specific" else None
         records.append(
             {
                 "id": entry["id"],
@@ -105,6 +128,11 @@ async def run(label: str | None) -> None:
                 "question": entry["question"],
                 "path": answer["path"],
                 "grounded": answer["grounded"],
+                "model_grounded": answer["model_grounded"],
+                "n_sources": len(sources),
+                "sources_fallback": answer["sources_fallback"],
+                "span_in_context": _overlaps(answer["context"], span) if span else None,
+                "span_in_sources": _overlaps(sources, span) if span else None,
                 "answer": with_slip_notes(answer["answer"], answer["slips"]),
                 "sources": [
                     {k: s[k] for k in ("segment_label", "start_time", "end_time")} for s in sources
@@ -136,12 +164,30 @@ async def run(label: str | None) -> None:
 
 
 def _print_table(summary: dict) -> None:
-    columns = ("supported", "answers_question", "declines", "faithful", "grounded", "routed_broad")
+    columns = (
+        "supported",
+        "answers_question",
+        "declines",
+        "faithful",
+        "grounded",
+        "routed_broad",
+        "mean_sources",
+        "span_kept",
+        "flipped",
+        "false_alarms",
+        "fallbacks",
+    )
     print("| kind | n | " + " | ".join(columns) + " | slips |")
     print("|---" * (len(columns) + 3) + "|")
     for kind, s in summary.items():
-        cells = [f"{s[c]:.2f}" if s.get(c) is not None else "—" for c in columns]
+        cells = [_cell(s.get(c)) for c in columns]
         print(f"| {kind} | {s['n']} | " + " | ".join(cells) + f" | {s['speaker_slips']} |")
+
+
+def _cell(value: float | None) -> str:
+    if value is None:
+        return "—"
+    return str(value) if isinstance(value, int) else f"{value:.2f}"
 
 
 if __name__ == "__main__":

@@ -65,7 +65,9 @@ Response:
 
 `slips` lists the known speaker slips (detected at ingestion, #34) the answer relies on: the transcript says `said`, the speaker means `meant`. The answer states the intended fact; the UI shows the slips beside it so the viewer isn't confused when the video says something else. Empty when none, and always empty when `grounded` is `false`.
 
-`grounded` is `false` when retrieval found nothing relevant and the model declined to answer. The UI should render that case differently — it is a feature, not an error.
+`sources` for a specific answer is the excerpts the answer used, in rerank order (most relevant first), not every excerpt the model was shown ([#47](https://github.com/jdavidIP/grasp/issues/47)).
+
+`grounded` is `false` when retrieval found nothing relevant and the model declined to answer, or when the model called its answer grounded but used no excerpt: with nothing to check it against, it isn't treated as covered. The UI should render that case differently — it is a feature, not an error.
 
 Broad questions ("summarize this video," "what's this about") are answered from segment summaries instead of individual chunks — see `docs/ARCHITECTURE.md`'s broad-vs-specific split. Their `sources` entries have `chunk_id: null` and cite a whole segment (`start_time`/`end_time` span the segment, `text` is its summary) rather than one chunk.
 
