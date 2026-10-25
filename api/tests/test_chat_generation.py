@@ -8,7 +8,11 @@ from app.generation import chat
 from app.models.chunk import TranscriptChunk
 from app.models.segment import TranscriptSegment
 from app.models.video import Video
-from app.prompts.chat_answer import build_broad_user_prompt, build_specific_user_prompt
+from app.prompts.chat_answer import (
+    SPECIFIC_SYSTEM_PROMPT,
+    build_broad_user_prompt,
+    build_specific_user_prompt,
+)
 
 
 def _chunk(text: str, label: str, slips: list[dict] | None = None) -> TranscriptChunk:
@@ -82,7 +86,13 @@ async def test_answer_specific_happy_path(monkeypatch):
     monkeypatch.setattr(
         chat.llm,
         "generate_json",
-        AsyncMock(return_value={"answer": "Attention weighs tokens.", "grounded": True}),
+        AsyncMock(
+            return_value={
+                "answer": "Attention weighs tokens.",
+                "grounded": True,
+                "used_excerpts": [0, 1],
+            }
+        ),
     )
 
     result = await chat._answer_specific(None, uuid.uuid4(), "what is attention?", [])
@@ -152,7 +162,12 @@ async def test_answer_specific_returns_slips_apart_from_the_answer(monkeypatch):
         chat.llm,
         "generate_json",
         AsyncMock(
-            return_value={"answer": "It prints 0 to 2.", "grounded": True, "slips_used": [0]}
+            return_value={
+                "answer": "It prints 0 to 2.",
+                "grounded": True,
+                "slips_used": [0],
+                "used_excerpts": [0],
+            }
         ),
     )
 
@@ -213,6 +228,8 @@ async def test_answer_broad_path_uses_segment_summaries(monkeypatch):
         assert result["sources"][0]["chunk_id"] is None
         assert result["sources"][0]["segment_label"] == "Intro"
         assert result["sources"][0]["text"] == "Intro summary."
+        assert result["context"] == result["sources"]
+        assert result["model_grounded"] is True
 
         await session.delete(video)
         await session.commit()
@@ -265,3 +282,56 @@ def test_grounded_needs_a_real_true():
     assert chat._grounded({"grounded": True}) is True
     for value in ("false", "true", 1, None):
         assert chat._grounded({"grounded": value}) is False
+
+
+async def _answer_with(monkeypatch, model_result, chunks=None):
+    chunks = chunks or [_chunk(f"c{i}", "T") for i in range(3)]
+    monkeypatch.setattr(chat.llm, "embed_texts", AsyncMock(return_value=[[0.1] * 1536]))
+    monkeypatch.setattr(chat, "hybrid_search", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(chat, "rerank", AsyncMock(return_value=chunks))
+    monkeypatch.setattr(chat.llm, "generate_json", AsyncMock(return_value=model_result))
+    return chunks, await chat._answer_specific(None, uuid.uuid4(), "q", [])
+
+
+async def test_specific_lists_only_used_excerpts_in_rerank_order(monkeypatch):
+    # Out of order, duplicated, a bool (an int in Python), a string, out of range.
+    chunks, result = await _answer_with(
+        monkeypatch, {"answer": "a", "grounded": True, "used_excerpts": [2, 0, 2, True, "1", 9]}
+    )
+
+    assert [s["chunk_id"] for s in result["sources"]] == [chunks[0].id, chunks[2].id]
+    assert len(result["context"]) == 3
+    assert result["grounded"] is True and result["model_grounded"] is True
+    assert result["sources_fallback"] is False
+
+
+async def test_grounded_answer_using_no_excerpt_becomes_not_covered(monkeypatch):
+    slip = {"said": "values from 0 to 3", "meant": "values from 0 to 2"}
+    chunks = [_chunk("values from 0 to 3", "Loops", slips=[slip])]
+    _, result = await _answer_with(
+        monkeypatch,
+        {"answer": "a", "grounded": True, "slips_used": [0], "used_excerpts": ["x"]},
+        chunks,
+    )
+
+    assert result["grounded"] is False and result["model_grounded"] is True
+    assert result["sources"] == [] and result["slips"] == []
+
+
+async def test_missing_used_excerpts_falls_back_to_every_reranked_chunk(monkeypatch):
+    _, result = await _answer_with(monkeypatch, {"answer": "a", "grounded": True})
+
+    assert len(result["sources"]) == 3 and result["sources_fallback"] is True
+    assert result["grounded"] is True
+
+
+async def test_ungrounded_answer_lists_no_sources_even_if_it_names_excerpts(monkeypatch):
+    _, result = await _answer_with(
+        monkeypatch, {"answer": "a", "grounded": False, "used_excerpts": [0]}
+    )
+
+    assert result["sources"] == [] and result["grounded"] is False
+
+
+def test_specific_prompt_asks_for_used_excerpts():
+    assert '"used_excerpts"' in SPECIFIC_SYSTEM_PROMPT

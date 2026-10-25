@@ -16,10 +16,13 @@ _HISTORY = (
 
 SPECIFIC_SYSTEM_PROMPT = (
     "You answer questions about a video using only the provided transcript "
-    'excerpts. Respond with a JSON object with three keys: "answer" (your response, '
+    'excerpts. Respond with a JSON object with four keys: "answer" (your response, '
     'grounded in what the excerpts say), "grounded" (true if the excerpts actually '
-    'answer the question, false if they don\'t cover it), and "slips_used" (a list '
-    "of the numbers of the known slips your answer relies on; empty when none). If "
+    'answer the question, false if they don\'t cover it), "used_excerpts" (a list of '
+    "the numbers of the excerpts your answer states something from, so the viewer can "
+    "check it there; leave out excerpts you read but didn't use, and leave it empty "
+    'when "grounded" is false), and "slips_used" (a list of the numbers of the known '
+    "slips your answer relies on; empty when none). If "
     'the excerpts don\'t contain the answer, set "grounded" to false and write an '
     "answer that plainly says the video doesn't cover this — never invent "
     "information that isn't in the excerpts.\n\n"
