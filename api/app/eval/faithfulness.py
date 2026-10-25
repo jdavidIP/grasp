@@ -21,7 +21,7 @@ from app.generation import llm
 from app.generation.common import segment_text
 from app.generation.flashcards import generate_flashcards
 from app.generation.quizzes import generate_quiz
-from app.prompts.faithfulness_judge import (
+from app.prompts.eval.faithfulness_judge import (
     FLASHCARD_SYSTEM_PROMPT,
     QUIZ_SYSTEM_PROMPT,
     build_flashcard_user_prompt,
