@@ -1,0 +1,706 @@
+{
+  "run_at": "2026-10-25T03:54:52+00:00",
+  "label": "run1",
+  "pairs": [
+    {
+      "id": "BDqvzFY72mg-13",
+      "kind": "specific",
+      "question": "How did the Marshall Plan contribute to political stability in post-World War II Europe?",
+      "path": "specific",
+      "claim": "This reconstruction process facilitated great prosperity and created an era of political stability in most advanced capitalist democracies, including European nations, after the war",
+      "chunk_id": "59d71f27-1f79-4f42-8ed3-2b1ca22e9551",
+      "chunk_text": "of very great political stability for people who grew up in that period. Internationally, as well, it was a period of very great stability because partly, because of the Cold War. It's true we had episodes\nlike the Cuban Missile Crisis and the Vietnam War but as\nthe Vietnam War indicates, most of the conflicts within the Cold War were played out as you like, as proxy wars in other parts of the world. From the point of view of the citizens of the Western democracies, except for those who are\nactually fighting in Vietnam, it was a far-off war that\ndidn't have a great impact on the stability of people's lives",
+      "similarity": 0.4390564868917469
+    },
+    {
+      "id": "BDqvzFY72mg-14",
+      "kind": "specific",
+      "question": "What was the significance of the symbolic dismantling of the Berlin Wall during the celebrations in Berlin?",
+      "path": "specific",
+      "claim": "This event was filled with deep emotions for the Germans, indicating a move towards closer unity within Germany, and it took place during a transformative time in Eastern Europe where countries were shedding totalitarian control and moving towards democracy",
+      "chunk_id": "eaffe7b5-5f4a-43d3-84ec-ddcf90ba4d65",
+      "chunk_text": "So let's just go back to 1989 in Berlin. - The Berlin Wall, once\nit divided East from West, now on its way to becoming\nan artifact of history. (upbeat music) This the CBS Evening News. Dan Rather, reporting\ntonight from in front of the Brandenburg Gate\nin Berlin, Germany. Good evening. These are the sights and sounds of the continuing celebration of Germans about the symbolic, not the\nliteral, at least, not yet but the symbolic tearing\ndown of the Berlin Wall. It's impossible to completely describe how deeply Germans feel\nabout what's happened here. East German border guards tonight were literally tearing down\nportions of the wall itself, not the whole wall but\nportions of the wall to make it easier for East\nGermans to come into West Berlin and as the joyous hordes of Berliners were still streaming through the wall, the East German communist government said they can come and go permanently, they can come into West\nBerlin, have a look and then come back home again with no special documents required. Today, what goes through\nyour mind and heart? - Well, of course, I look\nback to all those years of hardship for the\nfamilies even more than",
+      "similarity": 0.512340461066963
+    },
+    {
+      "id": "BDqvzFY72mg-14",
+      "kind": "specific",
+      "question": "What was the significance of the symbolic dismantling of the Berlin Wall during the celebrations in Berlin?",
+      "path": "specific",
+      "claim": "This event was filled with deep emotions for the Germans, indicating a move towards closer unity within Germany, and it took place during a transformative time in Eastern Europe where countries were shedding totalitarian control and moving towards democracy",
+      "chunk_id": "d3d569f7-5e35-4b9a-8bf6-e963607dba9b",
+      "chunk_text": "with no special documents required. Today, what goes through\nyour mind and heart? - Well, of course, I look\nback to all those years of hardship for the\nfamilies even more than for the country as a whole and it's moving to see families getting together again. My feeling is that we are very close to an end of the artificial\ndivision of Berlin and I also believe we\nare close to the point where the parts of Germany will\nbecome much closer together. This, of course, only within the reasonable\nEuropean framework. Anyone know who that was? Xxx Billy Braun, the former\nChancellor of Germany who actually would die a couple of years, three years after that, so he was one of the\ncelebratory crowd at that time. So that might give you a\nlittle sense of the shock and the enthusiasm that people experienced in the latter days of 1989.",
+      "similarity": 0.6085594715899666
+    },
+    {
+      "id": "BDqvzFY72mg-15",
+      "kind": "specific",
+      "question": "What was the outcome of democratization movements in Eastern Europe and other regions following the decline of Soviet dominance?",
+      "path": "specific",
+      "claim": "Additionally, conflicts such as those in Northern Ireland began to see resolutions, indicating a broader trend towards democratization during this period",
+      "chunk_id": "99dec6b1-fe22-442b-8919-414c92338364",
+      "chunk_text": "This had been a period\nin which the Soviet Union was clearly losing its\ngrip on Eastern Europe. It wasn't just Germany. Right across Eastern\nEurope, all through 1989, there had been these massive\nresistance movements developing and the Soviet Union was losing, it was clearly not in\na position to intervene in these countries. And they were shedding\ntotalitarian control for the first time in decades. Of course, the great exception which we will be talking\nabout next week was in China where demonstrations in Tiananmen Square that June had come out,\nmeant a very different result but in most of the world, after 1989, it seemed like democracy was on the March. We saw the democratization of all of the former Soviet Union bloc\ncountries in Eastern Europe even places like South\nAfrica which had been mired in a bitter conflict for\ndecades transitioned in the early 1990s to a\nmulti-racial democracy. The problems in Northern\nIreland finally settled with the Good Friday Accords in 1997. Even Israel-Palestine which had been one of the most intractable\nconflicts for decades and decades seemed to be moving towards a\nresolution in the early 1990s.",
+      "similarity": 0.6454899469021879
+    },
+    {
+      "id": "BDqvzFY72mg-17",
+      "kind": "specific",
+      "question": "How did the traditional political parties fare in the Bavarian regional elections?",
+      "path": "specific",
+      "claim": "Additionally, the Social Democratic Party (SPD) also suffered by losing support to the Greens, indicating that establishment parties are shrinking and becoming weaker while fringe parties are gaining strength",
+      "chunk_id": "40f9fe99-129a-42f8-9a4c-f0982792e861",
+      "chunk_text": "this is what you see happening. - [Presnter] German\nChancellor, Angela Merkel, who's led Germany for 13\nyears has offered to step down as her party's leader\nand said she won't run for office again after\nher term ends in 2021. Her announcement came\na day after her party, the Christian Democratic Union, saw a disappointing performance\nin a key regional election in the state of Hesse. The far-right, Alternative\nfor Germany party claimed more than a dozen\nseats in Hesse's Parliament for the first time. The entire migrant\nparty now controls seats in all 16 of Germany's state Parliament's plus the National Bundestag\nand European Parliament. - So there it is. They had also done very poorly in the Bavarian regional elections. They had hemorrhaged about\n10% of their vote to the AFD in these regional\nelections and by the way, the SPD wasn't very happy either because they were hemorrhaging\nsupport to the greens. And this is something\nwe'll see playing out in many European countries. The establishment parties are\nshrinking and becoming weaker and the parties on the fringes are growing and becoming stronger.",
+      "similarity": 0.6879987518869367
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "claim": "This reflects a broader trend across Europe where fringe parties are achieving greater electoral success at the expense of traditional parties, including in countries thought to be stable, such as Sweden",
+      "chunk_id": "79145aa8-c7a3-47ae-ba8f-96e8ba9c4e76",
+      "chunk_text": "in many European countries. The establishment parties are\nshrinking and becoming weaker and the parties on the fringes are growing and becoming stronger. And it was impossible\nnot to start thinking about the past and thinking particularly about the 1920s and 30s. (speaking in foreign language) - [Presenter] As a result of\nthe elections of July, 1932, the Nazis became the\nbiggest party in Germany with 37% of the vote. - So if you wanna go back to the 1930s, you can see that that video was\nabout the July 1932 election and you can see what happened\nin the subsequent elections that it was a very unstable system. They were having multiple\nelections and of course, 18 months later, Hitler came to power. And if you go to Germany, you hear very anxious people talking about is this back to the future? Is 2017 and 2018 some kind\nof replay of the empowerment of extremist parties and of course, it wasn't just Germany. In 2016 we had massive shocks delivered to establishment parties\nwith the Brexit result in the UK and Donald\nTrump's populist stampede to the presidency in the US,",
+      "similarity": 0.5596136924346451
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "claim": "This reflects a broader trend across Europe where fringe parties are achieving greater electoral success at the expense of traditional parties, including in countries thought to be stable, such as Sweden",
+      "chunk_id": "40f9fe99-129a-42f8-9a4c-f0982792e861",
+      "chunk_text": "this is what you see happening. - [Presnter] German\nChancellor, Angela Merkel, who's led Germany for 13\nyears has offered to step down as her party's leader\nand said she won't run for office again after\nher term ends in 2021. Her announcement came\na day after her party, the Christian Democratic Union, saw a disappointing performance\nin a key regional election in the state of Hesse. The far-right, Alternative\nfor Germany party claimed more than a dozen\nseats in Hesse's Parliament for the first time. The entire migrant\nparty now controls seats in all 16 of Germany's state Parliament's plus the National Bundestag\nand European Parliament. - So there it is. They had also done very poorly in the Bavarian regional elections. They had hemorrhaged about\n10% of their vote to the AFD in these regional\nelections and by the way, the SPD wasn't very happy either because they were hemorrhaging\nsupport to the greens. And this is something\nwe'll see playing out in many European countries. The establishment parties are\nshrinking and becoming weaker and the parties on the fringes are growing and becoming stronger.",
+      "similarity": 0.5740249753353397
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "claim": "This reflects a broader trend across Europe where fringe parties are achieving greater electoral success at the expense of traditional parties, including in countries thought to be stable, such as Sweden",
+      "chunk_id": "12a858d4-a3b4-4d57-9107-678a32b02db4",
+      "chunk_text": "for the far-right Flemish Vlaams Belang which received almost 12%\nof the vote gaining seats. If you look at Italy, you can see the center-left party ceding\npower to the center-right but many of the votes for\nthe center-right party are coming from the league, so-called, again, a far right-wing populist party which ends up with 125 seats and 17% of the popular vote, of 109 seats and I could put up another\nseven or eight or nine slides of different countries that\nbasically tell the same stories in country after country across Europe both Eastern Europe and Western Europe, including countries that\nwe thought of as bastions of civil social democratic\nstability like Sweden. You see these far-right\nparties doing well, Turkey, Latin America, elsewhere, where anti-establishment\nparties that sometimes also verge on being anti-system parties are gaining ground in many legislatures. So if you think about the contrast between the videos of\n1989 and where the world has been since 2016, it\ncouldn't be more dramatic and in some ways, it's a big downer but my first thing I wanna say\nis don't get too depressed. It's not all of course, for depression.",
+      "similarity": 0.5899501230308726
+    },
+    {
+      "id": "BDqvzFY72mg-18",
+      "kind": "specific",
+      "question": "How did the political landscape change in some European countries with the rise of far-right parties?",
+      "path": "specific",
+      "claim": "This reflects a broader trend across Europe where fringe parties are achieving greater electoral success at the expense of traditional parties, including in countries thought to be stable, such as Sweden",
+      "chunk_id": "fb657825-bd0a-4f52-9dcd-084fde82bca2",
+      "chunk_text": "but they weren't able to form a coalition. However, over the course\nof that six months, all the opinion polls showed that the AFD, the Alternative for Deutschland was actually rising in popularity. And so the German\npresident was very against having another election in\nthe face of the stalemate with the Social Democrats refusing to join in a grand\ncoalition on the one hand and Merkel's inability to construct a different coalition on the other. They all knew that if they\nwent for another election, the AFD would do even better. So finally, after much hand-wringing, the SPD was persuaded after extracting a very big set of concessions,\nincluding six ministries and the Finance Ministry. They were persuaded to go\nback into a grand coalition even though a lot of their\nmembership didn't want it. So terrified were they of the\nprospect of another election in which the far right\nwould do even better. So we thought German politics\nwas kind of settling down at this point but the following year, this is what you see happening. - [Presnter] German\nChancellor, Angela Merkel, who's led Germany for 13\nyears has offered to step down as her party's leader\nand said she won't run",
+      "similarity": 0.4051292027093696
+    },
+    {
+      "id": "BDqvzFY72mg-20",
+      "kind": "specific",
+      "question": "What is the difference between normative political theory and empirical work in political science?",
+      "path": "specific",
+      "claim": "The speaker, being a political theorist, emphasizes normative questions, while also recognizing the importance of data and empirical findings to inform political science and to make normative arguments more realistic and implementable",
+      "chunk_id": "e3acfb33-4af9-45e4-a699-e3313ee7d048",
+      "chunk_text": "and we're gonna discover that some of the conventional\nwisdom needs rethinking. So on the one hand\nwe're bringing the tools of political science and the\ntheories of political science to bear on the data that's thrown up by this last 30 years of history. On the other hand, we're using that data to keep the political scientists honest, precisely because we have\nthis whole smorgasbord of new results as a social\nscientist would put it but then I also said\nI'm gonna use the tools of political theory. So political theory, I should\nconfess, truth in advertising by my first profession, if\nextended is a profession is I'm a political theorist. I cut my teeth in the world\nof political philosophy. I'm in normative things\nabout what should happen, how the world should be organized, rather than empirical work\non how it is organized. We are definitely gonna be thinking about normative questions\nhere as well as we go along, what should happen,\nwhat might have happened but the confession I need to\nmake about my home discipline is that it reminds me of\nthe story about the fella who goes up to a farmer in Donegal",
+      "similarity": 0.6599925794965852
+    },
+    {
+      "id": "BDqvzFY72mg-20",
+      "kind": "specific",
+      "question": "What is the difference between normative political theory and empirical work in political science?",
+      "path": "specific",
+      "claim": "The speaker, being a political theorist, emphasizes normative questions, while also recognizing the importance of data and empirical findings to inform political science and to make normative arguments more realistic and implementable",
+      "chunk_id": "7a335cfc-1739-4e48-86b4-d209409db2f9",
+      "chunk_text": "but the confession I need to\nmake about my home discipline is that it reminds me of\nthe story about the fella who goes up to a farmer in Donegal and says how do I get to Dublin and the answer that comes back is well, I wouldn't start from here, sonny. That is to say much of\npolitical philosophy develops theories that take no account of where we actually\nare and how the theories that people argue about in the journals and in the literature\nactually could be implemented in the world, if at all. And this spills over\ninto normative arguments made by other scholars. Thomas Piketty in his book, Capital in the Twenty-First Century, argues for a 4% global wealth tax. Well, good luck with that. Who's gonna implement\na 4% global wealth tax. So when I think about normative questions, it's gonna be from the perspective of how might the goals\nthat we think are desirable actually be achieved. I am going to spend, as we go along, through the different topics\nthat we're gonna be discussing. I am gonna be focusing on paths not taken, things that might have\nbeen done differently and here the sorts of things\nI'm gonna be talking about",
+      "similarity": 0.5333917468283469
+    },
+    {
+      "id": "BDqvzFY72mg-21",
+      "kind": "specific",
+      "question": "What connection is drawn between Ukraine's interest in joining NATO and the invasion of Ukraine?",
+      "path": "specific",
+      "claim": "The connection drawn between Ukraine's interest in joining NATO and the invasion of Ukraine is that part of the reason for the Soviet Union's invasion of Ukraine was related to Ukraine's talks about joining NATO",
+      "chunk_id": "fef1cb3d-3643-4740-a9fb-d3cb160bcc03",
+      "chunk_text": "are things like NATO\nexpansion, after the collapse of the Soviet Union, the NATO alliance, we'll talk about this next week which was expanded over\nthe next several decades to include most, eventually, all of the former Soviet bloc countries and there were overtures, also to including former\nSoviet states like Georgia and several others. I'll, talk about this Ukraine,\nGeorgia and Ukraine were both talking about,\njoining NATO that part of the reason the Soviet\nUnion invaded Ukraine. So we will talk about\nwhether there was a path not taken at that time French\npresident Francois Mitterrand thought that NATO should be shut down at the end of the Cold War\nit was a defensive alliance that had lost its purpose. How realistic was that? how might the world have been\ndifferent had that happened we're going to be talking about the Global War on Terror I should in after 9/11 when, we invaded first\nAfghanistan and then Iraq. Was there another path that would have been politically\nviable that would have led the world in a different direction. We will talk about the response to the financial crisis\nof 2008 in 2009, again what were their possibilities that,",
+      "similarity": 0.495702197530975
+    },
+    {
+      "id": "BDqvzFY72mg-22",
+      "kind": "specific",
+      "question": "What role did the Washington Consensus play in the economic policies of developing countries after the post-communist era?",
+      "path": "specific",
+      "claim": "This approach reflected a global confidence in free-market capitalism as the best economic strategy for countries around the world during this period",
+      "chunk_id": "c0ac9603-34ad-4d8e-90ef-3269121af0f1",
+      "chunk_text": "And then I'm going to\ntalk about the, politics of the economics. What I'm going to call the\nrise of neoliberalism at home and the Washington Consensus abroad and this is put on this is basically it comes to, exist because of the collapse of an\nalternative to capitalism, the disappearance of communism\nas a viable, political system as a viable economic system and so you have this idea that's\noften called neoliberalism that basically has three elements. Its trade deregulation,\ntrade deals getting rid of restraints on trade, getting\nrid of internal regulation within countries, and\nmassive privatization of formerly state assets that was called, the neoliberal approach to political public political economy. And when it's translated into a set of recommendations or requirements for countries in the developing world, it was called the Washington Consensus, was essentially adopted by the World Bank by the IMF as a condition for giving loans to developing countries and it, was essentially taking\nneoliberalism global. And so the, post communist era is marked by, this massive confidence in, the the capacity of unregulated or mildly regulated\nfree-market capitalism, to deliver the best results,\nfor every country in the world then we're going to talk about the new global order, that\nis ushered in by this.",
+      "similarity": 0.5387707345249856
+    },
+    {
+      "id": "fWjsdhR3z3c-27",
+      "kind": "specific",
+      "question": "How do you create a list in Python that contains different types of values?",
+      "path": "specific",
+      "claim": "This can include a mixture of numbers, booleans, and more",
+      "chunk_id": "6c2153fb-07fb-4efe-b24d-40a5a8da05c0",
+      "chunk_text": "have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you that there is a difference so we'll go ahead and click on run and you'll notice it will say banana and apple now let's go ahead and print another string which this time is going to be hello and we're going to add a plus and the item name so as you can see we can actually combine text and when we print that it's going to say hello orange next we have data types so the first one is the integer which is just any number and you're going to notice it being written in blue then we have strings which as i showed you earlier is just any text inside quotation marks then we have booleans which is just a simple true or false so as you can see we can just type in false here or true here and that's all that it is it just says true or false and the final one you should know for getting started is list which all you have to do is create a pair of angle brackets and insert the values you want inside here and it can be a mixture between numbers booleans and so on but for this example we'll just keep it simple and write a few strings then if we go",
+      "similarity": 0.46875934377349104
+    },
+    {
+      "id": "fWjsdhR3z3c-27",
+      "kind": "specific",
+      "question": "How do you create a list in Python that contains different types of values?",
+      "path": "specific",
+      "claim": "This can include a mixture of numbers, booleans, and more",
+      "chunk_id": "ddf83ded-ddf2-43b3-b564-833cd0c7e05e",
+      "chunk_text": "and insert the values you want inside here and it can be a mixture between numbers booleans and so on but for this example we'll just keep it simple and write a few strings then if we go ahead and print these you're going to notice that we will get 2021 text false and the list but let's move on to an example that we want to print these values combined so let's say name is mario the string number is going to equal 22. so you're going to notice 2021 is a blue number and this one is green because this is considered text while this is considered an integer so what we need to do is actually convert them into the correct types before combining them so to do that we can just go ahead and type in print name plus the string value of integer so it's going to convert the integer to a string so that we can combine these two texts together if we remove that and only write integer you're going to notice we are going to get an exception that says we cannot do that and the same thing goes for the string number pretend we want to add the value of 10 to the string number the editor will be nice enough to tell you you shouldn't do that and we should just put some parentheses",
+      "similarity": 0.45756591575926736
+    },
+    {
+      "id": "fWjsdhR3z3c-29",
+      "kind": "specific",
+      "question": "How does one use conditional statements to provide different outputs based on a person's age and happiness in Python?",
+      "path": "specific",
+      "claim": "The conditional statements are structured to evaluate whether the conditions are true or false, and depending on that, they generate appropriate outcomes based on the values provided",
+      "chunk_id": "8256bd71-5428-4199-93e6-86d728bb558b",
+      "chunk_text": "these two values so is happy is false age is 28. let's pretend we want something to happen if the age is more than 21 we'll say print you are old and if they are not old we can also type in l if the age is equal to 18 we will tell them you are getting old and if it's neither of those we can go ahead and say you are still young and the same thing goes with the is happy statement so we type in if the person is happy we can write you are happy else they are probably not happy so we will just write you are not happy and when we play it it's going to say they are not happy because is happy is false and if we set this to true it's going to change to you are happy so the if statement just takes into account whether a statement is true or false and depending on that it's going to give the outcome of the values and the if else statement is going to probably be your most used logic next let's move on to the for",
+      "similarity": 0.5430831056216586
+    },
+    {
+      "id": "fWjsdhR3z3c-30",
+      "kind": "specific",
+      "question": "How can you modify a loop in Python to start its index at 1 instead of 0?",
+      "path": "specific",
+      "claim": "To start at 1, you can change your print statement to include 'i + 1', so you would print 'hello' followed by 'i + 1', resulting in 'hello 1', 'hello 2', 'hello 3' instead of 'hello 0', 'hello 1', 'hello 2'",
+      "chunk_id": "43f7cf41-745e-4b00-942b-7a921074d1fc",
+      "chunk_text": "used logic next let's move on to the for loop so for i in range of three which means it's going to loop over three values we want to print hello and we can add a comma here and the value of i so if we print this you're going to notice it's going to say hello0 hello1 hello2 because in programming the index always starts at 0. so if you actually want that to start at one you're going to have to manually add one to i so now you get hello one hello to hello three and also just so you know what range is we can go down here and we can go ahead and type in print range of three so you're going to notice it's going to create a range object which is going to have the values from 0 to 3 so this can iterate three times over that but you should also know that this works for lists so we can create a name list and we can type in for name in name list we can print the name next we have a while loop so we're just gonna type in i equals zero and while i is less than five we're going to increment the value of i by one each time it goes in this loop and finally we want to print the value of i",
+      "similarity": 0.5774531756081085
+    },
+    {
+      "id": "fWjsdhR3z3c-31",
+      "kind": "specific",
+      "question": "What is the purpose of using 'break' in a Python loop?",
+      "path": "specific",
+      "claim": "For example, if the user inputs zero, the program will print a message and then execute the break statement, which makes the loop no longer valid and exits it",
+      "chunk_id": "5c24687d-7b23-4ee0-a7b2-de97668594eb",
+      "chunk_text": "five we're going to increment the value of i by one each time it goes in this loop and finally we want to print the value of i so what you should get are five values printed out just like this because as soon as this statement becomes false it's going to exit out of this loop and just terminate the program but a reason to use this is because you can create an infinite loop such as while true and that's never going to be false and inside here we're going to type in user input and that's going to equal an input that says enter something and if the user input is equal to the string of zero then we're going to print we are done here and we are also going to break and what break does is just cancel the loop which means if we type in zero this loop is no longer going to be valid and it's going to exit out of the program otherwise it's going to loop forever and if we actually play the program you're going to notice that finally we can add some inputs so we can type in 10 we can do two we can type in whatever that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish",
+      "similarity": 0.6925104333657343
+    },
+    {
+      "id": "fWjsdhR3z3c-31",
+      "kind": "specific",
+      "question": "What is the purpose of using 'break' in a Python loop?",
+      "path": "specific",
+      "claim": "For example, if the user inputs zero, the program will print a message and then execute the break statement, which makes the loop no longer valid and exits it",
+      "chunk_id": "f519f7ae-a11f-4083-84df-9ba5a337390a",
+      "chunk_text": "that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish moving on to functions to create a function all you have to do is use the def keyword and just name the function however you like of course i'm going to use the underscore naming convention and this function is only going to be used to say hello to the user so here we can go ahead and type in print hey there and we're going to insert the name so you might be wondering what are functions and what do we use functions for well functions are just used to reuse your code in many different instances because the main point of programming is to reuse your code as much as possible you want to maximize how often you can reuse the same line of code without having to rewrite it so for example now we created a function that says hello we can type in mario and we can also use it again and we can type in luigi and when we run the program it will say hey there mario and hey there luigi instead of writing this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create",
+      "similarity": 0.5694089103751783
+    },
+    {
+      "id": "fWjsdhR3z3c-32",
+      "kind": "specific",
+      "question": "Why are functions used in programming?",
+      "path": "specific",
+      "claim": "For example, a function can be created to greet users by name, which can then be called multiple times with different names without duplicating the code to print the greeting each time",
+      "chunk_id": "f519f7ae-a11f-4083-84df-9ba5a337390a",
+      "chunk_text": "that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish moving on to functions to create a function all you have to do is use the def keyword and just name the function however you like of course i'm going to use the underscore naming convention and this function is only going to be used to say hello to the user so here we can go ahead and type in print hey there and we're going to insert the name so you might be wondering what are functions and what do we use functions for well functions are just used to reuse your code in many different instances because the main point of programming is to reuse your code as much as possible you want to maximize how often you can reuse the same line of code without having to rewrite it so for example now we created a function that says hello we can type in mario and we can also use it again and we can type in luigi and when we run the program it will say hey there mario and hey there luigi instead of writing this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create",
+      "similarity": 0.5988934731512053
+    },
+    {
+      "id": "fWjsdhR3z3c-34",
+      "kind": "specific",
+      "question": "How does a try-except block handle exceptions in Python?",
+      "path": "specific",
+      "claim": "For example, if the user inputs a non-integer string like 'mario', the program will handle the exception by printing 'that is not a valid number' instead of throwing an error",
+      "chunk_id": "05bc6077-905f-4f76-a0a3-3fae7f0aa032",
+      "chunk_text": "we can use the try and accept block so for here we're going to create an input and it's going to say please provide a number so now we're going to go ahead and type in try and we're going to try to print the value plus the integer of the number that we get from the user and if that doesn't work we're going to print that that is not a valid number so the way it works is it tries to execute the code that's inside here and if anything goes wrong if an exception occurs it's going to go to the accept block and it's going to execute whatever is inside that of course if you write something that throws an exception inside here you need to try with another try and accept block but if we go ahead and run the program now we can write something like 10 and it's going to add 10 to the value but of course what if we write something such as mario try adding mario to 10 and the program is not going to be happy because you cannot convert mario to an integer and then add it to 10. so it's going to say you shouldn't do that but don't worry because we have the exception covered and our program will say that is not a valid number and not throw an exception",
+      "similarity": 0.6488473299898184
+    },
+    {
+      "id": "qiP1E6iAVS8-01",
+      "kind": "specific",
+      "question": "How has the Pentagon recently changed its stance on unidentified aerial phenomena captured by military personnel?",
+      "path": "specific",
+      "claim": "Recently, the Pentagon has changed its stance by confirming that they have captured videos of unidentified aerial phenomena (UAP) off naval vessels, which are real and hovering over defense systems, although they do not know what these objects are or how they operate",
+      "chunk_id": "147b80f9-8e4a-419e-97dc-a005c842c70f",
+      "chunk_text": "otherwise i don't know that i can claim to be an educator well you certainly can claim to be an educator but maybe you're not making the best use of your particular abilities your particular abilities that are unique to you or your humor and your fun your jovial along with being deep and philosophical and talking about very happy i found that matters people like i said people like to smile yeah they like silliness yeah you're a silly dude it's fun i mean for a guy who talks about yes it is a compliment for a guy who talks about like really intense subjects you know the nature of infinity yeah and and different kinds of infinities well you remember that yeah i remember everything some of cities are bigger than others yeah which is what what are you saying i'm not going to let you get away with this alien thing though oh bring it back go bring it back bring it back to this damn i thought i could so this it's weird to me that now the pentagon is uh saying that these are real videos that they've captured off of naval vessels and and they're been hovering over defense systems and they don't know what they are they don't know how they operate there's a film that was released recently by jeremy corbell that also came from",
+      "similarity": 0.4920404214810018
+    },
+    {
+      "id": "qiP1E6iAVS8-01",
+      "kind": "specific",
+      "question": "How has the Pentagon recently changed its stance on unidentified aerial phenomena captured by military personnel?",
+      "path": "specific",
+      "claim": "This aligns with earlier requirements set by Trump for federal agencies to report on unidentified sky objects",
+      "chunk_id": "cfed33ac-6632-43bc-a3a7-7cdf55d3a821",
+      "chunk_text": "you know yeah there's a lot of cultural um statistics related to the frequency of of ufo sightings but uh trump just before he left office required he slips something into the covert relief bill as they do so often in congress where you agree with the rest of this i don't agree with that but i want to get it through so he put that in yes well under his administrative exposure it's under administration the full disclosure within six months he wants all federal agencies that collect information on unidentified sky objects to put together reports and deliver to congress within six months fine i don't have a problem with that what's weird though is this somehow this belief that somehow the government is some repository of knowledge and secrets that we don't otherwise have access to that's not the kind of country we live in nor is the government that competent right so yeah they try to keep secrets and they keep many secrets they tend to be of the uninteresting kind but if we have an interesting secret if you're stockpiling aliens and you're telling me the the secretary the admin the janitor that they're not sneaking out an iphone photo really really do you think it's that simple really really do you think it's that simple christopher mellon who worked for the",
+      "similarity": 0.4995883455592755
+    },
+    {
+      "id": "qiP1E6iAVS8-02",
+      "kind": "specific",
+      "question": "What does Neil deGrasse Tyson believe unidentified aerial phenomena (UAPs) might actually be?",
+      "path": "specific",
+      "claim": "He expresses skepticism towards the idea that UAPs are piloted by extraterrestrial beings, suggesting instead that they are likely some kind of drone and not from another planet",
+      "chunk_id": "37b063d3-bf86-4666-a868-363743d89f41",
+      "chunk_text": "you have to say that so that's that's sort of that's your way to maintain your your your alien belief system by saying that and i don't have a problem with it go get him go get him but all of what has been put forth as evidence for aliens to me is insufficient evidence to excite my interest my research interest in devoting time to finding it out but it definitely has excited other people i have not stopped them i am not saying defund the military uh program on uaps which of course is just updated ufo i know they like to say that now because that's just like a stigma i know that's just that that's a really transparent sneaky way no no it's not even sneaky it's actually i think it's embarrassing it's like maybe if we call them uaps people take themselves people with tables no i'm of the belief that they're probably akin to what we did on mars i don't think there's aliens in them i have a feeling that these things are probes and i feel like if you just think about biological entities flying through the universe like why do that right when you have sophisticated technology that's good enough right now from our like relatively primitive in consideration of what",
+      "similarity": 0.5546294107749266
+    },
+    {
+      "id": "qiP1E6iAVS8-02",
+      "kind": "specific",
+      "question": "What does Neil deGrasse Tyson believe unidentified aerial phenomena (UAPs) might actually be?",
+      "path": "specific",
+      "claim": "He expresses skepticism towards the idea that UAPs are piloted by extraterrestrial beings, suggesting instead that they are likely some kind of drone and not from another planet",
+      "chunk_id": "be5a737c-6216-4a20-808c-d20f6a617c99",
+      "chunk_text": "sighting by a bunch of american airlines pilots like two i should say not a bunch of yeah it can happen again you get the more i don't know what i'm looking at yeah but was it was it detailed did you have if you had a guess if you had a bet like if you had a pile of money and you have to put it on green for aliens or red for horse [ __ ] where are you putting your money uh you you're forcing a binary decision here i am i am yeah but i wouldn't call it horseshit i would say um [Music] i would say not aliens not aliens right i i don't think there's things in most of those crafts but i think those crafts are some kind of drone and i'm not convinced that they're from another planet but they think oh sure i don't have but i don't have a problem with that and and if you by the way the it if you if this if this thing that they see out the window okay and they don't get a good photo or or it's still fuzzy or it's still a light in the sky and and i'm saying okay i'm not yet convinced but it's something fine go invest resources",
+      "similarity": 0.5041556504406184
+    },
+    {
+      "id": "qiP1E6iAVS8-04",
+      "kind": "specific",
+      "question": "What does our fear of aliens reveal about ourselves?",
+      "path": "specific",
+      "claim": "The portrayals of aliens as evil in media are seen as mirrors of our own conduct, suggesting that these fears are rooted in actual knowledge of human behavior rather than an understanding of how aliens would behave",
+      "chunk_id": "656a821d-fb44-4e97-a664-292159823ccf",
+      "chunk_text": "it's actual knowledge of how we have behaved but what about the day the earth stood still it's one of the first well it's one of the rare ones where where uh well no the war of the worlds long predates that by half a century right yeah um so so uh but i'm on balance the aliens are evil okay that's all i'm saying yes and so we are i see those portrayals as unwitting mirrors of our own conduct because an alien coming to earth has a greater technology than we do period that's just the end of story so how has it gone on earth any time one civilization with higher technology encounters one with lesser technology it has never boded well for the society with lesser technology they've been enslaved killed um put in camps exterminated so i think we fear aliens because in fact we fear ourselves we feel we fear what we would do if we had the capability to go to another planet i think they do to us i think we do that un unwittingly yeah that's what's manifesting in our storytelling i think it represents what we see out of human beings sure yeah definitely that's that's so so getting back to the the the ufo reports and sites you know that the headline i saw",
+      "similarity": 0.69484931736595
+    },
+    {
+      "id": "qiP1E6iAVS8-04",
+      "kind": "specific",
+      "question": "What does our fear of aliens reveal about ourselves?",
+      "path": "specific",
+      "claim": "The portrayals of aliens as evil in media are seen as mirrors of our own conduct, suggesting that these fears are rooted in actual knowledge of human behavior rather than an understanding of how aliens would behave",
+      "chunk_id": "1c37e265-3846-42b2-85e7-bb874a96b808",
+      "chunk_text": "that's an example i know it's fictional of course but it's an example of thinking outside of an earth box sure and if you think outside of an earth box there you go that is a life form that would not understand us they would think we how could how could such a world exist and on top of that there's how we treat each other yes all right that's and by the way i bet yeah i'm one of those who's a little worried when we give our return address broadcast out into space because you don't give your email to strangers in the street yet we're giving the coordinates of earth broadcast out to the gaps of interstellar space so i'm a little worried about that but then i think about and i say every nearly every portrayal of an alien in hollywood is evil going right on back to war of the worlds with h.g wells and i'm thinking why do we have any insights that aliens would be evil or is it really a mirror to ourselves it's not it's not imagined knowledge of how aliens would behave it's actual knowledge of how we have behaved but what about the day the earth stood still it's one of the first well it's one of the rare ones where where",
+      "similarity": 0.6696112955166763
+    },
+    {
+      "id": "qiP1E6iAVS8-06",
+      "kind": "specific",
+      "question": "How did past predictions about future technology often differ from the reality we experience today?",
+      "path": "specific",
+      "claim": "They did not anticipate the internet or the true nature of how technology would evolve and integrate into daily life, illustrating that extrapolating from the present often leads to significant inaccuracies over longer time spans",
+      "chunk_id": "76eae2d9-2560-40e0-8ea7-5cef8f90db06",
+      "chunk_text": "mean that's the thing that's going to happen true so i'm old enough to remember the 1950s and 60s people were imagining the future the home of the future well technology was automating things so everything was a button so the home of the future was just a button and then people imagine that the future evolution of humans would grow a big index finger because you have to be pushing buttons all the time right and now no we don't have buttons all over the house not really okay that's not the thing well we have the remote control i guess that's buttons but the button can do a thousand different things right depending on how it's programmed so there are things that take a look at computing we you know there was an era where the more the bigger a computer was the more powerful it was okay let's go right up to 1968 2001 a space odyssey this is imagining a world in 2001. oh computers will be really big then there's that one big computer in the center of the ship oh no one imagined that you'd have something more powerful than that on your hip yeah that that was no one thought that way people imagined people imagine of the future where we have motorized sidewalks and monorails and everything",
+      "similarity": 0.47268402489929795
+    },
+    {
+      "id": "qiP1E6iAVS8-06",
+      "kind": "specific",
+      "question": "How did past predictions about future technology often differ from the reality we experience today?",
+      "path": "specific",
+      "claim": "They did not anticipate the internet or the true nature of how technology would evolve and integrate into daily life, illustrating that extrapolating from the present often leads to significant inaccuracies over longer time spans",
+      "chunk_id": "e2e3c583-e737-454a-8e06-af2de75fab18",
+      "chunk_text": "your hip yeah that that was no one thought that way people imagined people imagine of the future where we have motorized sidewalks and monorails and everything and they what we didn't get was we thought energy would cost nothing so we imagined a world with transportation motion and actions that all require energy to enable and those worlds came out of the heads of people who extrapolated forward and they did not understand that the real action was in information information is what became cheap not energy and when you when information becomes cheap i have the world at my fingertips even though i still have to walk down the sidewalk and it's not a motorized pathway yeah that's the thing they never saw coming they didn't have any of those didn't see it coming they didn't see the internet coming information would be cheap right and so i i'm not one to just take what's going on now and extrapolate it and say everyone is going to be living that differently because other things come in from the side right that you don't anticipate there and when they come in from the side it is not an extrapolation of what you're doing now it is something you didn't even imagine because a innovative creative person looks to the left looks to the right and says i can",
+      "similarity": 0.5480462979287787
+    },
+    {
+      "id": "qiP1E6iAVS8-06",
+      "kind": "specific",
+      "question": "How did past predictions about future technology often differ from the reality we experience today?",
+      "path": "specific",
+      "claim": "They did not anticipate the internet or the true nature of how technology would evolve and integrate into daily life, illustrating that extrapolating from the present often leads to significant inaccuracies over longer time spans",
+      "chunk_id": "f6418338-4911-46a2-8d06-a651636e4f15",
+      "chunk_text": "side it is not an extrapolation of what you're doing now it is something you didn't even imagine because a innovative creative person looks to the left looks to the right and says i can combine these into something that's completely new that no one even imagined so that's how the future unfolds so extrapolating you get the first couple of years correct five years ten years out you are completely off and you said 500 years a thousand years let's shorten that a little bit let's say 30 years you say no that's not much you know we need more time than that ask yourself let's go back to 1960. we didn't have a spaceship the united states did not have a a rocket to carry people that wouldn't blow up on the launch pad okay we weren't there yet um 30 years later it's 1990 people have laptop computers and we've been to the moon six times over 30 years so when i think today to 30 years from now i'm saying i don't know that i can predict anything but there's some things that i know are going to happen in the next few years self-driving cars it's going to take over like that why because you replace your car every half of the people replace the car every",
+      "similarity": 0.48256921697438065
+    },
+    {
+      "id": "qiP1E6iAVS8-07",
+      "kind": "specific",
+      "question": "What was the state of the universe in its early stages that affected the behavior of light?",
+      "path": "specific",
+      "claim": "It was only when the universe expanded and cooled, allowing electrons to combine with atoms, that light could move freely and the universe became transparent to light",
+      "chunk_id": "f51bb069-c30e-4a78-97f1-b858e47d7f87",
+      "chunk_text": "ripped off ripped into the soup so you have free moving electrons and atoms and it's a soup the atoms are not part of the the electrons are not part of the atoms the the consequence of that is light interacts heavily with free electrons so you try to move light through a plasma and the light sees an electron it careens off of it and it does not travel in a straight line it bounces and careens and scatters and so by the time the light comes out the other side you lost all hope of any information about what was on the other side of the star or on the other side of that plasma okay so the early universe was very hot you can calculate what those temperatures must have been so hot that all atoms are ionized and the whole universe is plasma so light is just bouncing around within the universe in fact this is a lot of visible light is doing this then the universe expands and cools the electrons combine with the atoms all of a sudden the beam of light is no longer batted to and fro by these free electrons and you reach a point where the universe clears and it becomes transparent to the passage of light in that moment all the light that was contained in that fireball now moves free across the universe",
+      "similarity": 0.6593847205745234
+    },
+    {
+      "id": "qiP1E6iAVS8-09",
+      "kind": "specific",
+      "question": "What was James Randi's approach to investigating psychic claims?",
+      "path": "specific",
+      "claim": "He emphasized that any claims of psychic ability should be tested in controlled situations, and that any supposed abilities should be reliable and repeatable, which he found lacking in the claims he investigated",
+      "chunk_id": "22004728-5b3d-4ba1-aef4-0081956a6161",
+      "chunk_text": "who's who has who's not heralded you go to the best who they claim yeah i think most of the ones that claim to be psychic are full of [ __ ] i'm not discounting the possibility of psychic phenomena that's what the amazing randy did he he bypassed everyone who everyone else said was full of [ __ ] they said go to her go to her that's what he did what else you want him to do yeah no i mean look i've never seen any evidence that psychic ability is real but i've left the door open because i think intuition is a weird thing and then the ability to think that you know when something's going to happen and then something does happen people claim that has taken place i don't know if it really ever has but if it ever has if someone really did tell someone that something was going to happen it did happen that to me is very fascinating i've seen no evidence that it does that it does work that way or you have to well it's got to be it's got to be a reliable prediction i mean maybe right but again maybe it's an emerging phenomenon maybe it's a thing that one day human beings will have as in our natural toolbox",
+      "similarity": 0.5440077784261453
+    },
+    {
+      "id": "qiP1E6iAVS8-09",
+      "kind": "specific",
+      "question": "What was James Randi's approach to investigating psychic claims?",
+      "path": "specific",
+      "claim": "He emphasized that any claims of psychic ability should be tested in controlled situations, and that any supposed abilities should be reliable and repeatable, which he found lacking in the claims he investigated",
+      "chunk_id": "41b3adb0-79a9-4232-8879-db0a273d06c3",
+      "chunk_text": "telekinetics is real no okay we've we've got we understand what forces there are but people that make things move with their mind what do you what do you think they're doing they're lying yes to themselves or to others people get so upset if you say that right what do you think about psychic ability think there's any of it i'm not convinced by any of it i've ever seen yeah put him in a controlled situation if if there is psychic ability it's not particularly repeatable right like maybe an emerging phenomenon okay i so so but that you have to be invoking forces that don't don't otherwise show up in a laboratory right so that's a b um the laboratory has a hard time duplicating your claims okay c if one of your psychic ability is to help the police find the criminal yeah why is it oh they're in a ravine and they think why just gives the person's name and their address and their phone number what's not that good it's like a dog well when you you get a bloodhound to go find a guy yeah they're not that good at it okay i don't know i'm pretty good at it yeah like they run around the woods and they catch it they could find somebody else's",
+      "similarity": 0.5540404991203977
+    },
+    {
+      "id": "qiP1E6iAVS8-09",
+      "kind": "specific",
+      "question": "What was James Randi's approach to investigating psychic claims?",
+      "path": "specific",
+      "claim": "He emphasized that any claims of psychic ability should be tested in controlled situations, and that any supposed abilities should be reliable and repeatable, which he found lacking in the claims he investigated",
+      "chunk_id": "d5b096f4-7e43-403d-a94c-85b5fc148736",
+      "chunk_text": "bloodhound to go find a guy yeah they're not that good at it okay i don't know i'm pretty good at it yeah like they run around the woods and they catch it they could find somebody else's underwear well the idea is you give them yours so they know what you smell like yeah but they go looking for you yeah how unique are you in seven billion dog pretty [ __ ] unique okay so a dog's good so their dogs can smell covered 19. so then why are they not good at so why did you say they weren't good they're pretty good but they're not perfect it's not like you let a dog loose and it just runs well they're better than any of us would be yeah in that situation my point is it's gathering evidence it's using its ears and its ears are actually wafting up smells you know so the amazing randy uh who's a magician uh uh who also he exposes exposes frauds and claims uh there is a woman who claimed to be a very important psychic i think in russia and she sees events and she can know things she can look at a photo of you and figure out you know all right so he brings a photo of someone and gets her to to talk about it she",
+      "similarity": 0.35516345396183724
+    },
+    {
+      "id": "qiP1E6iAVS8-10",
+      "kind": "specific",
+      "question": "Why does the idea of psychic abilities captivate people and remain widespread throughout history?",
+      "path": "specific",
+      "claim": "This allure of having insight into the future seems to be a significant aspect of human nature, despite the increasing understanding of scientific explanations over time",
+      "chunk_id": "b58bac5b-1d81-4c08-a4cd-2ff7c00f1756",
+      "chunk_text": "phenomenon people are all in it right now trying to figure out what this particle called the muon is making it do something that we didn't expect it to do that's not on the table top so to say you're going to have a psychic power that manifests on a tabletop there is no there is no we we got the tabletop what do you think about that phenomenon about the the idea of the phenomenon psychic phenomenon is so interesting to people why why is that something that's so compelling and has been so prevalent throughout history i think we have always deeply respected anyone who had the power of of prophecy anyone now what's weird is the people who really have the power of prophecy are scientists i can tell you that on june 10th there's going to be a total a a solar eclipse visible from new york and the sun will rise eclipsed now if i didn't tell you how i knew that i can create a cult okay but i say well there's an equation you got to take some physics and some math and you learn some astrophysics and you could predict that too well that takes away any mystique i might have had over you for knowing the future but you go back to all",
+      "similarity": 0.4757907989898291
+    },
+    {
+      "id": "qiP1E6iAVS8-10",
+      "kind": "specific",
+      "question": "Why does the idea of psychic abilities captivate people and remain widespread throughout history?",
+      "path": "specific",
+      "claim": "This allure of having insight into the future seems to be a significant aspect of human nature, despite the increasing understanding of scientific explanations over time",
+      "chunk_id": "78743fde-0c62-471c-851f-453e16b8a511",
+      "chunk_text": "and you could predict that too well that takes away any mystique i might have had over you for knowing the future but you go back to all cultures that there's the the the the the shaman who's oh the weather this and the future that and the moon this and these are people with power over others even we are so into this that we're thinking that dreams matter oh i dreamed that they were oh is that going to be true oh my god look at how much we invest in thinking somebody's dream is something that's going to come true that was especially true in the past less of it today because we know more about dreams and things but the urge to want someone else to have the power to predict the future seems to be without limit and psychic powers and astrology what is astrology but a method to predict what's going to happen to you today all of that but that's a weird one because you lump it in with astronomy because astrology and astronomy sort of like get lumped in together in a lot of people's eyes like oh but it's based on where the planets are and we know that the planets have an effect on you because the gravity and it changes and shifts that's why the tide goes in and out we're always constantly being affected",
+      "similarity": 0.5021223060421008
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "63e9a574-5a07-4bbf-84a8-d28ef2d7bf0d",
+      "chunk_text": "- Hello everybody and welcome. How is everybody today? Great. Well, I'm delighted to\nhave the opportunity to be giving the DeVane Lectures. And the DeVane Lectures, as you can tell, from looking around you double as being a regular Yale course for credit that students can take for credit and lectures that are open\nto the general public. These lectures are going to\ndeal with power and politics in today's world and by today's world, I'm gonna mean the 30 years since 1989 and the 30 years since 1989 are and have been an incredibly\ntumultuous period of very great change. And that's for xxx unusual. For instance, if you compare\nit to the previous 40 years in most of the advanced\ncapitalist democracies, they were a period of relative stability after World War II. In most countries, it was\nan era of great prosperity even countries recovering\nfrom World War II like the countries of\nEurope were being rebuilt with Marshal Plan aid and it was a period, partly for demographic reasons, of very great political stability for people who grew up in that period. Internationally, as well, it was a period of very great stability because partly,",
+      "similarity": 0.35414199106061456
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "69ae210b-4f9c-4823-b00d-98f82d015311",
+      "chunk_text": "and that is very different\nfrom what has been experienced since 1989; time, if you like,\nhas speeded up a great deal. We've seen incredible\nchange in three decades. And those are the three decades that I am going to be exploring. One pedagogical challenge that presents is that for some of us in this room, the last three decades\nare etched into our minds as like it was yesterday. We experienced them in real time but there are many people in this room who were never born until long after that. For them, whether it's the last 40 years or the last 60 years,\n40 years or the 60 years after World War II, it's all history. One of the first things I need to do and I'm gonna try and make\nthis a regular practice during the course is I\nneed to take everybody back and to make people\nunderstand who weren't there what it was like and then to remind people who've lived through it of things that they might have forgotten.",
+      "similarity": 0.32182092117000644
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "d3d569f7-5e35-4b9a-8bf6-e963607dba9b",
+      "chunk_text": "with no special documents required. Today, what goes through\nyour mind and heart? - Well, of course, I look\nback to all those years of hardship for the\nfamilies even more than for the country as a whole and it's moving to see families getting together again. My feeling is that we are very close to an end of the artificial\ndivision of Berlin and I also believe we\nare close to the point where the parts of Germany will\nbecome much closer together. This, of course, only within the reasonable\nEuropean framework. Anyone know who that was? Xxx Billy Braun, the former\nChancellor of Germany who actually would die a couple of years, three years after that, so he was one of the\ncelebratory crowd at that time. So that might give you a\nlittle sense of the shock and the enthusiasm that people experienced in the latter days of 1989.",
+      "similarity": 0.2346406700081821
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "99dec6b1-fe22-442b-8919-414c92338364",
+      "chunk_text": "This had been a period\nin which the Soviet Union was clearly losing its\ngrip on Eastern Europe. It wasn't just Germany. Right across Eastern\nEurope, all through 1989, there had been these massive\nresistance movements developing and the Soviet Union was losing, it was clearly not in\na position to intervene in these countries. And they were shedding\ntotalitarian control for the first time in decades. Of course, the great exception which we will be talking\nabout next week was in China where demonstrations in Tiananmen Square that June had come out,\nmeant a very different result but in most of the world, after 1989, it seemed like democracy was on the March. We saw the democratization of all of the former Soviet Union bloc\ncountries in Eastern Europe even places like South\nAfrica which had been mired in a bitter conflict for\ndecades transitioned in the early 1990s to a\nmulti-racial democracy. The problems in Northern\nIreland finally settled with the Good Friday Accords in 1997. Even Israel-Palestine which had been one of the most intractable\nconflicts for decades and decades seemed to be moving towards a\nresolution in the early 1990s.",
+      "similarity": 0.26346800561478806
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "d76d700a-319e-4b97-906b-2e7887128c6a",
+      "chunk_text": "This is the period when Francis Fukuyama was talking about the end of history by which he meant that liberal democracy was sweeping the world. In fact, at the turn of the 21st century, we finally went from a world\nin which most countries in the world were not democracies\nby most standard measures to a world in which most\ncountries were democracies by most standard measures. So it's not surprising that\none would have had the kind of enthusiasm that\nFukuyama had at that time and that was almost, what's the word? Just snowballing across so\nmuch of the developed world. Enormous confidence in\ndemocratic capitalism and enormous confidence in the idea that many people were gonna\nbe lifted out of poverty and that the world was heading for a kind of benign equilibrium, as an economist would say,\nFukuyama's end of history idea.",
+      "similarity": 0.3622089460775048
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "79145aa8-c7a3-47ae-ba8f-96e8ba9c4e76",
+      "chunk_text": "in many European countries. The establishment parties are\nshrinking and becoming weaker and the parties on the fringes are growing and becoming stronger. And it was impossible\nnot to start thinking about the past and thinking particularly about the 1920s and 30s. (speaking in foreign language) - [Presenter] As a result of\nthe elections of July, 1932, the Nazis became the\nbiggest party in Germany with 37% of the vote. - So if you wanna go back to the 1930s, you can see that that video was\nabout the July 1932 election and you can see what happened\nin the subsequent elections that it was a very unstable system. They were having multiple\nelections and of course, 18 months later, Hitler came to power. And if you go to Germany, you hear very anxious people talking about is this back to the future? Is 2017 and 2018 some kind\nof replay of the empowerment of extremist parties and of course, it wasn't just Germany. In 2016 we had massive shocks delivered to establishment parties\nwith the Brexit result in the UK and Donald\nTrump's populist stampede to the presidency in the US,",
+      "similarity": 0.30179722601211756
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "40a18b2e-6b8b-4cfd-8194-0ab50753d291",
+      "chunk_text": "The the first one is going to starting on Monday deal with the\ncollapse of communism and its aftermath. There we going to look\nat collapse of communism in Eastern Europe in Russia, in China and in Vietnam.\nAlthough I will talk about some other countries along the way. We're going to talk about\nthe rise of a unipolar world, until 1989, we had a\nbipolar world in which, as I said a lot of actual stability, that came about as a\nbyproduct of the Cold War at least among the the major powers even if they maintained this stability, partly by, acting out their conflicts in proxy wars in, Asia, Africa and at America but it by and large the great powers were the\nnucleus standoff worked and we didn't have a major\nconflict between them. Now we have gone to a\nunipolar world dominated, by a single power ,after 1989. How does that restructure politics and the possibilities for\npolitics that will be also part of our concern. And then I'm going to\ntalk about the, politics of the economics. What I'm going to call the\nrise of neoliberalism at home and the Washington Consensus abroad",
+      "similarity": 0.4279729282893147
+    },
+    {
+      "id": "BDqvzFY72mg-broad-2",
+      "kind": "broad",
+      "question": "What are the main themes of this lecture?",
+      "path": "broad",
+      "claim": "Additionally, it emphasizes the importance of discussing the interplay between history, politics, and normative questions about political goals",
+      "chunk_id": "d1aa6a1a-b0aa-499c-a538-36d3ebd95923",
+      "chunk_text": "these countries was,\nso poorly misdiagnosed by so many, political elites and people in control of\npolitical parties, misdiagnosed to the point where not only\ndid they fail to respond, to the growing economic insecurity, that was experienced by many,\nmany millions of workers within their own countries. They were actually\nimplementing political reforms that were likely to make things worse. And so the last part of the\ncourse will be looking at those two interacting issues. What sorts of economic\npolicies were pursued or failed to be pursued. What kinds of policies\nmight have been pursued and how did the reform\nof political systems over the last 15 or 20 years, make the problem worse\nand that will lead me, to make some arguments, about\nhow we should, think about, politics going forward. So, that is what we're going, to be doing. It's a big menu, we have, you know we have 26 now soon to be 25 lectures in which to explore it. I'm going to, before breaking today, I'm going to talk about\na few logistical matters. One is that I have been\nasked to announce but you can see for yourself,",
+      "similarity": 0.41465919659990796
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "claim": "The video provides an introduction to Python programming, starting with the basics of variable assignment, case sensitivity, data types, and basic math operations",
+      "chunk_id": "8b6acc6b-1a18-4414-bf56-f285af49eada",
+      "chunk_text": "what is up guys in this video i'm going to be showing you how you can get started with python in less than 10 minutes and i'm going to be using python 3.8 for this along with pycharm as my code editor you can just search these on google and they will pop up immediately they are free and open source so definitely do check those out otherwise let's get started immediately with the first thing you should know in python and that is how to assign values to variables so to create a variable all you have to do is decide on a name such as item and then you can just assign it a value this is a string and a string is just any form of text for the program to read and you also need to keep in mind that python is a case sensitive language which means item with a small i and item with a big i are going to mean absolutely different things and also a naming convention in python is to add an underscore every time you have more than one word so if we say item name you want to add this underscore over here and we can just say orange so now we have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you",
+      "similarity": 0.544459180669052
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "claim": "It then covers the use of if statements to evaluate conditions based on various factors such as age and happiness",
+      "chunk_id": "8256bd71-5428-4199-93e6-86d728bb558b",
+      "chunk_text": "these two values so is happy is false age is 28. let's pretend we want something to happen if the age is more than 21 we'll say print you are old and if they are not old we can also type in l if the age is equal to 18 we will tell them you are getting old and if it's neither of those we can go ahead and say you are still young and the same thing goes with the is happy statement so we type in if the person is happy we can write you are happy else they are probably not happy so we will just write you are not happy and when we play it it's going to say they are not happy because is happy is false and if we set this to true it's going to change to you are happy so the if statement just takes into account whether a statement is true or false and depending on that it's going to give the outcome of the values and the if else statement is going to probably be your most used logic next let's move on to the for",
+      "similarity": 0.6096167239342993
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "claim": "Next, it discusses control structures, including for loops and while loops, and introduces functions for writing reusable code",
+      "chunk_id": "f519f7ae-a11f-4083-84df-9ba5a337390a",
+      "chunk_text": "that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish moving on to functions to create a function all you have to do is use the def keyword and just name the function however you like of course i'm going to use the underscore naming convention and this function is only going to be used to say hello to the user so here we can go ahead and type in print hey there and we're going to insert the name so you might be wondering what are functions and what do we use functions for well functions are just used to reuse your code in many different instances because the main point of programming is to reuse your code as much as possible you want to maximize how often you can reuse the same line of code without having to rewrite it so for example now we created a function that says hello we can type in mario and we can also use it again and we can type in luigi and when we run the program it will say hey there mario and hey there luigi instead of writing this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create",
+      "similarity": 0.5150156533774428
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-1",
+      "kind": "broad",
+      "question": "Give me an overview of this video.",
+      "path": "broad",
+      "claim": "Finally, it explains how to handle exceptions using try and accept blocks, demonstrating how to manage user input and invalid data",
+      "chunk_id": "05bc6077-905f-4f76-a0a3-3fae7f0aa032",
+      "chunk_text": "we can use the try and accept block so for here we're going to create an input and it's going to say please provide a number so now we're going to go ahead and type in try and we're going to try to print the value plus the integer of the number that we get from the user and if that doesn't work we're going to print that that is not a valid number so the way it works is it tries to execute the code that's inside here and if anything goes wrong if an exception occurs it's going to go to the accept block and it's going to execute whatever is inside that of course if you write something that throws an exception inside here you need to try with another try and accept block but if we go ahead and run the program now we can write something like 10 and it's going to add 10 to the value but of course what if we write something such as mario try adding mario to 10 and the program is not going to be happy because you cannot convert mario to an integer and then add it to 10. so it's going to say you shouldn't do that but don't worry because we have the exception covered and our program will say that is not a valid number and not throw an exception",
+      "similarity": 0.6021730475863397
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "broad",
+      "claim": "From this tutorial, you will learn how to get started with Python, including variable assignment, data types, and basic math operations",
+      "chunk_id": "8b6acc6b-1a18-4414-bf56-f285af49eada",
+      "chunk_text": "what is up guys in this video i'm going to be showing you how you can get started with python in less than 10 minutes and i'm going to be using python 3.8 for this along with pycharm as my code editor you can just search these on google and they will pop up immediately they are free and open source so definitely do check those out otherwise let's get started immediately with the first thing you should know in python and that is how to assign values to variables so to create a variable all you have to do is decide on a name such as item and then you can just assign it a value this is a string and a string is just any form of text for the program to read and you also need to keep in mind that python is a case sensitive language which means item with a small i and item with a big i are going to mean absolutely different things and also a naming convention in python is to add an underscore every time you have more than one word so if we say item name you want to add this underscore over here and we can just say orange so now we have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you",
+      "similarity": 0.5558032889210638
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "broad",
+      "claim": "You will also understand how to use if statements to evaluate conditions and their corresponding outputs",
+      "chunk_id": "8256bd71-5428-4199-93e6-86d728bb558b",
+      "chunk_text": "these two values so is happy is false age is 28. let's pretend we want something to happen if the age is more than 21 we'll say print you are old and if they are not old we can also type in l if the age is equal to 18 we will tell them you are getting old and if it's neither of those we can go ahead and say you are still young and the same thing goes with the is happy statement so we type in if the person is happy we can write you are happy else they are probably not happy so we will just write you are not happy and when we play it it's going to say they are not happy because is happy is false and if we set this to true it's going to change to you are happy so the if statement just takes into account whether a statement is true or false and depending on that it's going to give the outcome of the values and the if else statement is going to probably be your most used logic next let's move on to the for",
+      "similarity": 0.5049307096132767
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "broad",
+      "claim": "Additionally, the tutorial covers control structures like for and while loops, as well as the concept of functions for reusable code",
+      "chunk_id": "f519f7ae-a11f-4083-84df-9ba5a337390a",
+      "chunk_text": "that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish moving on to functions to create a function all you have to do is use the def keyword and just name the function however you like of course i'm going to use the underscore naming convention and this function is only going to be used to say hello to the user so here we can go ahead and type in print hey there and we're going to insert the name so you might be wondering what are functions and what do we use functions for well functions are just used to reuse your code in many different instances because the main point of programming is to reuse your code as much as possible you want to maximize how often you can reuse the same line of code without having to rewrite it so for example now we created a function that says hello we can type in mario and we can also use it again and we can type in luigi and when we run the program it will say hey there mario and hey there luigi instead of writing this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create",
+      "similarity": 0.4865017970618319
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-2",
+      "kind": "broad",
+      "question": "What will I learn from this tutorial?",
+      "path": "broad",
+      "claim": "Lastly, you will learn about handling exceptions using try and accept blocks to manage user input errors",
+      "chunk_id": "05bc6077-905f-4f76-a0a3-3fae7f0aa032",
+      "chunk_text": "we can use the try and accept block so for here we're going to create an input and it's going to say please provide a number so now we're going to go ahead and type in try and we're going to try to print the value plus the integer of the number that we get from the user and if that doesn't work we're going to print that that is not a valid number so the way it works is it tries to execute the code that's inside here and if anything goes wrong if an exception occurs it's going to go to the accept block and it's going to execute whatever is inside that of course if you write something that throws an exception inside here you need to try with another try and accept block but if we go ahead and run the program now we can write something like 10 and it's going to add 10 to the value but of course what if we write something such as mario try adding mario to 10 and the program is not going to be happy because you cannot convert mario to an integer and then add it to 10. so it's going to say you shouldn't do that but don't worry because we have the exception covered and our program will say that is not a valid number and not throw an exception",
+      "similarity": 0.5959569536305915
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-1",
+      "kind": "broad",
+      "question": "Summarize this conversation.",
+      "path": "broad",
+      "claim": "The conversation covers various topics, starting with the perception of randomness in nature and nostalgic reflections on Austin, before transitioning into a debate about UFOs and the military budget for investigating them, ultimately criticizing the handling of social issues like homelessness in Los Angeles",
+      "chunk_id": "087cc8e0-0c0e-4650-8171-9f8d88b4f474",
+      "chunk_text": "inquisitive perspective on these things you're not necessarily dismissive right but you're not willing to just adopt this narrative that we're being visited by ufos or from another planet yeah so it's um by the way let's start with the military yeah right if they're glowing lights in the sky and we don't know what it is i they damn sure better look into it right we give them folks 700 billion dollars make some percentage of that budget to check out the possible threat of things we don't understand i used to think that was a lot of money until i found out that los angeles spent a billion dollars on the homeless every year the budget for the homeless they got a homeless budget okay a billion and they're not doing [ __ ] all right so when i look at like the military getting 700 billion is that what they get plus or minus we need to give them more money you know clearly they need more money because if you can't fix the la homeless situation with 1 billion how are you going to protect us with 700 billion well that's not the same agency charged with it are they better they're better than the homeless people no i'm saying the mayor's office of los",
+      "similarity": 0.5336938284429791
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-1",
+      "kind": "broad",
+      "question": "Summarize this conversation.",
+      "path": "broad",
+      "claim": "Additionally, there is an exploration of skepticism regarding claims of UFOs and alien encounters, emphasizing the lack of credible evidence to support such claims",
+      "chunk_id": "37b063d3-bf86-4666-a868-363743d89f41",
+      "chunk_text": "you have to say that so that's that's sort of that's your way to maintain your your your alien belief system by saying that and i don't have a problem with it go get him go get him but all of what has been put forth as evidence for aliens to me is insufficient evidence to excite my interest my research interest in devoting time to finding it out but it definitely has excited other people i have not stopped them i am not saying defund the military uh program on uaps which of course is just updated ufo i know they like to say that now because that's just like a stigma i know that's just that that's a really transparent sneaky way no no it's not even sneaky it's actually i think it's embarrassing it's like maybe if we call them uaps people take themselves people with tables no i'm of the belief that they're probably akin to what we did on mars i don't think there's aliens in them i have a feeling that these things are probes and i feel like if you just think about biological entities flying through the universe like why do that right when you have sophisticated technology that's good enough right now from our like relatively primitive in consideration of what",
+      "similarity": 0.517887552507546
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "claim": "It explains how to create variables and assign them values, the importance of naming conventions, how to perform arithmetic operations and use logical statements, the mechanics of loops for iteration, and the purpose of functions for code reuse",
+      "chunk_id": "8b6acc6b-1a18-4414-bf56-f285af49eada",
+      "chunk_text": "what is up guys in this video i'm going to be showing you how you can get started with python in less than 10 minutes and i'm going to be using python 3.8 for this along with pycharm as my code editor you can just search these on google and they will pop up immediately they are free and open source so definitely do check those out otherwise let's get started immediately with the first thing you should know in python and that is how to assign values to variables so to create a variable all you have to do is decide on a name such as item and then you can just assign it a value this is a string and a string is just any form of text for the program to read and you also need to keep in mind that python is a case sensitive language which means item with a small i and item with a big i are going to mean absolutely different things and also a naming convention in python is to add an underscore every time you have more than one word so if we say item name you want to add this underscore over here and we can just say orange so now we have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you",
+      "similarity": 0.4476883264746393
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "claim": "It explains how to create variables and assign them values, the importance of naming conventions, how to perform arithmetic operations and use logical statements, the mechanics of loops for iteration, and the purpose of functions for code reuse",
+      "chunk_id": "6c2153fb-07fb-4efe-b24d-40a5a8da05c0",
+      "chunk_text": "have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you that there is a difference so we'll go ahead and click on run and you'll notice it will say banana and apple now let's go ahead and print another string which this time is going to be hello and we're going to add a plus and the item name so as you can see we can actually combine text and when we print that it's going to say hello orange next we have data types so the first one is the integer which is just any number and you're going to notice it being written in blue then we have strings which as i showed you earlier is just any text inside quotation marks then we have booleans which is just a simple true or false so as you can see we can just type in false here or true here and that's all that it is it just says true or false and the final one you should know for getting started is list which all you have to do is create a pair of angle brackets and insert the values you want inside here and it can be a mixture between numbers booleans and so on but for this example we'll just keep it simple and write a few strings then if we go",
+      "similarity": 0.5123800797952406
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "claim": "It explains how to create variables and assign them values, the importance of naming conventions, how to perform arithmetic operations and use logical statements, the mechanics of loops for iteration, and the purpose of functions for code reuse",
+      "chunk_id": "0d693190-ec28-4442-b99a-e204d59085ae",
+      "chunk_text": "number pretend we want to add the value of 10 to the string number the editor will be nice enough to tell you you shouldn't do that and we should just put some parentheses there and type in in ahead of that so we can convert it to an integer and add it easily next let's move on to math so we will create two variables one will be 10 and one will be five and to do math in python it's very self-explanatory as you can see to do addition you just need to add a plus symbol for the difference you just add a minus symbol to multiply you add an asterisk to divide you add a slash and if you want the exponential power just add two asterisks and you'll notice that if we print all of these you're going to get a very quick calculator so of course 10 plus 5 is 15 a minus b is going to be 5 and so on you will get the values that correspond to those operators okay next let's go ahead and create a logic statement so we're going to use these two values so is happy is false",
+      "similarity": 0.4450259561541344
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "claim": "It explains how to create variables and assign them values, the importance of naming conventions, how to perform arithmetic operations and use logical statements, the mechanics of loops for iteration, and the purpose of functions for code reuse",
+      "chunk_id": "43f7cf41-745e-4b00-942b-7a921074d1fc",
+      "chunk_text": "used logic next let's move on to the for loop so for i in range of three which means it's going to loop over three values we want to print hello and we can add a comma here and the value of i so if we print this you're going to notice it's going to say hello0 hello1 hello2 because in programming the index always starts at 0. so if you actually want that to start at one you're going to have to manually add one to i so now you get hello one hello to hello three and also just so you know what range is we can go down here and we can go ahead and type in print range of three so you're going to notice it's going to create a range object which is going to have the values from 0 to 3 so this can iterate three times over that but you should also know that this works for lists so we can create a name list and we can type in for name in name list we can print the name next we have a while loop so we're just gonna type in i equals zero and while i is less than five we're going to increment the value of i by one each time it goes in this loop and finally we want to print the value of i",
+      "similarity": 0.4615673766564418
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-3",
+      "kind": "broad",
+      "question": "What Python concepts does this teach?",
+      "path": "specific",
+      "claim": "It explains how to create variables and assign them values, the importance of naming conventions, how to perform arithmetic operations and use logical statements, the mechanics of loops for iteration, and the purpose of functions for code reuse",
+      "chunk_id": "f519f7ae-a11f-4083-84df-9ba5a337390a",
+      "chunk_text": "that is but as soon as we type in zero it's going to exit the loop because it will reach this break statement and the program will finish moving on to functions to create a function all you have to do is use the def keyword and just name the function however you like of course i'm going to use the underscore naming convention and this function is only going to be used to say hello to the user so here we can go ahead and type in print hey there and we're going to insert the name so you might be wondering what are functions and what do we use functions for well functions are just used to reuse your code in many different instances because the main point of programming is to reuse your code as much as possible you want to maximize how often you can reuse the same line of code without having to rewrite it so for example now we created a function that says hello we can type in mario and we can also use it again and we can type in luigi and when we run the program it will say hey there mario and hey there luigi instead of writing this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create",
+      "similarity": 0.5071890705956179
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-4",
+      "kind": "broad",
+      "question": "What's covered here?",
+      "path": "broad",
+      "claim": "The video covers several topics related to Python basics, including variable assignment and data types",
+      "chunk_id": "8b6acc6b-1a18-4414-bf56-f285af49eada",
+      "chunk_text": "what is up guys in this video i'm going to be showing you how you can get started with python in less than 10 minutes and i'm going to be using python 3.8 for this along with pycharm as my code editor you can just search these on google and they will pop up immediately they are free and open source so definitely do check those out otherwise let's get started immediately with the first thing you should know in python and that is how to assign values to variables so to create a variable all you have to do is decide on a name such as item and then you can just assign it a value this is a string and a string is just any form of text for the program to read and you also need to keep in mind that python is a case sensitive language which means item with a small i and item with a big i are going to mean absolutely different things and also a naming convention in python is to add an underscore every time you have more than one word so if we say item name you want to add this underscore over here and we can just say orange so now we have a few strings assigned to three different variables let's go ahead and print first the difference between item and item just to show you",
+      "similarity": 0.5432313021740655
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-4",
+      "kind": "broad",
+      "question": "What's covered here?",
+      "path": "broad",
+      "claim": "The video covers several topics related to Python basics, including variable assignment and data types, the use of if statements for evaluating conditions",
+      "chunk_id": "8256bd71-5428-4199-93e6-86d728bb558b",
+      "chunk_text": "these two values so is happy is false age is 28. let's pretend we want something to happen if the age is more than 21 we'll say print you are old and if they are not old we can also type in l if the age is equal to 18 we will tell them you are getting old and if it's neither of those we can go ahead and say you are still young and the same thing goes with the is happy statement so we type in if the person is happy we can write you are happy else they are probably not happy so we will just write you are not happy and when we play it it's going to say they are not happy because is happy is false and if we set this to true it's going to change to you are happy so the if statement just takes into account whether a statement is true or false and depending on that it's going to give the outcome of the values and the if else statement is going to probably be your most used logic next let's move on to the for",
+      "similarity": 0.36717702277351866
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-4",
+      "kind": "broad",
+      "question": "What's covered here?",
+      "path": "broad",
+      "claim": "The video covers several topics related to Python basics, including variable assignment and data types, the use of if statements for evaluating conditions, control structures such as for and while loops",
+      "chunk_id": "3d69da30-1441-4450-9e95-01976092af81",
+      "chunk_text": "this statement twice we were able to just use one function to do it multiple times and one thing we should cover also on functions is pretend you have a lot of functions you need to create such as get internet and run game something such as that and you don't really have the logic for it yet so you're going to notice that these are empty if you run the program you're going to get an error but python has created this keyword that is called pass which essentially just says there's nothing in here we accept that and your program is still going to be able to run regardless of having no content inside the function now when we tap on run you're going to notice there are going to be no errors because the program's going to understand that we provided the keyword pass which just tells it that there's nothing there and it accepts it but this is very good for creating the blueprints later in case you need to write everything your program should do but don't really know how to do that yet just insert the word pass and it will save you a lot of trouble and finally we're going to go over how we can use the try and accept block so for here we're going",
+      "similarity": 0.42814825807968515
+    },
+    {
+      "id": "fWjsdhR3z3c-broad-4",
+      "kind": "broad",
+      "question": "What's covered here?",
+      "path": "broad",
+      "claim": "The video covers several topics related to Python basics, including variable assignment and data types, the use of if statements for evaluating conditions, control structures such as for and while loops, and handling exceptions with try and accept blocks",
+      "chunk_id": "334c5d3e-76a7-44ae-8084-0eacb7d20a31",
+      "chunk_text": "going to say you shouldn't do that but don't worry because we have the exception covered and our program will say that is not a valid number and not throw an exception but anyway i really hope that helped you to get started with python of course there's a lot more to cover this was just meant as a very quick guide for helping you to get started and with that being said have a wonderful day and i'll see you guys in the next video",
+      "similarity": 0.5011892764890695
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-4",
+      "kind": "broad",
+      "question": "Walk me through the conversation.",
+      "path": "broad",
+      "claim": "The conversation begins by discussing the perception of randomness in nature and includes reflections on Austin before transitioning into a debate about UFOs, specifically the military's budget for investigating them and critiques regarding the handling of social issues like homelessness in Los Angeles",
+      "chunk_id": "087cc8e0-0c0e-4650-8171-9f8d88b4f474",
+      "chunk_text": "inquisitive perspective on these things you're not necessarily dismissive right but you're not willing to just adopt this narrative that we're being visited by ufos or from another planet yeah so it's um by the way let's start with the military yeah right if they're glowing lights in the sky and we don't know what it is i they damn sure better look into it right we give them folks 700 billion dollars make some percentage of that budget to check out the possible threat of things we don't understand i used to think that was a lot of money until i found out that los angeles spent a billion dollars on the homeless every year the budget for the homeless they got a homeless budget okay a billion and they're not doing [ __ ] all right so when i look at like the military getting 700 billion is that what they get plus or minus we need to give them more money you know clearly they need more money because if you can't fix the la homeless situation with 1 billion how are you going to protect us with 700 billion well that's not the same agency charged with it are they better they're better than the homeless people no i'm saying the mayor's office of los",
+      "similarity": 0.5200044205540015
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-4",
+      "kind": "broad",
+      "question": "Walk me through the conversation.",
+      "path": "broad",
+      "claim": "It further explores skepticism around UFO sightings, emphasizing the lack of credible evidence while questioning the reliability of reports despite advancements in technology",
+      "chunk_id": "37b063d3-bf86-4666-a868-363743d89f41",
+      "chunk_text": "you have to say that so that's that's sort of that's your way to maintain your your your alien belief system by saying that and i don't have a problem with it go get him go get him but all of what has been put forth as evidence for aliens to me is insufficient evidence to excite my interest my research interest in devoting time to finding it out but it definitely has excited other people i have not stopped them i am not saying defund the military uh program on uaps which of course is just updated ufo i know they like to say that now because that's just like a stigma i know that's just that that's a really transparent sneaky way no no it's not even sneaky it's actually i think it's embarrassing it's like maybe if we call them uaps people take themselves people with tables no i'm of the belief that they're probably akin to what we did on mars i don't think there's aliens in them i have a feeling that these things are probes and i feel like if you just think about biological entities flying through the universe like why do that right when you have sophisticated technology that's good enough right now from our like relatively primitive in consideration of what",
+      "similarity": 0.5211096129582995
+    },
+    {
+      "id": "qiP1E6iAVS8-broad-4",
+      "kind": "broad",
+      "question": "Walk me through the conversation.",
+      "path": "broad",
+      "claim": "It further explores skepticism around UFO sightings, emphasizing the lack of credible evidence while questioning the reliability of reports despite advancements in technology",
+      "chunk_id": "54159289-2403-4b88-bac3-fec26cd0dd3e",
+      "chunk_text": "see out of human beings sure yeah definitely that's that's so so getting back to the the the ufo reports and sites you know that the headline i saw recently says pentagon confirms ufos are real that's that's that title has no meaning well it gets me happy well no no it has no meaning i know what you're saying yeah it just has no meaning it's unidentified so unidentified things are real yeah that doesn't mean anything it doesn't it doesn't mean they're aliens if the title said pentagon confirms ufos are actually aliens that that is a headline right that's a good headline right there but that's not what anybody can report what do you think this whole ramping up of all this information is all the all the videos and all the conversations about the article in the new york times yeah it's part of what the uh trump said into motion i mean the the landscape was right before it but um the oh by the way was it ufo sightings went up during covet i think because everyone was home bored with nothing to do and you go out and look out look up you know yeah there's a lot of cultural um statistics related to the frequency of of ufo sightings but uh trump just before he left office",
+      "similarity": 0.4643611228129353
+    },
+    {
+      "id": "BDqvzFY72mg-keyword-1",
+      "kind": "specific",
+      "question": "What was the main point of the Washington Consensus section?",
+      "path": "specific",
+      "claim": "This consensus was adopted by institutions like the World Bank and IMF as conditions for loans to developing countries, reflecting a global confidence in free-market capitalism after the collapse of communism as an alternative system",
+      "chunk_id": "c0ac9603-34ad-4d8e-90ef-3269121af0f1",
+      "chunk_text": "And then I'm going to\ntalk about the, politics of the economics. What I'm going to call the\nrise of neoliberalism at home and the Washington Consensus abroad and this is put on this is basically it comes to, exist because of the collapse of an\nalternative to capitalism, the disappearance of communism\nas a viable, political system as a viable economic system and so you have this idea that's\noften called neoliberalism that basically has three elements. Its trade deregulation,\ntrade deals getting rid of restraints on trade, getting\nrid of internal regulation within countries, and\nmassive privatization of formerly state assets that was called, the neoliberal approach to political public political economy. And when it's translated into a set of recommendations or requirements for countries in the developing world, it was called the Washington Consensus, was essentially adopted by the World Bank by the IMF as a condition for giving loans to developing countries and it, was essentially taking\nneoliberalism global. And so the, post communist era is marked by, this massive confidence in, the the capacity of unregulated or mildly regulated\nfree-market capitalism, to deliver the best results,\nfor every country in the world then we're going to talk about the new global order, that\nis ushered in by this.",
+      "similarity": 0.6167105972299695
+    },
+    {
+      "id": "BDqvzFY72mg-oos-adj-1",
+      "kind": "out_of_scope",
+      "question": "What role did Mikhail Gorbachev's reforms play in the end of Soviet control over Eastern Europe?",
+      "path": "specific",
+      "claim": "This loss of control coincided with massive resistance movements in Eastern Europe, suggesting that Mikhail Gorbachev's reforms played a crucial role in enabling these movements and contributing to the democratization of the region, as the countries transitioned to new political systems without Soviet intervention",
+      "chunk_id": "99dec6b1-fe22-442b-8919-414c92338364",
+      "chunk_text": "This had been a period\nin which the Soviet Union was clearly losing its\ngrip on Eastern Europe. It wasn't just Germany. Right across Eastern\nEurope, all through 1989, there had been these massive\nresistance movements developing and the Soviet Union was losing, it was clearly not in\na position to intervene in these countries. And they were shedding\ntotalitarian control for the first time in decades. Of course, the great exception which we will be talking\nabout next week was in China where demonstrations in Tiananmen Square that June had come out,\nmeant a very different result but in most of the world, after 1989, it seemed like democracy was on the March. We saw the democratization of all of the former Soviet Union bloc\ncountries in Eastern Europe even places like South\nAfrica which had been mired in a bitter conflict for\ndecades transitioned in the early 1990s to a\nmulti-racial democracy. The problems in Northern\nIreland finally settled with the Good Friday Accords in 1997. Even Israel-Palestine which had been one of the most intractable\nconflicts for decades and decades seemed to be moving towards a\nresolution in the early 1990s.",
+      "similarity": 0.6698985330789287
+    },
+    {
+      "id": "qiP1E6iAVS8-keyword-1",
+      "kind": "specific",
+      "question": "Summarize what they said about James Randi.",
+      "path": "specific",
+      "claim": "The speaker mentions that Randi bypassed those considered by others to be credible and emphasizes that he approached the subject scientifically and left the door open for the possibility of phenomena that might not yet be understood, but ultimately remained unconvinced by the evidence presented for psychic abilities",
+      "chunk_id": "22004728-5b3d-4ba1-aef4-0081956a6161",
+      "chunk_text": "who's who has who's not heralded you go to the best who they claim yeah i think most of the ones that claim to be psychic are full of [ __ ] i'm not discounting the possibility of psychic phenomena that's what the amazing randy did he he bypassed everyone who everyone else said was full of [ __ ] they said go to her go to her that's what he did what else you want him to do yeah no i mean look i've never seen any evidence that psychic ability is real but i've left the door open because i think intuition is a weird thing and then the ability to think that you know when something's going to happen and then something does happen people claim that has taken place i don't know if it really ever has but if it ever has if someone really did tell someone that something was going to happen it did happen that to me is very fascinating i've seen no evidence that it does that it does work that way or you have to well it's got to be it's got to be a reliable prediction i mean maybe right but again maybe it's an emerging phenomenon maybe it's a thing that one day human beings will have as in our natural toolbox",
+      "similarity": 0.5699071143146602
+    },
+    {
+      "id": "qiP1E6iAVS8-keyword-1",
+      "kind": "specific",
+      "question": "Summarize what they said about James Randi.",
+      "path": "specific",
+      "claim": "The speaker mentions that Randi bypassed those considered by others to be credible and emphasizes that he approached the subject scientifically and left the door open for the possibility of phenomena that might not yet be understood, but ultimately remained unconvinced by the evidence presented for psychic abilities",
+      "chunk_id": "41b3adb0-79a9-4232-8879-db0a273d06c3",
+      "chunk_text": "telekinetics is real no okay we've we've got we understand what forces there are but people that make things move with their mind what do you what do you think they're doing they're lying yes to themselves or to others people get so upset if you say that right what do you think about psychic ability think there's any of it i'm not convinced by any of it i've ever seen yeah put him in a controlled situation if if there is psychic ability it's not particularly repeatable right like maybe an emerging phenomenon okay i so so but that you have to be invoking forces that don't don't otherwise show up in a laboratory right so that's a b um the laboratory has a hard time duplicating your claims okay c if one of your psychic ability is to help the police find the criminal yeah why is it oh they're in a ravine and they think why just gives the person's name and their address and their phone number what's not that good it's like a dog well when you you get a bloodhound to go find a guy yeah they're not that good at it okay i don't know i'm pretty good at it yeah like they run around the woods and they catch it they could find somebody else's",
+      "similarity": 0.4098602496257727
+    }
+  ]
+}
