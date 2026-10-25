@@ -133,7 +133,17 @@ def test_chat_parse_judgment_requires_every_flag_for_the_kind():
 
 def test_chat_summary_rates_checks_grounding_and_routing():
     def record(kind, judgment, grounded=True, path="specific"):
-        return {"kind": kind, "judgment": judgment, "grounded": grounded, "path": path}
+        return {
+            "kind": kind,
+            "judgment": judgment,
+            "grounded": grounded,
+            "model_grounded": grounded,
+            "path": path,
+            "n_sources": 1,
+            "sources_fallback": False,
+            "span_in_context": None,
+            "span_in_sources": None,
+        }
 
     good = {"supported": True, "answers_question": True, "speaker_slip": False}
     unsupported = {"supported": False, "answers_question": True, "speaker_slip": True}
@@ -154,6 +164,44 @@ def test_chat_summary_rates_checks_grounding_and_routing():
     assert specific["grounded"] == pytest.approx(2 / 3)
     assert summary["broad"]["routed_broad"] == 0.5
     assert "out_of_scope" not in summary
+
+
+def test_chat_summary_counts_flips_false_alarms_and_span_kept():
+    supported = {"supported": True, "answers_question": True, "speaker_slip": False}
+    declines = {"declines": True, "supported": True, "speaker_slip": False}
+
+    def record(kind, judgment, flipped, n_sources, span_in_context=None, span_in_sources=None):
+        return {
+            "kind": kind,
+            "judgment": judgment,
+            "grounded": not flipped,
+            "model_grounded": True,
+            "path": "specific",
+            "n_sources": n_sources,
+            "sources_fallback": False,
+            "span_in_context": span_in_context,
+            "span_in_sources": span_in_sources,
+        }
+
+    summary = summarize_chat(
+        [
+            # Supported but left with no source: a false alarm, and the span was lost.
+            record("specific", supported, True, 0, span_in_context=True, span_in_sources=False),
+            record("specific", supported, False, 2, span_in_context=True, span_in_sources=True),
+            # Retrieval missed the span, so it doesn't count toward span_kept.
+            record("specific", supported, False, 1, span_in_context=False, span_in_sources=False),
+            record("out_of_scope", declines, True, 0),
+        ]
+    )
+
+    specific = summary["specific"]
+    assert (specific["flipped"], specific["false_alarms"]) == (1, 1)
+    assert specific["span_kept"] == 0.5
+    assert specific["mean_sources"] == 1.0
+    assert specific["fallbacks"] == 0
+    assert summary["out_of_scope"]["flipped"] == 1
+    assert "false_alarms" not in summary["out_of_scope"]
+    assert "span_kept" not in summary["out_of_scope"]
 
 
 def test_unready_videos_reports_missing_and_unfinished():
