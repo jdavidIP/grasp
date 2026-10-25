@@ -61,7 +61,6 @@ Each is measured and discussed in [`docs/EVALUATION.md`](docs/EVALUATION.md#know
 - [`docs/EVALUATION.md`](docs/EVALUATION.md): eval results, what each change taught, and the limitations in detail.
 - [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md): schema and pgvector setup.
 - [`docs/API.md`](docs/API.md): endpoint contracts.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md): build order.
 
 ## License
 
