@@ -10,6 +10,8 @@ Every answer, card and question traces back to a moment in the video, and "this 
 
 ![Opening a video, asking the chat a question and jumping to its source, revealing flashcards, and answering quiz questions](docs/assets/demo.gif)
 
+## Architecture
+
 ```mermaid
 flowchart TD
     A["Add video by URL"] --> B["Fetch transcript<br/>captions, or yt-dlp + Whisper fallback"]
@@ -20,6 +22,8 @@ flowchart TD
     E --> G["Flashcards<br/>select topics → generate → validate → store"]
     E --> H["Quizzes<br/>select topics → generate → validate → store"]
 ```
+
+Ingestion runs once per video as a background task. Chat, flashcards and quizzes are three separate tabs hitting three separate endpoint groups. Chat answers a whole-video question from the topic summaries, and anything narrower from the reranked transcript excerpts it retrieves. Flashcards and quizzes share one pipeline: pick topics, build context from their summaries and excerpts, generate with a strict JSON schema, validate every item against its topic's full transcript, and store it. Full detail is in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Tech stack
 
