@@ -11,3 +11,10 @@ web/dist/
 *.egg-info/
 .DS_Store
 api/eval/golden_set.draft.json
+
+# Claude Code
+.claude/
+.superpowers/
+CLAUDE.md
+CLAUDE_WORKFLOW.md
+docs/superpowers/
