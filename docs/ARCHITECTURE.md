@@ -129,7 +129,7 @@ Storing `segment_id` on the chunk is what lets you filter retrieval to selected 
 
 ### Broad vs specific questions
 
-There is no app-level query router (see `CLAUDE.md` — intent is decided by which section of the UI the user is in). But a smaller version of the same problem still exists *inside* the chat endpoint: a user can type "summarize this video" or "what are the main points?" into the same chat box they use for "what did they say about X at minute 10?" Standard top-k retrieval is built for the second kind of question and handles the first one badly — it pulls a handful of chunks and produces a thin, partial summary of a few topics rather than the whole video.
+There is no app-level query router (intent is decided by which section of the UI the user is in). But a smaller version of the same problem still exists *inside* the chat endpoint: a user can type "summarize this video" or "what are the main points?" into the same chat box they use for "what did they say about X at minute 10?" Standard top-k retrieval is built for the second kind of question and handles the first one badly — it pulls a handful of chunks and produces a thin, partial summary of a few topics rather than the whole video.
 
 Handle this with a lightweight strategy check at the top of `POST /videos/{id}/chat`, before retrieval runs:
 
@@ -262,7 +262,7 @@ gpt-4o calls in the eval tools run sequentially. Running them in parallel exceed
 
 ## 8. What's deliberately out of scope
 
-Same list as `CLAUDE.md`'s scope guardrails, restated here for anyone not reading the codebase:
+The project's scope guardrails:
 
 - **Authentication, accounts, multi-user support.** This assumes a single local user throughout — there's no user table, no session, no per-user data isolation.
 - **Spaced-repetition scheduling** (SM-2 and similar). Flashcard review is a browser (reveal, previous/next), not a scheduler; there's no review-state table.
